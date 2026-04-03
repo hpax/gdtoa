@@ -1,0 +1,10 @@
+*~
+.\#*
+\#*
+*.bak
+*.a
+*.o
+*.lib
+*.obj
+arith.h
+gd_qnan.h
