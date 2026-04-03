@@ -104,7 +104,7 @@ Bigint *Balloc(int k MTd) {
 #endif
 	/* The k > Kmax case does not need ACQUIRE_DTOA_LOCK(0), */
 	/* but this case seems very unlikely. */
-	if (k <= Kmax && (rv = freelist[k]) != 0) {
+	if (k <= Kmax && (rv = freelist[k])) {
 		freelist[k] = rv->next;
 	} else {
 		x = 1 << k;
@@ -337,7 +337,7 @@ Bigint *pow5mult(Bigint * b, int k MTd) {
 	if (!(TI = *PTI))
 		*PTI = TI = get_TI();
 #endif
-	if ((p5 = p5s) == 0) {
+	if (!(p5 = p5s)) {
 		/* first time */
 #ifdef MULTIPLE_THREADS
 		if (!(TI = *PTI))
@@ -352,7 +352,7 @@ Bigint *pow5mult(Bigint * b, int k MTd) {
 			FREE_DTOA_LOCK(1);
 #else
 		p5 = p5s = i2b(625);
-		p5->next = 0;
+		p5->next = NULL;
 #endif
 	}
 	for (;;) {
@@ -363,7 +363,7 @@ Bigint *pow5mult(Bigint * b, int k MTd) {
 		}
 		if (!(k >>= 1))
 			break;
-		if ((p51 = p5->next) == 0) {
+		if (!(p51 = p5->next)) {
 #ifdef MULTIPLE_THREADS
 			if (!TI && !(TI = *PTI))
 				*PTI = TI = get_TI();
@@ -377,7 +377,7 @@ Bigint *pow5mult(Bigint * b, int k MTd) {
 				FREE_DTOA_LOCK(1);
 #else
 			p51 = p5->next = mult(p5, p5 MTa);
-			p51->next = 0;
+			p51->next = NULL;
 #endif
 		}
 		p5 = p51;

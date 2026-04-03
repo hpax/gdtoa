@@ -49,7 +49,7 @@ char *g_dfmt_p(char *buf, double *d, int ndig, size_t bufsize, int nik)
 	if (ndig < 0)
 		ndig = 0;
 	if (bufsize < (size_t)(ndig + 10))
-		return 0;
+		return NULL;
 
 	L = (uint32_t *) d;
 	sign = L[_0] & 0x80000000L;
@@ -58,7 +58,7 @@ char *g_dfmt_p(char *buf, double *d, int ndig, size_t bufsize, int nik)
 		if (nik < 0 || nik > 35)
 			nik = 0;
 		if (bufsize < 10)
-			return 0;
+			return NULL;
 		if (L[_0] & 0xfffff || L[_1]) {
 			b = buf;
 			if (L[_0] & 0x80000000L && nik < 18)

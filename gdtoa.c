@@ -149,7 +149,7 @@ char *gdtoa
 #ifndef MULTIPLE_THREADS
 	if (dtoa_result) {
 		freedtoa(dtoa_result);
-		dtoa_result = 0;
+		dtoa_result = NULL;
 	}
 #endif
 	inex = 0;
@@ -167,7 +167,7 @@ char *gdtoa
 		*decpt = -32768;
 		return nrv_alloc("NaN", rve, 3 MTb);
 	default:
-		return 0;
+		return NULL;
 	}
 	b = bitstob(bits, nbits = fpi->nbits, &bbits MTb);
 	be0 = be;
@@ -265,7 +265,7 @@ char *gdtoa
 		break;
 	case 2:
 		leftright = 0;
-		/* no break */
+		/* fall through */
 	case 4:
 		if (ndigits <= 0)
 			ndigits = 1;
@@ -273,7 +273,7 @@ char *gdtoa
 		break;
 	case 3:
 		leftright = 0;
-		/* no break */
+		/* fall through */
 	case 5:
 		i = ndigits + k + 1;
 		ilim = i;
@@ -343,7 +343,7 @@ char *gdtoa
 		dval(&eps) = ieps * dval(&d) + 7.;
 		word0(&eps) -= (P - 1) * Exp_msk1;
 		if (ilim == 0) {
-			S = mhi = 0;
+			S = mhi = NULL;
 			dval(&d) -= 5.;
 			if (dval(&d) > dval(&eps))
 				goto one_digit;
@@ -409,7 +409,7 @@ char *gdtoa
 		/* Yes. */
 		ds = tens[k];
 		if (ndigits < 0 && ilim <= 0) {
-			S = mhi = 0;
+			S = mhi = NULL;
 			if (ilim < 0 || dval(&d) <= 5 * ds)
 				goto no_digits;
 			goto one_digit;
@@ -460,7 +460,7 @@ char *gdtoa
 
 	m2 = b2;
 	m5 = b5;
-	mhi = mlo = 0;
+	mhi = mlo = NULL;
 	if (leftright) {
 		i = nbits - bbits;
 		if (be - i++ < fpi->emin && mode != 3 && mode != 5) {

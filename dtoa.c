@@ -111,7 +111,7 @@ char *dtoa(double d0, int mode, int ndigits, int *decpt, int *sign, char **rve) 
 	ThInfo *TI = 0;
 #endif
 	int bbits, b2, b5, be, dig, i, ieps, ilim, ilim0, ilim1,
-	    j, j1, k, k0, k_check, leftright, m2, m5, s2, s5,
+	    j, j1 = 0, k, k0, k_check, leftright, m2, m5, s2, s5,
 	    spec_case, try_quick;
 	int32_t L;
 #ifndef Sudden_Underflow
@@ -147,7 +147,7 @@ char *dtoa(double d0, int mode, int ndigits, int *decpt, int *sign, char **rve) 
 #ifndef MULTIPLE_THREADS
 	if (dtoa_result) {
 		freedtoa(dtoa_result);
-		dtoa_result = 0;
+		dtoa_result = NULL;
 	}
 #endif
 	d.d = d0;
@@ -285,7 +285,7 @@ char *dtoa(double d0, int mode, int ndigits, int *decpt, int *sign, char **rve) 
 		break;
 	case 2:
 		leftright = 0;
-		/* no break */
+		/* fall through */
 	case 4:
 		if (ndigits <= 0)
 			ndigits = 1;
@@ -293,7 +293,7 @@ char *dtoa(double d0, int mode, int ndigits, int *decpt, int *sign, char **rve) 
 		break;
 	case 3:
 		leftright = 0;
-		/* no break */
+		/* fall through */
 	case 5:
 		i = ndigits + k + 1;
 		ilim = i;
@@ -351,7 +351,7 @@ char *dtoa(double d0, int mode, int ndigits, int *decpt, int *sign, char **rve) 
 		dval(&eps) = ieps * dval(&d) + 7.;
 		word0(&eps) -= (P - 1) * Exp_msk1;
 		if (ilim == 0) {
-			S = mhi = 0;
+			S = mhi = NULL;
 			dval(&d) -= 5.;
 			if (dval(&d) > dval(&eps))
 				goto one_digit;
@@ -428,7 +428,7 @@ char *dtoa(double d0, int mode, int ndigits, int *decpt, int *sign, char **rve) 
 		/* Yes. */
 		ds = tens[k];
 		if (ndigits < 0 && ilim <= 0) {
-			S = mhi = 0;
+			S = mhi = NULL;
 			if (ilim < 0 || dval(&d) <= 5 * ds)
 				goto no_digits;
 			goto one_digit;
@@ -484,7 +484,7 @@ char *dtoa(double d0, int mode, int ndigits, int *decpt, int *sign, char **rve) 
 
 	m2 = b2;
 	m5 = b5;
-	mhi = mlo = 0;
+	mhi = mlo = NULL;
 	if (leftright) {
 		i =
 #ifndef Sudden_Underflow

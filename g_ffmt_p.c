@@ -48,7 +48,7 @@ char *g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
 	if (ndig < 0)
 		ndig = 0;
 	if (bufsize < (size_t)(ndig + 10))
-		return 0;
+		return NULL;
 
 	L = (uint32_t *) f;
 	sign = L[0] & 0x80000000L;
@@ -92,7 +92,7 @@ char *g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
 	mode = 2;
 	if (ndig <= 0) {
 		if (bufsize < 16)
-			return 0;
+			return NULL;
 		mode = 0;
 	}
 	i = STRTOG_Normal;

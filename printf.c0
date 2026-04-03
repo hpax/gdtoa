@@ -885,7 +885,7 @@ x_sprintf
 				break;
 			case 'p':
 				len = alt = 1;
-				/* no break */
+				/* fall through */
 			case 'x':
 				digits = hex;
 				goto more_x;

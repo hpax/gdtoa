@@ -81,7 +81,7 @@ void freedtoa(char *s)
 	Bfree(b MTb);
 #ifndef MULTIPLE_THREADS
 	if (s == dtoa_result)
-		dtoa_result = 0;
+		dtoa_result = NULL;
 #endif
 }
 

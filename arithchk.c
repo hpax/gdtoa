@@ -37,7 +37,7 @@ typedef struct
 static const Akind IEEE_8087  = { "IEEE_8087", 1 };
 static const Akind IEEE_MC68k = { "IEEE_MC68k", 2 };
 
-static Akind *Lcheck(void)
+static const Akind *Lcheck(void)
 {
 	union {
 		double d;
@@ -49,7 +49,7 @@ static Akind *Lcheck(void)
 	} x[2];
 
 	if (sizeof(double) != 2 * sizeof(int32_t))
-		return 0;
+		return NULL;
 
 	if (sizeof(x) > 2 * (sizeof(double) + sizeof(int32_t)))
 		dalign = 1;
@@ -59,7 +59,7 @@ static Akind *Lcheck(void)
 		return &IEEE_MC68k;
 	if (u.L[1] == 1117925532 && u.L[0] == -448790528)
 		return &IEEE_8087;
-	return 0;
+	return NULL;
 }
 
 static int fzcheck(void)
@@ -80,10 +80,9 @@ static int fzcheck(void)
 	return b == 0.;
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
-	Akind *a = 0;
-	int Ldef = 0;
+	const Akind *a = NULL;
 	FILE *f;
 
 #ifdef WRITE_ARITH_H		/* for Symantec's buggy "make" */

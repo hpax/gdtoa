@@ -153,7 +153,7 @@ char *g__fmt(char *b, char *s, char *se, int decpt, uint32_t sign, size_t blen)
 		}
 		if (b + decpt > be) {
  ret0:
-			b = 0;
+			b = NULL;
 			goto ret;
 		}
 		for (; decpt > 0; decpt--)
@@ -171,7 +171,7 @@ char *add_nanbits_D2A(char *b, size_t blen, uint32_t *bits, int nb)
 	char *rv;
 	int i, j;
 	size_t L;
-	static char Hexdig[16] = "0123456789abcdef";
+	static const char Hexdig[] = "0123456789abcdef";
 
 	while (!bits[--nb])
 		if (!nb)

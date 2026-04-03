@@ -66,7 +66,7 @@ char *g_Qfmt(char *buf, void *V, int ndig, size_t bufsize)
 	if (ndig < 0)
 		ndig = 0;
 	if (bufsize < (size_t)(ndig + 10))
-		return 0;
+		return NULL;
 
 	L = (uint32_t *) V;
 	sign = L[_0] & 0x80000000L;
@@ -106,7 +106,7 @@ char *g_Qfmt(char *buf, void *V, int ndig, size_t bufsize)
 	mode = 2;
 	if (ndig <= 0) {
 		if (bufsize < 48)
-			return 0;
+			return NULL;
 		mode = 0;
 	}
 	s = gdtoa(fpi, ex, bits, &i, mode, ndig, &decpt, &se);

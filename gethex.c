@@ -63,14 +63,14 @@ gethex(const char **sp, const FPI *fpi, int32_t *exp, Bigint **bp, int sign MTd)
 #endif
 
 	/**** if (!hexdig['0']) hexdig_init_D2A(); ****/
-	*bp = 0;
+	*bp = NULL;
 	havedig = 0;
 	s0 = *(const unsigned char **)sp + 2;
 	while (s0[havedig] == '0')
 		havedig++;
 	s0 += havedig;
 	s = s0;
-	decpt = 0;
+	decpt = NULL;
 	zret = 0;
 	e = 0;
 	if (hexdig[*s])
@@ -124,7 +124,7 @@ gethex(const char **sp, const FPI *fpi, int32_t *exp, Bigint **bp, int sign MTd)
 		switch (*++s) {
 		case '-':
 			esign = 1;
-			/* no break */
+			/* fall through */
 		case '+':
 			s++;
 		}

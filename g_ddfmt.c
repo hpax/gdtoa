@@ -64,7 +64,7 @@ char *g_ddfmt(char *buf, double *dd0, int ndig, size_t bufsize)
 #endif				/*}} */
 
 	if (bufsize < 10 || bufsize < (size_t)(ndig + 8))
-		return 0;
+		return NULL;
 
 	dd = (U *) dd0;
 	L = dd->L;
@@ -155,7 +155,7 @@ char *g_ddfmt(char *buf, double *dd0, int ndig, size_t bufsize)
 	if (ndig <= 0) {
 		if (bufsize < (size_t)(fpi.nbits * .301029995664) + 10) {
 			Bfree(z MTb);
-			return 0;
+			return NULL;
 		}
 		mode = 0;
 	}

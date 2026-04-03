@@ -65,7 +65,7 @@ char *g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
 	if (ndig < 0)
 		ndig = 0;
 	if (bufsize < (size_t)(ndig + 10))
-		return 0;
+		return NULL;
 
 	L = (uint32_t *) V;
 	sign = L[_0] & 0x80000000L;
@@ -112,7 +112,7 @@ char *g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
 	mode = 2;
 	if (ndig <= 0) {
 		if (bufsize < 32)
-			return 0;
+			return NULL;
 		mode = 0;
 	}
 	s = gdtoa(fpi, ex, bits, &i, mode, ndig, &decpt, &se);

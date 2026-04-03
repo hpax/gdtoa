@@ -141,11 +141,11 @@ double
 		switch (*s) {
 		case '-':
 			sign = 1;
-			/* no break */
+			/* fall through */
 		case '+':
 			if (*++s)
 				goto break2;
-			/* no break */
+			/* fall through */
 		case 0:
 			goto ret0;
 		case '\t':
@@ -265,6 +265,7 @@ double
 		switch (c = *++s) {
 		case '-':
 			esign = 1;
+			/* fall through */
 		case '+':
 			c = *++s;
 		}
@@ -358,7 +359,7 @@ double
 #endif
 		dval(&rv) = tens[k - 9] * dval(&rv) + z;
 	}
-	bd0 = 0;
+	bd0 = NULL;
 	if (nd <= DBL_DIG
 #ifndef RND_PRODQUOT
 #ifndef Honor_FLT_ROUNDS

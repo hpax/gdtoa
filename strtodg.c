@@ -284,17 +284,17 @@ int strtodg
 	irv = STRTOG_Zero;
 	denorm = sign = nz0 = nz = 0;
 	dval(&rv) = 0.;
-	rvb = 0;
+	rvb = NULL;
 	nbits = fpi->nbits;
 	for (s = s00;; s++)
 		switch (*s) {
 		case '-':
 			sign = 1;
-			/* no break */
+			/* fall through */
 		case '+':
 			if (*++s)
 				goto break2;
-			/* no break */
+			/* fall through */
 		case 0:
 			sign = 0;
 			irv = STRTOG_NoNumber;
@@ -392,6 +392,7 @@ int strtodg
 		switch (c = *++s) {
 		case '-':
 			esign = 1;
+			/* fall through */
 		case '+':
 			c = *++s;
 		}
@@ -480,7 +481,7 @@ int strtodg
 	dval(&rv) = y;
 	if (k > 9)
 		dval(&rv) = tens[k - 9] * dval(&rv) + z;
-	bd0 = 0;
+	bd0 = NULL;
 	if (nbits <= P && nd <= DBL_DIG) {
 		if (!e) {
 			if (rvOK(&rv, fpi, exp, bits, 1, rd, &irv MTb))
@@ -907,7 +908,7 @@ int strtodg
 	if (rve > fpi->emax) {
  huge:
 		Bfree(rvb MTb);
-		rvb = 0;
+		rvb = NULL;
 #ifndef NO_ERRNO
 		errno = ERANGE;
 #endif
@@ -919,6 +920,7 @@ int strtodg
 		case FPI_Round_down:
 			if (!sign)
 				break;
+			/* fall through */
 		case FPI_Round_near:
  ret_inf:
 			irv = STRTOG_Infinite | STRTOG_Overflow | STRTOG_Inexhi;

@@ -46,7 +46,7 @@ strtoIg(const char *s00, char **se, const FPI *fpi, int32_t *exp, Bigint **B,
 	b = *B;
 	rv = strtodg(s00, se, fpi, exp, b->x);
 	if (!(rv & STRTOG_Inexact)) {
-		B[1] = 0;
+		B[1] = NULL;
 		return *rvp = rv;
 	}
 	e1 = exp[0];

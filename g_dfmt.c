@@ -47,14 +47,14 @@ char *g_dfmt(char *buf, double *d, int ndig, size_t bufsize)
 	if (ndig < 0)
 		ndig = 0;
 	if (bufsize < (size_t)(ndig + 10))
-		return 0;
+		return NULL;
 
 	L = (uint32_t *) d;
 	sign = L[_0] & 0x80000000L;
 	if ((L[_0] & 0x7ff00000) == 0x7ff00000) {
 		/* Infinity or NaN */
 		if (bufsize < 10)
-			return 0;
+			return NULL;
 		if (L[_0] & 0xfffff || L[_1]) {
 			return strcp(buf, "NaN");
 		}
