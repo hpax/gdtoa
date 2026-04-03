@@ -53,7 +53,7 @@ THIS SOFTWARE.
 #include <stdlib.h>
 #include <string.h>
 
- extern int getround ANSI((int,char*));
+ extern int getround (int,char*);
 
  static char ibuf[2048], obuf[2048], obuf1[2048];
 

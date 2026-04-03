@@ -37,13 +37,11 @@ THIS SOFTWARE.
 #define _SIZE_T
 typedef unsigned int size_t;
 #endif
-#define ANSI(x) ()
 #include "varargs.h"
 #ifndef Char
 #define Char char
 #endif
 #else
-#define ANSI(x) x
 #include "stdarg.h"
 #ifndef Char
 #define Char void
@@ -61,20 +59,20 @@ typedef unsigned int size_t;
 extern "C" {
 #endif
 
-extern int Fprintf ANSI((FILE*, const char*, ...));
-extern int Printf ANSI((const char*, ...));
-extern int Sprintf ANSI((char*, const char*, ...));
-extern int Snprintf ANSI((char*, size_t, const char*, ...));
-extern void Perror ANSI((const char*));
-extern int Vfprintf ANSI((FILE*, const char*, va_list));
-extern int Vsprintf ANSI((char*, const char*, va_list));
-extern int Vsnprintf ANSI((char*, size_t, const char*, va_list));
+extern int Fprintf (FILE*, const char*, ...);
+extern int Printf (const char*, ...);
+extern int Sprintf (char*, const char*, ...);
+extern int Snprintf (char*, size_t, const char*, ...);
+extern void Perror (const char*);
+extern int Vfprintf (FILE*, const char*, va_list);
+extern int Vsprintf (char*, const char*, va_list);
+extern int Vsnprintf (char*, size_t, const char*, va_list);
 
 #ifdef PF_BUF
 extern FILE *stderr_ASL;
-extern void (*pfbuf_print_ASL) ANSI((char*));
+extern void (*pfbuf_print_ASL) (char*);
 extern char *pfbuf_ASL;
-extern void fflush_ASL ANSI((FILE*));
+extern void fflush_ASL (FILE*);
 #ifdef fflush
 #define old_fflush_ASL fflush
 #undef  fflush

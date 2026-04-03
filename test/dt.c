@@ -57,7 +57,7 @@ int STRTOD_DIGLIM = 24;
 #ifdef __cplusplus
 extern "C" double atof(const char*);
 #else
-extern double atof ANSI((char*));
+extern double atof (char*);
 #endif
 #endif
 
@@ -77,7 +77,7 @@ typedef union { double d; ULong L[2]; } U;
 #ifdef __cplusplus
 extern "C" char *dtoa(double, int, int, int*, int*, char **);
 #else
-extern char *dtoa ANSI((double, int, int, int*, int*, char **));
+extern char *dtoa (double, int, int, int*, int*, char **);
 #endif
 
  static void

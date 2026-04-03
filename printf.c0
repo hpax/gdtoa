@@ -120,7 +120,7 @@ Finfo {
 	size_t lastlen;
 	} Finfo;
 
- typedef char *(*pgdtoa) ANSI((CONST FPI*, int be, ULong *bits, int *kind, int mode, int ndigits, int *decpt, char **rve));
+ typedef char *(*pgdtoa) (CONST FPI*, int be, ULong *bits, int *kind, int mode, int ndigits, int *decpt, char **rve);
 
  typedef struct
 FPBits {
@@ -143,8 +143,8 @@ FPBits {
 	unsigned short us[5];
 	} U;
 
- typedef char *(*Putfunc) ANSI((Finfo*, int*));
- typedef void (*Fpbits) ANSI((U*, FPBits*));
+ typedef char *(*Putfunc) (Finfo*, int*);
+ typedef void (*Fpbits) (U*, FPBits*);
 
 /* Would have preferred typedef void (*Fpbits)(va_list*, FPBits*)
  * but gcc is buggy in this regard.
@@ -303,8 +303,8 @@ Qfpbits(U *u, FPBits *b)
 extern "C" {
 #endif
 
- extern char *dtoa ANSI((double, int, int, int*, int*, char **));
- extern void freedtoa ANSI((char*));
+ extern char *dtoa (double, int, int, int*, int*, char **);
+ extern void freedtoa (char*);
 
 
 
@@ -376,12 +376,12 @@ uldiv_ASL(ULONG a, ULONG b)
 
 #ifdef PF_BUF
 FILE *stderr_ASL = (FILE*)&stderr_ASL;
-void (*pfbuf_print_ASL) ANSI((char*));
+void (*pfbuf_print_ASL) (char*);
 char *pfbuf_ASL;
 static char *pfbuf_next;
 static size_t pfbuf_len;
-extern Char *mymalloc_ASL ANSI((size_t));
-extern Char *myralloc_ASL ANSI((void *, size_t));
+extern Char *mymalloc_ASL (size_t);
+extern Char *myralloc_ASL (void *, size_t);
 
 #undef fflush
 #ifdef old_fflush_ASL
