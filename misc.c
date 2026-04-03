@@ -532,12 +532,8 @@ b2d
 	uint32_t *xa, *xa0, w, y, z;
 	int k;
 	U d;
-#ifdef VAX
-	uint32_t d0, d1;
-#else
 #define d0 word0(&d)
 #define d1 word1(&d)
-#endif
 
 	xa0 = a->x;
 	xa = xa0 + a->wds;
@@ -564,10 +560,6 @@ b2d
 		d1 = z;
 		}
  ret_d:
-#ifdef VAX
-	word0(&d) = d0 >> 16 | d0 << 16;
-	word1(&d) = d1 >> 16 | d1 << 16;
-#endif
 	return dval(&d);
 	}
 #undef d0
@@ -584,17 +576,9 @@ d2b
 #endif
 	int de, k;
 	uint32_t *x, y, z;
-#ifdef VAX
-	uint32_t d0, d1;
-#else
 #define d0 word0(&d)
 #define d1 word1(&d)
-#endif
 	d.d = dd;
-#ifdef VAX
-	d0 = word0(&d) >> 16 | word0(&d) << 16;
-	d1 = word1(&d) >> 16 | word1(&d) << 16;
-#endif
 
 	b = Balloc(1 MTa);
 	x = b->x;
@@ -603,9 +587,7 @@ d2b
 	d0 &= 0x7fffffff;	/* clear sign bit, which we ignore */
 #ifdef Sudden_Underflow
 	de = (int)(d0 >> Exp_shift);
-#ifndef IBM
 	z |= Exp_msk11;
-#endif
 #else
 	if ( (de = (int)(d0 >> Exp_shift)) !=0)
 		z |= Exp_msk1;
@@ -634,13 +616,8 @@ d2b
 #ifndef Sudden_Underflow
 	if (de) {
 #endif
-#ifdef IBM
-		*e = (de - Bias - (P-1) << 2) + k;
-		*bits = 4*P + 8 - k - hi0bits(word0(&d) & Frac_mask);
-#else
 		*e = de - Bias - (P-1) + k;
 		*bits = P - k;
-#endif
 #ifndef Sudden_Underflow
 		}
 	else {
@@ -654,28 +631,15 @@ d2b
 #undef d1
 
  const double
-#ifdef IEEE_Arith
 bigtens[] = { 1e16, 1e32, 1e64, 1e128, 1e256 };
 const double tinytens[] = { 1e-16, 1e-32, 1e-64, 1e-128, 1e-256
 		};
-#else
-#ifdef IBM
-bigtens[] = { 1e16, 1e32, 1e64 };
-const double tinytens[] = { 1e-16, 1e-32, 1e-64 };
-#else
-bigtens[] = { 1e16, 1e32 };
-const double tinytens[] = { 1e-16, 1e-32 };
-#endif
-#endif
 
  const double
 tens[] = {
 		1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9,
 		1e10, 1e11, 1e12, 1e13, 1e14, 1e15, 1e16, 1e17, 1e18, 1e19,
 		1e20, 1e21, 1e22
-#ifdef VAX
-		, 1e23, 1e24
-#endif
 		};
 
  char *

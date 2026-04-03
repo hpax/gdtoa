@@ -38,7 +38,6 @@ THIS SOFTWARE.
 #include "locale.h"
 #endif
 
-#ifdef IEEE_Arith
 #ifndef NO_IEEE_Scale
 #define Avoid_Underflow
 #undef tinytens
@@ -47,7 +46,6 @@ THIS SOFTWARE.
 static const double tinytens[] = { 1e-16, 1e-32, 1e-64, 1e-128,
 		9007199254740992.*9007199254740992.e-256
 		};
-#endif
 #endif
 
 #ifdef Honor_FLT_ROUNDS
@@ -362,9 +360,6 @@ strtod
 #ifndef ROUND_BIASED_without_Round_Up
 		if (e > 0) {
 			if (e <= Ten_pmax) {
-#ifdef VAX
-				goto vax_ovfl_check;
-#else
 #ifdef Honor_FLT_ROUNDS
 				/* round correctly FLT_ROUNDS = 2 or 3 */
 				if (sign) {
@@ -374,7 +369,6 @@ strtod
 #endif
 				/* rv = */ rounded_product(dval(&rv), tens[e]);
 				goto ret;
-#endif
 				}
 			i = DBL_DIG - nd;
 			if (e <= Ten_pmax + i) {
@@ -390,20 +384,7 @@ strtod
 #endif
 				e -= i;
 				dval(&rv) *= tens[i];
-#ifdef VAX
-				/* VAX exponent range is so narrow we must
-				 * worry about overflow here...
-				 */
- vax_ovfl_check:
-				word0(&rv) -= P*Exp_msk1;
 				/* rv = */ rounded_product(dval(&rv), tens[e]);
-				if ((word0(&rv) & Exp_mask)
-				 > Exp_msk1*(DBL_MAX_EXP+Bias-1-P))
-					goto ovfl;
-				word0(&rv) += P*Exp_msk1;
-#else
-				/* rv = */ rounded_product(dval(&rv), tens[e]);
-#endif
 				goto ret;
 				}
 			}
@@ -424,7 +405,6 @@ strtod
 		}
 	e1 += nd - k;
 
-#ifdef IEEE_Arith
 #ifdef SET_INEXACT
 	inexact = 1;
 	if (k <= DBL_DIG)
@@ -442,7 +422,6 @@ strtod
 				Rounding = 0;
 		}
 #endif
-#endif /*IEEE_Arith*/
 
 	/* Get starting approximation = rv * 10**e1 */
 
@@ -453,7 +432,6 @@ strtod
 			if (e1 > DBL_MAX_10_EXP) {
  ovfl:
 				/* Can't trust HUGE_VAL */
-#ifdef IEEE_Arith
 #ifdef Honor_FLT_ROUNDS
 				switch(Rounding) {
 				  case 0: /* toward 0 */
@@ -474,10 +452,6 @@ strtod
 				dval(&rv0) = 1e300;
 				dval(&rv0) *= dval(&rv0);
 #endif
-#else /*IEEE_Arith*/
-				word0(&rv) = Big0;
-				word1(&rv) = Big1;
-#endif /*IEEE_Arith*/
  range_err:
 				if (bd0) {
 					Bfree(bb MTb);
@@ -613,11 +587,7 @@ strtod
 			}
 #else /*Avoid_Underflow*/
 #ifdef Sudden_Underflow
-#ifdef IBM
-		j = 1 + 4*P - 3 - bbbits + ((bbe + bbbits - 1) & 3);
-#else
 		j = P + 1 - bbbits;
-#endif
 #else /*Sudden_Underflow*/
 		j = bbe;
 		i = j + bbbits - 1;	/* logb(&rv) */
@@ -757,12 +727,10 @@ strtod
 			 * special case of mantissa a power of two.
 			 */
 			if (dsign || word1(&rv) || word0(&rv) & Bndry_mask
-#ifdef IEEE_Arith
 #ifdef Avoid_Underflow
 			 || (word0(&rv) & Exp_mask) <= (2*P+1)*Exp_msk1
 #else
 			 || (word0(&rv) & Exp_mask) <= Exp_msk1
-#endif
 #endif
 				) {
 #ifdef SET_INEXACT
@@ -798,9 +766,6 @@ strtod
 						goto ovfl;
 					word0(&rv) = (word0(&rv) & Exp_mask)
 						+ Exp_msk1
-#ifdef IBM
-						| Exp_msk1 >> 4
-#endif
 						;
 					word1(&rv) = 0;
 #ifdef Avoid_Underflow
@@ -814,15 +779,11 @@ strtod
 				/* boundary case -- decrement exponent */
 #ifdef Sudden_Underflow /*{{*/
 				L = word0(&rv) & Exp_mask;
-#ifdef IBM
-				if (L <  Exp_msk1)
-#else
 #ifdef Avoid_Underflow
 				if (L <= (scale ? (2*P+1)*Exp_msk1 : Exp_msk1))
 #else
 				if (L <= Exp_msk1)
 #endif /*Avoid_Underflow*/
-#endif /*IBM*/
 					goto undfl;
 				L -= Exp_msk1;
 #else /*Sudden_Underflow}{*/
@@ -843,11 +804,7 @@ strtod
 #endif /*Sudden_Underflow}}*/
 				word0(&rv) = L | Bndry_mask1;
 				word1(&rv) = 0xffffffff;
-#ifdef IBM
-				goto cont;
-#else
 				break;
-#endif
 				}
 #ifndef ROUND_BIASED
 #ifdef Avoid_Underflow
@@ -965,11 +922,7 @@ strtod
 				word0(&rv) += P*Exp_msk1;
 				dval(&adj) = dval(&aadj1) * ulp(&rv);
 				dval(&rv) += adj;
-#ifdef IBM
-				if ((word0(&rv) & Exp_mask) <  P*Exp_msk1)
-#else
 				if ((word0(&rv) & Exp_mask) <= P*Exp_msk1)
-#endif
 					{
 					if (word0(&rv0) == Tiny0
 					 && word1(&rv0) == Tiny1)
@@ -1050,11 +1003,7 @@ strtod
 		dval(&rv) *= dval(&rv0);
 #ifndef NO_ERRNO
 		/* try to avoid the bug of testing an 8087 register value */
-#ifdef IEEE_Arith
 		if (!(word0(&rv) & Exp_mask))
-#else
-		if (word0(&rv) == 0 && word1(&rv) == 0)
-#endif
 			errno = ERANGE;
 #endif
 		}

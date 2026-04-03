@@ -36,10 +36,7 @@ Akind {
 
  static Akind
 IEEE_8087	= { "IEEE_8087", 1 },
-IEEE_MC68k	= { "IEEE_MC68k", 2 },
-IBM		= { "IBM", 3 },
-VAX		= { "VAX", 4 },
-CRAY		= { "CRAY", 5};
+IEEE_MC68k	= { "IEEE_MC68k", 2 };
 
  static Akind *
 Lcheck(void)
@@ -64,35 +61,6 @@ Lcheck(void)
 		return &IEEE_MC68k;
 	if (u.L[1] == 1117925532 && u.L[0] == -448790528)
 		return &IEEE_8087;
-	if (u.L[0] == -2065213935 && u.L[1] == 10752)
-		return &VAX;
-	if (u.L[0] == 1267827943 && u.L[1] == 704643072)
-		return &IBM;
-	return 0;
-	}
-
- static Akind *
-ccheck(int ac, char **av)
-{
-	union {
-		double d;
-		long L;
-		} u;
-	long Cray1;
-
-	if (sizeof(double) != sizeof(long))
-		return 0;
-
-	/* Cray1 = 4617762693716115456 -- without overflow on non-Crays */
-	/* The next three tests should always be true. */
-	Cray1 = ac >= -2 ? 4617762 : 0;
-	if (ac >= -1)
-		Cray1 = 1000000*Cray1 + 693716;
-	if (av || ac >= 0)
-		Cray1 = 1000000*Cray1 + 115456;
-	u.d = 1e13;
-	if (u.L == Cray1)
-		return &CRAY;
 	return 0;
 	}
 
@@ -134,8 +102,6 @@ main(int argc, char **argv)
 
 	if (!a)
 		a = Lcheck();
-	if (!a)
-		a = ccheck(argc, argv);
 	if (a) {
 		fprintf(f, "#define %s\n#define Arith_Kind_ASL %d\n",
 			a->name, a->kind);
@@ -143,10 +109,6 @@ main(int argc, char **argv)
 			fprintf(f, "#define Double_Align\n");
 		if (sizeof(char*) == 8)
 			fprintf(f, "#define X64_bit_pointers\n");
-#ifndef NO_LONG_LONG
-		if (sizeof(long long) < 8)
-#endif
-			fprintf(f, "#define NO_LONG_LONG\n");
 		if (a->kind <= 2 && fzcheck())
 			fprintf(f, "#define Sudden_Underflow\n");
 		return 0;

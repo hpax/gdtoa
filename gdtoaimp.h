@@ -226,30 +226,13 @@ extern void *REALLOC (void*, size_t);
 #include "errno.h"
 #ifdef Bad_float_h
 
-#ifdef IEEE_Arith
 #define DBL_DIG 15
 #define DBL_MAX_10_EXP 308
 #define DBL_MAX_EXP 1024
 #define FLT_RADIX 2
 #define DBL_MAX 1.7976931348623157e+308
-#endif
 
-#ifdef IBM
-#define DBL_DIG 16
-#define DBL_MAX_10_EXP 75
-#define DBL_MAX_EXP 63
-#define FLT_RADIX 16
-#define DBL_MAX 7.2370055773322621e+75
-#endif
 
-#ifdef VAX
-#define DBL_DIG 16
-#define DBL_MAX_10_EXP 38
-#define DBL_MAX_EXP 127
-#define FLT_RADIX 2
-#define DBL_MAX 1.7014118346046923e+38
-#define n_bigtens 2
-#endif
 
 #ifndef LONG_MAX
 #define LONG_MAX 2147483647
@@ -259,18 +242,10 @@ extern void *REALLOC (void*, size_t);
 #include "float.h"
 #endif /* Bad_float_h */
 
-#ifdef IEEE_Arith
 #define Scale_Bit 0x10
 #define n_bigtens 5
-#endif
 
-#ifdef IBM
-#define n_bigtens 3
-#endif
 
-#ifdef VAX
-#define n_bigtens 2
-#endif
 
 #ifndef __MATH_H__
 #include "math.h"
@@ -313,7 +288,6 @@ typedef union { double d; uint32_t L[2]; } U;
 /* Quick_max = floor((P-1)*log(FLT_RADIX)/log(10) - 1) */
 /* Int_max = floor(P*log(FLT_RADIX)/log(10) - 1) */
 
-#ifdef IEEE_Arith
 #define Exp_shift  20
 #define Exp_shift1 20
 #define Exp_msk1    0x100000
@@ -347,71 +321,10 @@ typedef union { double d; uint32_t L[2]; } U;
 #endif
 #endif /*Flt_Rounds*/
 
-#else /* ifndef IEEE_Arith */
-#undef  Sudden_Underflow
-#define Sudden_Underflow
-#ifdef IBM
-#undef Flt_Rounds
-#define Flt_Rounds 0
-#define Exp_shift  24
-#define Exp_shift1 24
-#define Exp_msk1   0x1000000
-#define Exp_msk11  0x1000000
-#define Exp_mask  0x7f000000
-#define P 14
-#define Bias 65
-#define Exp_1  0x41000000
-#define Exp_11 0x41000000
-#define Ebits 8	/* exponent has 7 bits, but 8 is the right value in b2d */
-#define Frac_mask  0xffffff
-#define Frac_mask1 0xffffff
-#define Bletch 4
-#define Ten_pmax 22
-#define Bndry_mask  0xefffff
-#define Bndry_mask1 0xffffff
-#define LSB 1
-#define Sign_bit 0x80000000
-#define Log2P 4
-#define Tiny0 0x100000
-#define Tiny1 0
-#define Quick_max 14
-#define Int_max 15
-#else /* VAX */
-#undef Flt_Rounds
-#define Flt_Rounds 1
-#define Exp_shift  23
-#define Exp_shift1 7
-#define Exp_msk1    0x80
-#define Exp_msk11   0x800000
-#define Exp_mask  0x7f80
-#define P 56
-#define Bias 129
-#define Exp_1  0x40800000
-#define Exp_11 0x4080
-#define Ebits 8
-#define Frac_mask  0x7fffff
-#define Frac_mask1 0xffff007f
-#define Ten_pmax 24
-#define Bletch 2
-#define Bndry_mask  0xffff007f
-#define Bndry_mask1 0xffff007f
-#define LSB 0x10000
-#define Sign_bit 0x8000
-#define Log2P 1
-#define Tiny0 0x80
-#define Tiny1 0
-#define Quick_max 15
-#define Int_max 15
-#endif /* IBM, VAX */
-#endif /* IEEE_Arith */
 
-#ifndef IEEE_Arith
-#define ROUND_BIASED
-#else
 #ifdef ROUND_BIASED_without_Round_Up
 #undef  ROUND_BIASED
 #define ROUND_BIASED
-#endif
 #endif
 
 #ifdef RND_PRODQUOT
@@ -588,7 +501,6 @@ extern void memcpy_D2A (void*, const void*, size_t);
  * and -DNAN_WORD1=...  values if necessary.  This should still work.
  * (On HP Series 700/800 machines, -DNAN_WORD0=0x7ff40000 works.)
  */
-#ifdef IEEE_Arith
 #ifndef NO_INFNAN_CHECK
 #undef INFNAN_CHECK
 #define INFNAN_CHECK
@@ -611,9 +523,6 @@ extern void memcpy_D2A (void*, const void*, size_t);
 #ifndef NAN_WORD1
 #define NAN_WORD1 d_QNAN0
 #endif
-#endif
-#else
-#undef INFNAN_CHECK
 #endif
 
 #undef SI

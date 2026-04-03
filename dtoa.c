@@ -157,25 +157,14 @@ dtoa
 	else
 		*sign = 0;
 
-#if defined(IEEE_Arith) + defined(VAX)
-#ifdef IEEE_Arith
 	if ((word0(&d) & Exp_mask) == Exp_mask)
-#else
-	if (word0(&d)  == 0x8000)
-#endif
 		{
 		/* Infinity or NaN */
 		*decpt = 9999;
-#ifdef IEEE_Arith
 		if (!word1(&d) && !(word0(&d) & 0xfffff))
 			return nrv_alloc("Infinity", rve, 8 MTb);
-#endif
 		return nrv_alloc("NaN", rve, 3 MTb);
 		}
-#endif
-#ifdef IBM
-	dval(&d) += 0; /* normalize */
-#endif
 	if (!dval(&d)) {
 		*decpt = 1;
 		return nrv_alloc("0", rve, 1 MTb);
@@ -204,10 +193,6 @@ dtoa
 		dval(&d2) = dval(&d);
 		word0(&d2) &= Frac_mask1;
 		word0(&d2) |= Exp_11;
-#ifdef IBM
-		if (( j = 11 - hi0bits(word0(&d2) & Frac_mask) )!=0)
-			dval(&d2) /= 1 << j;
-#endif
 
 		/* log(x)	~=~ log(1.5) + (x-1.5)/1.5
 		 * log10(x)	 =  log(x) / log(10)
@@ -232,10 +217,6 @@ dtoa
 		 */
 
 		i -= Bias;
-#ifdef IBM
-		i <<= 2;
-		i += j;
-#endif
 #ifndef Sudden_Underflow
 		denorm = 0;
 		}
@@ -510,11 +491,7 @@ dtoa
 #ifndef Sudden_Underflow
 			denorm ? be + (Bias + (P-1) - 1 + 1) :
 #endif
-#ifdef IBM
-			1 + 4*P - 3 - bbits + ((bbits + be - 1) & 3);
-#else
 			1 + P - bbits;
-#endif
 		b2 += i;
 		s2 += i;
 		mhi = i2b(1 MTb);

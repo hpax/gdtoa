@@ -189,10 +189,6 @@ gdtoa
 	i = be + bbits - 1;
 	word0(&d) &= Frac_mask1;
 	word0(&d) |= Exp_11;
-#ifdef IBM
-	if ( (j = 11 - hi0bits(word0(&d) & Frac_mask)) !=0)
-		dval(&d) /= 1 << j;
-#endif
 
 	/* log(x)	~=~ log(1.5) + (x-1.5)/1.5
 	 * log10(x)	 =  log(x) / log(10)
@@ -228,14 +224,7 @@ gdtoa
 	if (ds < 0. && ds != k)
 		k--;	/* want k = floor(ds) */
 	k_check = 1;
-#ifdef IBM
-	j = be + bbits - 1;
-	if ( (j1 = j & 3) !=0)
-		dval(&d) *= 1 << j1;
-	word0(&d) += j << Exp_shift - 2 & Exp_mask;
-#else
 	word0(&d) += (be + bbits - 1) << Exp_shift;
-#endif
 	if (k >= 0 && k <= Ten_pmax) {
 		if (dval(&d) < tens[k])
 			k--;

@@ -42,9 +42,6 @@ ulp
 #ifndef Sudden_Underflow
 	if (L > 0) {
 #endif
-#ifdef IBM
-		L |= Exp_msk1 >> 4;
-#endif
 		word0(&a) = L;
 		word1(&a) = 0;
 #ifndef Sudden_Underflow

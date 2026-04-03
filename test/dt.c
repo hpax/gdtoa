@@ -188,9 +188,6 @@ main(void)
 	int decpt, sign;
 	int mode = 0, ndigits = 17;
 	uint32_t x, y;
-#ifdef VAX
-	uint32_t z;
-#endif
 
 	fpinit_ASL();
 	d.d = 0.;
@@ -247,14 +244,7 @@ main(void)
 		x = word1(&d);
 		if (x != 0xffffffff
 		 && (word0(&d) & 0x7ff00000) != 0x7ff00000) {
-#ifdef VAX
-			z = x << 16 | x >> 16;
-			z++;
-			z = z << 16 | z >> 16;
-			word1(&d) = z;
-#else
 			word1(&d) = x + 1;
-#endif
 			printf("\tnextafter(d,+Inf) = %.17g = 0x%lx %lx:\n",
 				dval(&d), UL word0(&d), UL word1(&d));
 			g_fmt(buf1, dval(&d));
@@ -266,14 +256,7 @@ main(void)
 			check(&d);
 			}
 		if (x) {
-#ifdef VAX
-			z = x << 16 | x >> 16;
-			z--;
-			z = z << 16 | z >> 16;
-			word1(&d) = z;
-#else
 			word1(&d) = x - 1;
-#endif
 			printf("\tnextafter(d,-Inf) = %.17g = 0x%lx %lx:\n",
 				dval(&d), UL word0(&d), UL word1(&d));
 			g_fmt(buf1, dval(&d));
