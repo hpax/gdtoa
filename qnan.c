@@ -43,17 +43,8 @@ SOFTWARE.
 /* distributed?							*/
 
 #include <stdio.h>
+#include <inttypes.h>
 #include "arith.h"
-
-#ifndef Long
-#define Long long
-#endif
-
-typedef unsigned Long Ulong;
-
-#ifdef NO_LONG_LONG
-#undef Gen_ld_QNAN
-#endif
 
 #undef HAVE_IEEE
 #ifdef IEEE_8087
@@ -84,11 +75,7 @@ main(void)
 	typedef union {
 		float f;
 		double d;
-		Ulong L[4];
-#ifndef NO_LONG_LONG
-		unsigned short u[5];
-		long double D;
-#endif
+		uint32_t L[4];
 		} U;
 	U a, b, c;
 #ifdef Gen_ld_QNAN

@@ -94,12 +94,12 @@ strtod
 		 e, e1, esign, i, j, k, nd, nd0, nf, nz, nz0, sign;
 	const char *s, *s0;
 	double aadj;
-	Long L;
+	int32_t L;
 	U adj, aadj1, rv, rv0;
-	ULong y, z;
+	uint32_t y, z;
 	Bigint *bb, *bb1, *bd, *bd0, *bs, *delta;
 #ifdef Avoid_Underflow
-	ULong Lsb, Lsb1;
+	uint32_t Lsb, Lsb1;
 #endif
 #ifdef SET_INEXACT
 	int inexact, oldinexact;
@@ -170,8 +170,8 @@ strtod
 #ifndef NO_HEX_FP /*{*/
 		{
 		static FPI fpi = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
-		Long exp;
-		ULong bits[2];
+		int32_t exp;
+		uint32_t bits[2];
 		switch(s[1]) {
 		  case 'x':
 		  case 'X':
@@ -296,7 +296,7 @@ strtod
 		if (!nz && !nz0) {
 #ifdef INFNAN_CHECK
 			/* Check for Nan and Infinity */
-			ULong bits[2];
+			uint32_t bits[2];
 			static FPI fpinan =	/* only 52 explicit bits */
 				{ 52, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
 			if (!decpt)
@@ -1018,7 +1018,7 @@ strtod
 #endif
 		if (y == z) {
 			/* Can we stop now? */
-			L = (Long)aadj;
+			L = (int32_t)aadj;
 			aadj -= L;
 			/* The tolerances below are conservative. */
 			if (dsign || word1(&rv) || word0(&rv) & Bndry_mask) {

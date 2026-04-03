@@ -31,7 +31,7 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 #include <string.h>
 
- extern ULong NanDflt_d_D2A[2];
+ extern uint32_t NanDflt_d_D2A[2];
 
  char *
 #ifdef KR_headers
@@ -42,7 +42,7 @@ g_ddfmt_p(char *buf, double *dd0, int ndig, size_t bufsize, int nik)
 {
 	FPI fpi;
 	char *b, *s, *se;
-	ULong *L, bits0[4], *bits, sign, *zx;
+	uint32_t *L, bits0[4], *bits, sign, *zx;
 	int bx, by, decpt, ex, ey, i, j, mode;
 	Bigint *x, *y, *z;
 	U *dd, ddx[2];

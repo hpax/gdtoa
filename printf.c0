@@ -120,11 +120,11 @@ Finfo {
 	size_t lastlen;
 	} Finfo;
 
- typedef char *(*pgdtoa) (const FPI*, int be, ULong *bits, int *kind, int mode, int ndigits, int *decpt, char **rve);
+ typedef char *(*pgdtoa) (const FPI*, int be, uint32_t *bits, int *kind, int mode, int ndigits, int *decpt, char **rve);
 
  typedef struct
 FPBits {
-	ULong bits[4];	/* sufficient for quad; modify if considering wider types */
+	uint32_t bits[4];	/* sufficient for quad; modify if considering wider types */
 	FPI *fpi;
 	pgdtoa gdtoa;
 	int sign;
@@ -170,7 +170,7 @@ FPBits {
  static void
 xfpbits(U *u, FPBits *b)
 {
-	ULong *bits;
+	uint32_t *bits;
 	int ex, i;
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, 0, 0 /*not used*/ };
 
@@ -231,7 +231,7 @@ xfpbits(U *u, FPBits *b)
  static void
 Qfpbits(U *u, FPBits *b)
 {
-	ULong *bits;
+	uint32_t *bits;
 	int ex, i;
 	static FPI fpi0 = { 113, 1-16383-113+1, 32766 - 16383 - 113 + 1, 1, 0, 0 /*not used*/ };
 
@@ -479,7 +479,7 @@ Wput
  static void
 dfpbits(U *u, FPBits *b)
 {
-	ULong *bits;
+	uint32_t *bits;
 	int ex, i;
 	static FPI fpi0 = { 53, 1-1023-53+1, 2046-1023-53+1, 1, 0, 0 /*not used*/ };
 
@@ -533,7 +533,7 @@ dfpbits(U *u, FPBits *b)
 fpiprec(FPBits *b)	/* return number of hex digits minus 1, or 0 for zero */
 {
 	FPI *fpi;
-	ULong *bits;
+	uint32_t *bits;
 	int i, j, k, m;
 
 	if (b->kind == STRTOG_Zero)
@@ -573,7 +573,7 @@ fpiprec(FPBits *b)	/* return number of hex digits minus 1, or 0 for zero */
  static int
 bround(FPBits *b, int prec, int prec1)	/* round to prec hex digits after the "." */
 {					/* prec1 = incoming precision (after ".") */
-	ULong *bits, t;
+	uint32_t *bits, t;
 	int i, inc, j, k, m, n;
 #ifdef Honor_FLT_ROUNDS
 	int rounding = fpi->rounding;

@@ -39,10 +39,10 @@ strtof(const char *s, char **sp)
 #endif
 {
 	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };
-	ULong bits[1];
-	Long exp;
+	uint32_t bits[1];
+	int32_t exp;
 	int k;
-	union { ULong L[1]; float f; } u;
+	union { uint32_t L[1]; float f; } u;
 #ifdef Honor_FLT_ROUNDS
 #include "gdtoa_fltrnds.h"
 #else

@@ -38,7 +38,7 @@ rshift(b, k) Bigint *b; int k;
 rshift(Bigint *b, int k)
 #endif
 {
-	ULong *x, *x1, *xe, y;
+	uint32_t *x, *x1, *xe, y;
 	int n;
 
 	x = x1 = b->x;
@@ -71,7 +71,7 @@ trailz(b) Bigint *b;
 trailz(Bigint *b)
 #endif
 {
-	ULong L, *x, *xe;
+	uint32_t L, *x, *xe;
 	int n = 0;
 
 	x = b->x;

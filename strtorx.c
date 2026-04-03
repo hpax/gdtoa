@@ -51,13 +51,13 @@ THIS SOFTWARE.
 #define _4 0
 #endif
 
- extern UShort NanDflt_ldus_D2A[5];
+ extern uint16_t NanDflt_ldus_D2A[5];
 
  void
 #ifdef KR_headers
-ULtox(L, bits, exp, k) UShort *L; ULong *bits; Long exp; int k;
+ULtox(L, bits, exp, k) uint16_t *L; uint32_t *bits; int32_t exp; int k;
 #else
-ULtox(UShort *L, ULong *bits, Long exp, int k)
+ULtox(uint16_t *L, uint32_t *bits, int32_t exp, int k)
 #endif
 {
 	switch(k & STRTOG_Retmask) {
@@ -74,10 +74,10 @@ ULtox(UShort *L, ULong *bits, Long exp, int k)
 	  case STRTOG_NaNbits:
 		L[_0] = exp + 0x3fff + 63;
  normal_bits:
-		L[_4] = (UShort)bits[0];
-		L[_3] = (UShort)(bits[0] >> 16);
-		L[_2] = (UShort)bits[1];
-		L[_1] = (UShort)(bits[1] >> 16);
+		L[_4] = (uint16_t)bits[0];
+		L[_3] = (uint16_t)(bits[0] >> 16);
+		L[_2] = (uint16_t)bits[1];
+		L[_1] = (uint16_t)(bits[1] >> 16);
 		break;
 
 	  case STRTOG_Infinite:
@@ -106,8 +106,8 @@ strtorx(const char *s, char **sp, int rounding, void *L)
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };
 	FPI *fpi, fpi1;
-	ULong bits[2];
-	Long exp;
+	uint32_t bits[2];
+	int32_t exp;
 	int k;
 
 	fpi = &fpi0;
@@ -117,6 +117,6 @@ strtorx(const char *s, char **sp, int rounding, void *L)
 		fpi = &fpi1;
 		}
 	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtox((UShort*)L, bits, exp, k);
+	ULtox((uint16_t*)L, bits, exp, k);
 	return k;
 	}

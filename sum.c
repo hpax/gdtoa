@@ -39,9 +39,9 @@ sum(Bigint *a, Bigint *b MTd)
 #endif
 {
 	Bigint *c;
-	ULong carry, *xc, *xa, *xb, *xe, y;
+	uint32_t carry, *xc, *xa, *xb, *xe, y;
 #ifdef Pack_32
-	ULong z;
+	uint32_t z;
 #endif
 
 	if (a->wds < b->wds) {

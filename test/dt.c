@@ -61,7 +61,7 @@ extern double atof (char*);
 #endif
 #endif
 
-typedef union { double d; ULong L[2]; } U;
+typedef union { double d; uint32_t L[2]; } U;
 
 #ifdef IEEE_8087
 #define word0(x) (x)->L[1]
@@ -199,9 +199,9 @@ main(void)
 	char *fmt, *s, *s1, *se;
 	int decpt, sign;
 	int mode = 0, ndigits = 17;
-	ULong x, y;
+	uint32_t x, y;
 #ifdef VAX
-	ULong z;
+	uint32_t z;
 #endif
 
 	fpinit_ASL();
@@ -216,9 +216,9 @@ main(void)
 			x = word0(&d);
 			y = word1(&d);
 			/* sscanf(buf+1, "%lx %lx:%d %d", &x, &y, &mode, &ndigits); */
-			x = (ULong)strtoul(s1 = buf+1, &se, 16);
+			x = (uint32_t)strtoul(s1 = buf+1, &se, 16);
 			if (se > s1) {
-				y = (ULong)strtoul(s1 = se, &se, 16);
+				y = (uint32_t)strtoul(s1 = se, &se, 16);
 				if (se > s1)
 					sscanf(se, ":%d %d", &mode, &ndigits);
 				}

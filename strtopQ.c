@@ -49,7 +49,7 @@ THIS SOFTWARE.
 #define _3 0
 #endif
 
- extern ULong NanDflt_Q_D2A[4];
+ extern uint32_t NanDflt_Q_D2A[4];
 
 
  int
@@ -60,10 +60,10 @@ strtopQ(const char *s, char **sp, void *V)
 #endif
 {
 	static FPI fpi0 = { 113, 1-16383-113+1, 32766 - 16383 - 113 + 1, 1, SI, 0 /*unused*/ };
-	ULong bits[4];
-	Long exp;
+	uint32_t bits[4];
+	int32_t exp;
 	int k;
-	ULong *L = (ULong*)V;
+	uint32_t *L = (uint32_t*)V;
 #ifdef Honor_FLT_ROUNDS
 #include "gdtoa_fltrnds.h"
 #else

@@ -119,9 +119,9 @@ Balloc
 	else {
 		x = 1 << k;
 #ifdef Omit_Private_Memory
-		rv = (Bigint *)MALLOC(sizeof(Bigint) + (x-1)*sizeof(ULong));
+		rv = (Bigint *)MALLOC(sizeof(Bigint) + (x-1)*sizeof(uint32_t));
 #else
-		len = (sizeof(Bigint) + (x-1)*sizeof(ULong) + sizeof(double) - 1)
+		len = (sizeof(Bigint) + (x-1)*sizeof(uint32_t) + sizeof(double) - 1)
 			/sizeof(double);
 		if (k <= Kmax && pmem_next - private_mem + len - PRIVATE_mem <= 0
 #ifdef MULTIPLE_THREADS
@@ -183,13 +183,13 @@ Bfree
  int
 lo0bits
 #ifdef KR_headers
-	(y) ULong *y;
+	(y) uint32_t *y;
 #else
-	(ULong *y)
+	(uint32_t *y)
 #endif
 {
 	int k;
-	ULong x = *y;
+	uint32_t x = *y;
 
 	if (x & 7) {
 		if (x & 1)
@@ -237,15 +237,8 @@ multadd
 #endif
 {
 	int i, wds;
-#ifdef ULLong
-	ULong *x;
-	ULLong carry, y;
-#else
-	ULong carry, *x, y;
-#ifdef Pack_32
-	ULong xi, z;
-#endif
-#endif
+	uint32_t *x;
+	uint64_t carry, y;
 	Bigint *b1;
 
 	wds = b->wds;
@@ -253,23 +246,9 @@ multadd
 	i = 0;
 	carry = a;
 	do {
-#ifdef ULLong
-		y = *x * (ULLong)m + carry;
+		y = *x * (uint64_t)m + carry;
 		carry = y >> 32;
 		*x++ = y & 0xffffffffUL;
-#else
-#ifdef Pack_32
-		xi = *x;
-		y = (xi & 0xffff) * m + carry;
-		z = (xi >> 16) * m + (y >> 16);
-		carry = z >> 16;
-		*x++ = (z << 16) + (y & 0xffff);
-#else
-		y = *x * m + carry;
-		carry = y >> 16;
-		*x++ = y & 0xffff;
-#endif
-#endif
 		}
 		while(++i < wds);
 	if (carry) {
@@ -288,9 +267,9 @@ multadd
  int
 hi0bits_D2A
 #ifdef KR_headers
-	(x) ULong x;
+	(x) uint32_t x;
 #else
-	(ULong x)
+	(uint32_t x)
 #endif
 {
 	int k = 0;
@@ -345,16 +324,9 @@ mult
 {
 	Bigint *c;
 	int k, wa, wb, wc;
-	ULong *x, *xa, *xae, *xb, *xbe, *xc, *xc0;
-	ULong y;
-#ifdef ULLong
-	ULLong carry, z;
-#else
-	ULong carry, z;
-#ifdef Pack_32
-	ULong z2;
-#endif
-#endif
+	uint32_t *x, *xa, *xae, *xb, *xbe, *xc, *xc0;
+	uint32_t y;
+	uint64_t carry, z;
 
 	if (a->wds < b->wds) {
 		c = a;
@@ -375,14 +347,13 @@ mult
 	xb = b->x;
 	xbe = xb + wb;
 	xc0 = c->x;
-#ifdef ULLong
 	for(; xb < xbe; xc0++) {
 		if ( (y = *xb++) !=0) {
 			x = xa;
 			xc = xc0;
 			carry = 0;
 			do {
-				z = *x++ * (ULLong)y + *xc + carry;
+				z = *x++ * (uint64_t)y + *xc + carry;
 				carry = z >> 32;
 				*xc++ = z & 0xffffffffUL;
 				}
@@ -390,56 +361,6 @@ mult
 			*xc = carry;
 			}
 		}
-#else
-#ifdef Pack_32
-	for(; xb < xbe; xb++, xc0++) {
-		if ( (y = *xb & 0xffff) !=0) {
-			x = xa;
-			xc = xc0;
-			carry = 0;
-			do {
-				z = (*x & 0xffff) * y + (*xc & 0xffff) + carry;
-				carry = z >> 16;
-				z2 = (*x++ >> 16) * y + (*xc >> 16) + carry;
-				carry = z2 >> 16;
-				Storeinc(xc, z2, z);
-				}
-				while(x < xae);
-			*xc = carry;
-			}
-		if ( (y = *xb >> 16) !=0) {
-			x = xa;
-			xc = xc0;
-			carry = 0;
-			z2 = *xc;
-			do {
-				z = (*x & 0xffff) * y + (*xc >> 16) + carry;
-				carry = z >> 16;
-				Storeinc(xc, z, z2);
-				z2 = (*x++ >> 16) * y + (*xc & 0xffff) + carry;
-				carry = z2 >> 16;
-				}
-				while(x < xae);
-			*xc = z2;
-			}
-		}
-#else
-	for(; xb < xbe; xc0++) {
-		if ( (y = *xb++) !=0) {
-			x = xa;
-			xc = xc0;
-			carry = 0;
-			do {
-				z = *x++ * y + *xc + carry;
-				carry = z >> 16;
-				*xc++ = z & 0xffff;
-				}
-				while(x < xae);
-			*xc = carry;
-			}
-		}
-#endif
-#endif
 	for(xc0 = c->x, xc = xc0 + wc; wc > 0 && !*--xc; --wc) ;
 	c->wds = wc;
 	return c;
@@ -527,7 +448,7 @@ lshift
 {
 	int i, k1, n, n1;
 	Bigint *b1;
-	ULong *x, *x1, *xe, z;
+	uint32_t *x, *x1, *xe, z;
 
 	n = k >> kshift;
 	k1 = b->k;
@@ -579,7 +500,7 @@ cmp
 	(Bigint *a, Bigint *b)
 #endif
 {
-	ULong *xa, *xa0, *xb, *xb0;
+	uint32_t *xa, *xa0, *xb, *xb0;
 	int i, j;
 
 	i = a->wds;
@@ -615,15 +536,8 @@ diff
 {
 	Bigint *c;
 	int i, wa, wb;
-	ULong *xa, *xae, *xb, *xbe, *xc;
-#ifdef ULLong
-	ULLong borrow, y;
-#else
-	ULong borrow, y;
-#ifdef Pack_32
-	ULong z;
-#endif
-#endif
+	uint32_t *xa, *xae, *xb, *xbe, *xc;
+	uint64_t borrow, y;
 
 	i = cmp(a,b);
 	if (!i) {
@@ -650,9 +564,8 @@ diff
 	xbe = xb + wb;
 	xc = c->x;
 	borrow = 0;
-#ifdef ULLong
 	do {
-		y = (ULLong)*xa++ - *xb++ - borrow;
+		y = (uint64_t)*xa++ - *xb++ - borrow;
 		borrow = y >> 32 & 1UL;
 		*xc++ = y & 0xffffffffUL;
 		}
@@ -662,37 +575,6 @@ diff
 		borrow = y >> 32 & 1UL;
 		*xc++ = y & 0xffffffffUL;
 		}
-#else
-#ifdef Pack_32
-	do {
-		y = (*xa & 0xffff) - (*xb & 0xffff) - borrow;
-		borrow = (y & 0x10000) >> 16;
-		z = (*xa++ >> 16) - (*xb++ >> 16) - borrow;
-		borrow = (z & 0x10000) >> 16;
-		Storeinc(xc, z, y);
-		}
-		while(xb < xbe);
-	while(xa < xae) {
-		y = (*xa & 0xffff) - borrow;
-		borrow = (y & 0x10000) >> 16;
-		z = (*xa++ >> 16) - borrow;
-		borrow = (z & 0x10000) >> 16;
-		Storeinc(xc, z, y);
-		}
-#else
-	do {
-		y = *xa++ - *xb++ - borrow;
-		borrow = (y & 0x10000) >> 16;
-		*xc++ = y & 0xffff;
-		}
-		while(xb < xbe);
-	while(xa < xae) {
-		y = *xa++ - borrow;
-		borrow = (y & 0x10000) >> 16;
-		*xc++ = y & 0xffff;
-		}
-#endif
-#endif
 	while(!*--xc)
 		wa--;
 	c->wds = wa;
@@ -707,11 +589,11 @@ b2d
 	(Bigint *a, int *e)
 #endif
 {
-	ULong *xa, *xa0, w, y, z;
+	uint32_t *xa, *xa0, w, y, z;
 	int k;
 	U d;
 #ifdef VAX
-	ULong d0, d1;
+	uint32_t d0, d1;
 #else
 #define d0 word0(&d)
 #define d1 word1(&d)
@@ -782,9 +664,9 @@ d2b
 	int i;
 #endif
 	int de, k;
-	ULong *x, y, z;
+	uint32_t *x, y, z;
 #ifdef VAX
-	ULong d0, d1;
+	uint32_t d0, d1;
 #else
 #define d0 word0(&d)
 #define d1 word1(&d)

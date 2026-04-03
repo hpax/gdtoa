@@ -49,13 +49,13 @@ THIS SOFTWARE.
 #define _3 0
 #endif
 
- extern ULong NanDflt_Q_D2A[4];
+ extern uint32_t NanDflt_Q_D2A[4];
 
  void
 #ifdef KR_headers
-ULtoQ(L, bits, exp, k) ULong *L; ULong *bits; Long exp; int k;
+ULtoQ(L, bits, exp, k) uint32_t *L; uint32_t *bits; int32_t exp; int k;
 #else
-ULtoQ(ULong *L, ULong *bits, Long exp, int k)
+ULtoQ(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 #endif
 {
 	switch(k & STRTOG_Retmask) {
@@ -103,8 +103,8 @@ strtorQ(const char *s, char **sp, int rounding, void *L)
 {
 	static FPI fpi0 = { 113, 1-16383-113+1, 32766-16383-113+1, 1, SI, 0 /*unused*/ };
 	FPI *fpi, fpi1;
-	ULong bits[4];
-	Long exp;
+	uint32_t bits[4];
+	int32_t exp;
 	int k;
 
 	fpi = &fpi0;
@@ -114,6 +114,6 @@ strtorQ(const char *s, char **sp, int rounding, void *L)
 		fpi = &fpi1;
 		}
 	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtoQ((ULong*)L, bits, exp, k);
+	ULtoQ((uint32_t*)L, bits, exp, k);
 	return k;
 	}

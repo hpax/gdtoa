@@ -43,12 +43,12 @@ strtopdd(const char *s, char **sp, double *dd)
 #else
 	static FPI fpi0 = { 106, 1-1023-53+1, 2046-1023-106+1, 1, 0, 0 /*unused*/ };
 #endif
-	ULong bits[4];
-	Long exp;
+	uint32_t bits[4];
+	int32_t exp;
 	int i, j, rv;
 	typedef union {
 		double d[2];
-		ULong L[4];
+		uint32_t L[4];
 		} U;
 	U *u;
 #ifdef Honor_FLT_ROUNDS

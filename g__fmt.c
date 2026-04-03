@@ -53,17 +53,17 @@ THIS SOFTWARE.
 
  const char *InfName[6] = { "Infinity", "infinity", "INFINITY", "Inf", "inf", "INF" };
  const char *NanName[3] = { "NaN", "nan", "NAN" };
- ULong NanDflt_Q_D2A[4] = { 0xffffffff, 0xffffffff, 0xffffffff, 0x7fffffff };
- ULong NanDflt_d_D2A[2] = { d_QNAN1, d_QNAN0 };
- ULong NanDflt_f_D2A[1] = { f_QNAN };
- ULong NanDflt_xL_D2A[3] = { 1, 0x80000000, 0x7fff0000 };
- UShort NanDflt_ldus_D2A[5] = { ldus_QNAN4, ldus_QNAN3, ldus_QNAN2, ldus_QNAN1, ldus_QNAN0 };
+ uint32_t NanDflt_Q_D2A[4] = { 0xffffffff, 0xffffffff, 0xffffffff, 0x7fffffff };
+ uint32_t NanDflt_d_D2A[2] = { d_QNAN1, d_QNAN0 };
+ uint32_t NanDflt_f_D2A[1] = { f_QNAN };
+ uint32_t NanDflt_xL_D2A[3] = { 1, 0x80000000, 0x7fff0000 };
+ uint16_t NanDflt_ldus_D2A[5] = { ldus_QNAN4, ldus_QNAN3, ldus_QNAN2, ldus_QNAN1, ldus_QNAN0 };
 
  char *
 #ifdef KR_headers
-g__fmt(b, s, se, decpt, sign, blen) char *b; char *s; char *se; int decpt; ULong sign; size_t blen;
+g__fmt(b, s, se, decpt, sign, blen) char *b; char *s; char *se; int decpt; uint32_t sign; size_t blen;
 #else
-g__fmt(char *b, char *s, char *se, int decpt, ULong sign, size_t blen)
+g__fmt(char *b, char *s, char *se, int decpt, uint32_t sign, size_t blen)
 #endif
 {
 	int i, j, k;
@@ -171,9 +171,9 @@ g__fmt(char *b, char *s, char *se, int decpt, ULong sign, size_t blen)
  	}
 
  char *
-add_nanbits_D2A(char *b, size_t blen, ULong *bits, int nb)
+add_nanbits_D2A(char *b, size_t blen, uint32_t *bits, int nb)
 {
-	ULong t;
+	uint32_t t;
 	char *rv;
 	int i, j;
 	size_t L;

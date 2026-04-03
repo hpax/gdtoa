@@ -33,9 +33,9 @@ THIS SOFTWARE.
 
  static void
 #ifdef KR_headers
-L_shift(x, x1, i) ULong *x; ULong *x1; int i;
+L_shift(x, x1, i) uint32_t *x; uint32_t *x1; int i;
 #else
-L_shift(ULong *x, ULong *x1, int i)
+L_shift(uint32_t *x, uint32_t *x1, int i)
 #endif
 {
 	int j;
@@ -52,12 +52,12 @@ L_shift(ULong *x, ULong *x1, int i)
  int
 #ifdef KR_headers
 hexnan(sp, fpi, x0)
-	const char **sp; const FPI *fpi; ULong *x0;
+	const char **sp; const FPI *fpi; uint32_t *x0;
 #else
-hexnan( const char **sp, const FPI *fpi, ULong *x0)
+hexnan( const char **sp, const FPI *fpi, uint32_t *x0)
 #endif
 {
-	ULong c, h, *x, *x1, *xe;
+	uint32_t c, h, *x, *x1, *xe;
 	const char *s;
 	int havedig, hd0, i, nbits;
 
@@ -145,7 +145,7 @@ hexnan( const char **sp, const FPI *fpi, ULong *x0)
 	else {
 		/* truncate high-order word if necessary */
 		if ( (i = nbits & (ULbits-1)) !=0)
-			*xe &= ((ULong)0xffffffff) >> (ULbits - i);
+			*xe &= ((uint32_t)0xffffffff) >> (ULbits - i);
 		}
 	for(x1 = xe;; --x1) {
 		if (*x1 != 0)

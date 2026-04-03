@@ -39,7 +39,7 @@ strtoIf(const char *s, char **sp, float *f0, float *f1)
 #endif
 {
 	static FPI fpi = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };
-	Long exp[2];
+	int32_t exp[2];
 	Bigint *B[2];
 	int k, rv[2];
 #ifdef MULTIPLE_THREADS
@@ -49,13 +49,13 @@ strtoIf(const char *s, char **sp, float *f0, float *f1)
 	B[0] = Balloc(0 MTb);
 	B[0]->wds = 1;
 	k = strtoIg(s, sp, &fpi, exp, B, rv);
-	ULtof((ULong*)f0, B[0]->x, exp[0], rv[0]);
+	ULtof((uint32_t*)f0, B[0]->x, exp[0], rv[0]);
 	Bfree(B[0] MTb);
 	if (B[1]) {
-		ULtof((ULong*)f1, B[1]->x, exp[1], rv[1]);
+		ULtof((uint32_t*)f1, B[1]->x, exp[1], rv[1]);
 		Bfree(B[1] MTb);
 		}
 	else
-		*(ULong*)f1 = *(ULong*)f0;
+		*(uint32_t*)f1 = *(uint32_t*)f0;
 	return k;
 	}

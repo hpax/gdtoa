@@ -39,8 +39,8 @@ strtopf(const char *s, char **sp, float *f)
 #endif
 {
 	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };
-	ULong bits[1], *L;
-	Long exp;
+	uint32_t bits[1], *L;
+	int32_t exp;
 	int k;
 #ifdef Honor_FLT_ROUNDS
 #include "gdtoa_fltrnds.h"
@@ -49,7 +49,7 @@ strtopf(const char *s, char **sp, float *f)
 #endif
 
 	k = strtodg(s, sp, fpi, &exp, bits);
-	L = (ULong*)f;
+	L = (uint32_t*)f;
 	switch(k & STRTOG_Retmask) {
 	  case STRTOG_NoNumber:
 	  case STRTOG_Zero:

@@ -31,13 +31,13 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern ULong NanDflt_d_D2A[2];
+ extern uint32_t NanDflt_d_D2A[2];
 
  void
 #ifdef KR_headers
-ULtodd(L, bits, exp, k) ULong *L; ULong *bits; Long exp; int k;
+ULtodd(L, bits, exp, k) uint32_t *L; uint32_t *bits; int32_t exp; int k;
 #else
-ULtodd(ULong *L, ULong *bits, Long exp, int k)
+ULtodd(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 #endif
 {
 	int i, j;
@@ -49,7 +49,7 @@ ULtodd(ULong *L, ULong *bits, Long exp, int k)
 		break;
 
 	  case STRTOG_Normal:
-		L[_1] = (bits[1] >> 21 | bits[2] << 11) & (ULong)0xffffffffL;
+		L[_1] = (bits[1] >> 21 | bits[2] << 11) & (uint32_t)0xffffffffL;
 		L[_0] = (bits[2] >> 21) | (bits[3] << 11 & 0xfffff)
 			  | ((exp + 0x3ff + 105) << 20);
 		exp += 0x3ff + 52;
@@ -63,7 +63,7 @@ ULtodd(ULong *L, ULong *bits, Long exp, int k)
 				exp -= i;
 			if (i > 0) {
 				bits[1] = bits[1] << i | bits[0] >> (32-i);
-				bits[0] = bits[0] << i & (ULong)0xffffffffL;
+				bits[0] = bits[0] << i & (uint32_t)0xffffffffL;
 				}
 			}
 		else if (bits[0]) {
@@ -76,7 +76,7 @@ ULtodd(ULong *L, ULong *bits, Long exp, int k)
 				exp -= i;
 			if (i < 32) {
 				bits[1] = bits[0] >> (32 - i);
-				bits[0] = bits[0] << i & (ULong)0xffffffffL;
+				bits[0] = bits[0] << i & (uint32_t)0xffffffffL;
 				}
 			else {
 				bits[1] = bits[0] << (i - 32);
@@ -110,7 +110,7 @@ ULtodd(ULong *L, ULong *bits, Long exp, int k)
 		L[_0] = ((bits[3] << i | bits[2] >> j) & 0xfffff)
 			| ((65 - i) << 20);
 		L[_1] = (bits[2] << i | bits[1] >> j) & 0xffffffffL;
-		L[2+_0] = bits[1] & (((ULong)1L << j) - 1);
+		L[2+_0] = bits[1] & (((uint32_t)1L << j) - 1);
 		L[2+_1] = bits[0];
 		break;
 
@@ -121,7 +121,7 @@ ULtodd(ULong *L, ULong *bits, Long exp, int k)
 			i += 32;
 			L[_0] = (bits[2] >> j & 0xfffff) | ((33 + j) << 20);
 			L[_1] = (bits[2] << i | bits[1] >> j) & 0xffffffffL;
-			L[2+_0] = bits[1] & (((ULong)1L << j) - 1);
+			L[2+_0] = bits[1] & (((uint32_t)1L << j) - 1);
 			L[2+_1] = bits[0];
 			break;
 			}
@@ -146,7 +146,7 @@ ULtodd(ULong *L, ULong *bits, Long exp, int k)
 		L[_0] = (bits[1] >> j & 0xfffff) | ((j + 1) << 20);
 		L[_1] = (bits[1] << i | bits[0] >> j) & 0xffffffffL;
 		L[2+_0] = 0;
-		L[2+_1] = bits[0] & (((ULong)1L << j) - 1);
+		L[2+_1] = bits[0] & (((uint32_t)1L << j) - 1);
 		break;
 
 	  case STRTOG_Infinite:
@@ -160,12 +160,12 @@ ULtodd(ULong *L, ULong *bits, Long exp, int k)
 		break;
 
 	  case STRTOG_NaNbits:
-		L[_1] = (bits[1] >> 20 | bits[2] << 12) & (ULong)0xffffffffL;
+		L[_1] = (bits[1] >> 20 | bits[2] << 12) & (uint32_t)0xffffffffL;
 		L[_0] = bits[2] >> 20 | bits[3] << 12;
-		L[_0] |= (L[_1] | L[_0]) ? (ULong)0x7ff00000L : (ULong)0x7ff80000L;
-		L[2+_1] = bits[0] & (ULong)0xffffffffL;
+		L[_0] |= (L[_1] | L[_0]) ? (uint32_t)0x7ff00000L : (uint32_t)0x7ff80000L;
+		L[2+_1] = bits[0] & (uint32_t)0xffffffffL;
 		L[2+_0] = bits[1] & 0xfffffL;
-		L[2+_0] |= (L[2+_1] | L[2+_0]) ? (ULong)0x7ff00000L : (ULong)0x7ff80000L;
+		L[2+_0] |= (L[2+_1] | L[2+_0]) ? (uint32_t)0x7ff00000L : (uint32_t)0x7ff80000L;
 	  }
 	if (k & STRTOG_Neg) {
 		L[_0] |= 0x80000000L;
@@ -186,8 +186,8 @@ strtordd(const char *s, char **sp, int rounding, double *dd)
 	static FPI fpi0 = { 106, 1-1023-53+1, 2046-1023-106+1, 1, 0, 0 /*unused*/ };
 #endif
 	FPI *fpi, fpi1;
-	ULong bits[4];
-	Long exp;
+	uint32_t bits[4];
+	int32_t exp;
 	int k;
 
 	fpi = &fpi0;
@@ -197,6 +197,6 @@ strtordd(const char *s, char **sp, int rounding, double *dd)
 		fpi = &fpi1;
 		}
 	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtodd((ULong*)dd, bits, exp, k);
+	ULtodd((uint32_t*)dd, bits, exp, k);
 	return k;
 	}

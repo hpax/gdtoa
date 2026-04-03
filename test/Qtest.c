@@ -82,7 +82,7 @@ main(void)
 {
 	char *s, *s1, *se, *se1;
 	int Ltest, i, dItry, ndig = 0, nik, nike, r = 1;
-	union { long double d; ULong bits[4]; } u, v[2], w;
+	union { long double d; uint32_t bits[4]; } u, v[2], w;
 
 	w.bits[0] = w.bits[3] = 0;
 	w.d = 1.;
@@ -108,13 +108,13 @@ main(void)
 		  case '#':
 			/* sscanf(s+1, "%lx %lx %lx %lx", &u.bits[_0],	*/
 			/*	&u.bits[_1], &u.bits[_2], &u.bits[_3]);	*/
-			u.bits[_0] = (ULong)strtoul(s1 = s+1, &se, 16);
+			u.bits[_0] = (uint32_t)strtoul(s1 = s+1, &se, 16);
 			if (se > s1) {
-			  u.bits[_1] = (ULong)strtoul(s1 = se, &se, 16);
+			  u.bits[_1] = (uint32_t)strtoul(s1 = se, &se, 16);
 			  if (se > s1) {
-			    u.bits[_2] = (ULong)strtoul(s1 = se, &se, 16);
+			    u.bits[_2] = (uint32_t)strtoul(s1 = se, &se, 16);
 			    if (se > s1)
-				u.bits[_3] = (ULong)strtoul(s1 = se, &se, 16);
+				u.bits[_3] = (uint32_t)strtoul(s1 = se, &se, 16);
 			    }
 			  }
 			printf("\nInput: %s", ibuf);

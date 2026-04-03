@@ -58,7 +58,7 @@ g_Qfmt(char *buf, void *V, int ndig, size_t bufsize)
 {
 	static FPI fpi0 = { 113, 1-16383-113+1, 32766 - 16383 - 113 + 1, 1, 0, Int_max };
 	char *b, *s, *se;
-	ULong bits[4], *L, sign;
+	uint32_t bits[4], *L, sign;
 	int decpt, ex, i, mode;
 #ifdef Honor_FLT_ROUNDS
 #include "gdtoa_fltrnds.h"
@@ -71,7 +71,7 @@ g_Qfmt(char *buf, void *V, int ndig, size_t bufsize)
 	if (bufsize < (size_t)(ndig + 10))
 		return 0;
 
-	L = (ULong*)V;
+	L = (uint32_t*)V;
 	sign = L[_0] & 0x80000000L;
 	bits[3] = L[_0] & 0xffff;
 	bits[2] = L[_1];

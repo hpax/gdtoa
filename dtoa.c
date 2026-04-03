@@ -61,7 +61,7 @@ THIS SOFTWARE.
  *	   guarantee that the floating-point calculation has given
  *	   the correctly rounded result.  For k requested digits and
  *	   "uniformly" distributed input, the probability is
- *	   something like 10^(k-15) that we must resort to the Long
+ *	   something like 10^(k-15) that we must resort to the int32_t
  *	   calculation.
  */
 
@@ -121,10 +121,10 @@ dtoa
 	int bbits, b2, b5, be, dig, i, ieps, ilim, ilim0, ilim1,
 		j, j1, k, k0, k_check, leftright, m2, m5, s2, s5,
 		spec_case, try_quick;
-	Long L;
+	int32_t L;
 #ifndef Sudden_Underflow
 	int denorm;
-	ULong x;
+	uint32_t x;
 #endif
 	Bigint *b, *b1, *delta, *mlo, *mhi, *S;
 	U d, d2, eps, eps1;
@@ -427,7 +427,7 @@ dtoa
 			/* Generate ilim digits, then fix them up. */
 			dval(&eps) *= tens[ilim-1];
 			for(i = 1;; i++, dval(&d) *= 10.) {
-				L = (Long)(dval(&d));
+				L = (int32_t)(dval(&d));
 				if (!(dval(&d) -= L))
 					ilim = i;
 				*s++ = '0' + (int)L;
@@ -461,7 +461,7 @@ dtoa
 			goto one_digit;
 			}
 		for(i = 1;; i++, dval(&d) *= 10.) {
-			L = (Long)(dval(&d) / ds);
+			L = (int32_t)(dval(&d) / ds);
 			dval(&d) -= L*ds;
 #ifdef Check_FLT_ROUNDS
 			/* If FLT_ROUNDS == 2, L will usually be high by 1 */

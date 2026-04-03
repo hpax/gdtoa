@@ -39,7 +39,7 @@ ulp
 	(U *x)
 #endif
 {
-	Long L;
+	int32_t L;
 	U a;
 
 	L = (word0(x) & Exp_mask) - (P-1)*Exp_msk1;

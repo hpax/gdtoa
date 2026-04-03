@@ -47,13 +47,13 @@ THIS SOFTWARE.
 #define _2 0
 #endif
 
- extern ULong NanDflt_xL_D2A[3];
+ extern uint32_t NanDflt_xL_D2A[3];
 
  void
 #ifdef KR_headers
-ULtoxL(L, bits, exp, k) ULong *L; ULong *bits; Long exp; int k;
+ULtoxL(L, bits, exp, k) uint32_t *L; uint32_t *bits; int32_t exp; int k;
 #else
-ULtoxL(ULong *L, ULong *bits, Long exp, int k)
+ULtoxL(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 #endif
 {
 	switch(k & STRTOG_Retmask) {
@@ -94,8 +94,8 @@ strtorxL(const char *s, char **sp, int rounding, void *L)
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };
 	FPI *fpi, fpi1;
-	ULong bits[2];
-	Long exp;
+	uint32_t bits[2];
+	int32_t exp;
 	int k;
 
 	fpi = &fpi0;
@@ -105,6 +105,6 @@ strtorxL(const char *s, char **sp, int rounding, void *L)
 		fpi = &fpi1;
 		}
 	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtoxL((ULong*)L, bits, exp, k);
+	ULtoxL((uint32_t*)L, bits, exp, k);
 	return k;
 	}

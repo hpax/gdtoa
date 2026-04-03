@@ -38,7 +38,7 @@ THIS SOFTWARE.
  * Complain about errors.
  */
 
-#include "gdtoa.h"	/* for ULong */
+#include "gdtoa.h"	/* for uint32_t */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,7 +46,7 @@ THIS SOFTWARE.
  static int W0, W1;
  typedef union {
 		double d;
-		ULong L[2];
+		uint32_t L[2];
 		} U;
 
 #define UL (unsigned long)
@@ -72,8 +72,8 @@ process(char *fname, FILE *f)
 		while(*s > ' ')
 			s++;
 		/* if (sscanf(s,"\t%lx\t%lx", &a.L[0], &a.L[1]) != 2) */
-		if ((a.L[0] = (ULong)strtoul(s, &s1,16), s1 <= s)
-		 || (a.L[1] = (ULong)strtoul(s1,&se,16), se <= s1)) {
+		if ((a.L[0] = (uint32_t)strtoul(s, &s1,16), s1 <= s)
+		 || (a.L[1] = (uint32_t)strtoul(s1,&se,16), se <= s1)) {
 			printf("Badly formatted line %d of %s\n",
 				line, fname);
 			n++;

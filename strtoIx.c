@@ -39,10 +39,10 @@ strtoIx(const char *s, char **sp, void *a, void *b)
 #endif
 {
 	static FPI fpi = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };
-	Long exp[2];
+	int32_t exp[2];
 	Bigint *B[2];
 	int k, rv[2];
-	UShort *L = (UShort *)a, *M = (UShort *)b;
+	uint16_t *L = (uint16_t *)a, *M = (uint16_t *)b;
 #ifdef MULTIPLE_THREADS
 	ThInfo *TI = 0;
 #endif

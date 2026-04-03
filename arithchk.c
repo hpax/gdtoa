@@ -25,6 +25,7 @@ THIS SOFTWARE.
 /* Try to deduce arith.h from arithmetic properties. */
 
 #include <stdio.h>
+#include <inttypes.h>
 
  static int dalign;
  typedef struct
@@ -45,41 +46,17 @@ Lcheck(void)
 {
 	union {
 		double d;
-		long L[2];
+		int32_t L[2];
 		} u;
 	struct {
 		double d;
-		long L;
+		int32_t L;
 		} x[2];
 
-	if (sizeof(x) > 2*(sizeof(double) + sizeof(long)))
-		dalign = 1;
-	u.L[0] = u.L[1] = 0;
-	u.d = 1e13;
-	if (u.L[0] == 1117925532 && u.L[1] == -448790528)
-		return &IEEE_MC68k;
-	if (u.L[1] == 1117925532 && u.L[0] == -448790528)
-		return &IEEE_8087;
-	if (u.L[0] == -2065213935 && u.L[1] == 10752)
-		return &VAX;
-	if (u.L[0] == 1267827943 && u.L[1] == 704643072)
-		return &IBM;
-	return 0;
-	}
+	if (sizeof(double) != 2*sizeof(int32_t))
+		return 0;
 
- static Akind *
-icheck(void)
-{
-	union {
-		double d;
-		int L[2];
-		} u;
-	struct {
-		double d;
-		int L;
-		} x[2];
-
-	if (sizeof(x) > 2*(sizeof(double) + sizeof(int)))
+	if (sizeof(x) > 2*(sizeof(double) + sizeof(int32_t)))
 		dalign = 1;
 	u.L[0] = u.L[1] = 0;
 	u.d = 1e13;
@@ -102,6 +79,9 @@ ccheck(int ac, char **av)
 		long L;
 		} u;
 	long Cray1;
+
+	if (sizeof(double) != sizeof(long))
+		return 0;
 
 	/* Cray1 = 4617762693716115456 -- without overflow on non-Crays */
 	/* The next three tests should always be true. */
@@ -152,19 +132,13 @@ main(int argc, char **argv)
 	f = stdout;
 #endif
 
-	if (sizeof(double) == 2*sizeof(long))
+	if (!a)
 		a = Lcheck();
-	else if (sizeof(double) == 2*sizeof(int)) {
-		Ldef = 1;
-		a = icheck();
-		}
-	else if (sizeof(double) == sizeof(long))
+	if (!a)
 		a = ccheck(argc, argv);
 	if (a) {
 		fprintf(f, "#define %s\n#define Arith_Kind_ASL %d\n",
 			a->name, a->kind);
-		if (Ldef)
-			fprintf(f, "#define Long int\n#define Intcast (int)(long)\n");
 		if (dalign)
 			fprintf(f, "#define Double_Align\n");
 		if (sizeof(char*) == 8)

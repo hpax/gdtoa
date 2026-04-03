@@ -40,7 +40,7 @@ g_ffmt(char *buf, float *f, int ndig, size_t bufsize)
 {
 	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, 0, 6 };
 	char *b, *s, *se;
-	ULong bits[1], *L, sign;
+	uint32_t bits[1], *L, sign;
 	int decpt, ex, i, mode;
 #ifdef Honor_FLT_ROUNDS
 #include "gdtoa_fltrnds.h"
@@ -53,7 +53,7 @@ g_ffmt(char *buf, float *f, int ndig, size_t bufsize)
 	if (bufsize < (size_t)(ndig + 10))
 		return 0;
 
-	L = (ULong*)f;
+	L = (uint32_t*)f;
 	sign = L[0] & 0x80000000L;
 	if ((L[0] & 0x7f800000) == 0x7f800000) {
 		/* Infinity or NaN */

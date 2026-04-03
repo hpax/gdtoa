@@ -83,7 +83,7 @@ main(void)
 {
 	char *s, *se, *se1;
 	int i, dItry, ndig = 0, nik, nike, r = 1;
-	union { long double d; UShort bits[5]; } u, v[2];
+	union { long double d; uint16_t bits[5]; } u, v[2];
 
 	while((s = fgets(ibuf, sizeof(ibuf), stdin))) {
 		while(*s <= ' ')

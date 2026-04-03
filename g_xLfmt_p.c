@@ -31,7 +31,7 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern ULong NanDflt_xL_D2A[3];
+ extern uint32_t NanDflt_xL_D2A[3];
 
 #undef _0
 #undef _1
@@ -58,7 +58,7 @@ g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, 0, Int_max };
 	char *b, *s, *se;
-	ULong bits[2], *L, sign;
+	uint32_t bits[2], *L, sign;
 	int decpt, ex, i, mode;
 #ifdef Honor_FLT_ROUNDS
 #include "gdtoa_fltrnds.h"
@@ -71,7 +71,7 @@ g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
 	if (bufsize < (size_t)(ndig + 10))
 		return 0;
 
-	L = (ULong*)V;
+	L = (uint32_t*)V;
 	sign = L[_0] & 0x80000000L;
 	bits[1] = L[_1];
 	bits[0] = L[_2];

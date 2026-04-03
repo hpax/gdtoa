@@ -31,13 +31,13 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern ULong NanDflt_f_D2A[1];
+ extern uint32_t NanDflt_f_D2A[1];
 
  void
 #ifdef KR_headers
-ULtof(L, bits, exp, k) ULong *L; ULong *bits; Long exp; int k;
+ULtof(L, bits, exp, k) uint32_t *L; uint32_t *bits; int32_t exp; int k;
 #else
-ULtof(ULong *L, ULong *bits, Long exp, int k)
+ULtof(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 #endif
 {
 	switch(k & STRTOG_Retmask) {
@@ -75,8 +75,8 @@ strtorf(const char *s, char **sp, int rounding, float *f)
 {
 	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };
 	FPI *fpi, fpi1;
-	ULong bits[1];
-	Long exp;
+	uint32_t bits[1];
+	int32_t exp;
 	int k;
 
 	fpi = &fpi0;
@@ -86,6 +86,6 @@ strtorf(const char *s, char **sp, int rounding, float *f)
 		fpi = &fpi1;
 		}
 	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtof((ULong*)f, bits, exp, k);
+	ULtof((uint32_t*)f, bits, exp, k);
 	return k;
 	}

@@ -58,7 +58,7 @@ THIS SOFTWARE.
  static char ibuf[2048], obuf[2048], obuf1[2048];
 
 #define UL (unsigned long)
-typedef union { float f; ULong L; } Uf;
+typedef union { float f; uint32_t L; } Uf;
 
  int
 main(void)
@@ -86,7 +86,7 @@ main(void)
 			break; /* nan? */
 		  case '#':
 			/* sscanf(s+1, "%lx", &u.L); */
-			u.L = (ULong)strtoul(s+1, &se, 16);
+			u.L = (uint32_t)strtoul(s+1, &se, 16);
 			printf("\nInput: %s", ibuf);
 			printf(" --> f = #%lx\n", UL u.L);
 			i = 0;

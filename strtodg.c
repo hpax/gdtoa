@@ -51,17 +51,17 @@ increment(b MTa) Bigint *b; MTk
 increment(Bigint *b MTd)
 #endif
 {
-	ULong *x, *xe;
+	uint32_t *x, *xe;
 	Bigint *b1;
 #ifdef Pack_16
-	ULong carry = 1, y;
+	uint32_t carry = 1, y;
 #endif
 
 	x = b->x;
 	xe = x + b->wds;
 #ifdef Pack_32
 	do {
-		if (*x < (ULong)0xffffffffL) {
+		if (*x < (uint32_t)0xffffffffL) {
 			++*x;
 			return b;
 			}
@@ -96,9 +96,9 @@ decrement(b) Bigint *b;
 decrement(Bigint *b)
 #endif
 {
-	ULong *x, *xe;
+	uint32_t *x, *xe;
 #ifdef Pack_16
-	ULong borrow = 1, y;
+	uint32_t borrow = 1, y;
 #endif
 
 	x = b->x;
@@ -128,7 +128,7 @@ all_on(b, n) Bigint *b; int n;
 all_on(Bigint *b, int n)
 #endif
 {
-	ULong *x, *xe;
+	uint32_t *x, *xe;
 
 	x = b->x;
 	xe = x + (n >> kshift);
@@ -148,7 +148,7 @@ set_ones(Bigint *b, int n MTd)
 #endif
 {
 	int k;
-	ULong *x, *xe;
+	uint32_t *x, *xe;
 
 	k = (n + ((1 << kshift) - 1)) >> kshift;
 	if (b->k < k) {
@@ -172,13 +172,13 @@ set_ones(Bigint *b, int n MTd)
 rvOK
 #ifdef KR_headers
  (d, fpi, exp, bits, exact, rd, irv MTa)
- U *d; const FPI *fpi; Long *exp; ULong *bits; int exact, rd, *irv; MTk
+ U *d; const FPI *fpi; int32_t *exp; uint32_t *bits; int exact, rd, *irv; MTk
 #else
- (U *d, const FPI *fpi, Long *exp, ULong *bits, int exact, int rd, int *irv MTd)
+ (U *d, const FPI *fpi, int32_t *exp, uint32_t *bits, int exact, int rd, int *irv MTd)
 #endif
 {
 	Bigint *b;
-	ULong carry, inex, lostbits;
+	uint32_t carry, inex, lostbits;
 	int bdif, e, j, k, k1, nb, rv;
 
 	carry = rv = 0;
@@ -220,7 +220,7 @@ rvOK
 				break;
 			goto trunc;
 			}
-		if (b->x[k>>kshift] & ((ULong)1 << (k & kmask)))
+		if (b->x[k>>kshift] & ((uint32_t)1 << (k & kmask)))
 			break;
 		goto trunc;
 	  }
@@ -296,7 +296,7 @@ mantbits(d) U *d;
 mantbits(U *d)
 #endif
 {
-	ULong L;
+	uint32_t L;
 #ifdef VAX
 	L = word1(d) << 16 | word1(d) >> 16;
 	if (L)
@@ -316,9 +316,9 @@ mantbits(U *d)
 strtodg
 #ifdef KR_headers
 	(s00, se, fpi, exp, bits)
-	const char *s00; char **se; const FPI *fpi; Long *exp; ULong *bits;
+	const char *s00; char **se; const FPI *fpi; int32_t *exp; uint32_t *bits;
 #else
-	(const char *s00, char **se, const FPI *fpi, Long *exp, ULong *bits)
+	(const char *s00, char **se, const FPI *fpi, int32_t *exp, uint32_t *bits)
 #endif
 {
 	int abe, abits, asub;
@@ -328,9 +328,9 @@ strtodg
 	int sudden_underflow;
 	const char *s, *s0;
 	double adj0, tol;
-	Long L;
+	int32_t L;
 	U adj, rv;
-	ULong *b, *be, y, z;
+	uint32_t *b, *be, y, z;
 	Bigint *ab, *bb, *bb1, *bd, *bd0, *bs, *delta, *rvb, *rvb0;
 #ifdef MULTIPLE_THREADS
 	ThInfo *TI = 0;
@@ -1041,7 +1041,7 @@ strtodg
 			k = nbits >> kshift;
 			if (nbits & kmask)
 				++k;
-			memset(bits, 0, k*sizeof(ULong));
+			memset(bits, 0, k*sizeof(uint32_t));
  infnanexp:
 			*exp = fpi->emax + 1;
 			goto ret;

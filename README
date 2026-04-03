@@ -30,9 +30,9 @@ arithmetic.
 
 The core conversion routines are strtodg for decimal -> binary conversions
 and gdtoa for binary -> decimal conversions.  These routines operate
-on arrays of unsigned 32-bit integers of type ULong, a signed 32-bit
-exponent of type Long, and arithmetic characteristics described in
-struct FPI; FPI, Long, and ULong are defined in gdtoa.h.  File arith.h
+on arrays of unsigned 32-bit integers of type uint32_t, a signed 32-bit
+exponent of type int32_t, and arithmetic characteristics described in
+struct FPI; FPI is defined in gdtoa.h.  File arith.h
 is supposed to provide #defines that cause gdtoa.h to define its
 types correctly.  File arithchk.c is source for a program that
 generates a suitable arith.h on all systems where I've been able to
@@ -104,7 +104,7 @@ to the final two argument for the strtoI... (interval) functions,
 and to the final argument for the others (strtop... and strtor...).
 Where possible, these arguments have "natural" return types (double*
 or float*), to permit at least some type checking.  In reality, they
-are viewed as arrays of ULong (or, for the "x" functions, UShort)
+are viewed as arrays of uint32_t (or, for the "x" functions, uint16_t)
 values. On systems where long double is the appropriate type, one can
 pass long double* final argument(s) to these routines.  The int value
 that these routines return is the return value from the call they make
@@ -352,7 +352,7 @@ present conversion routines; for now, this README file must suffice.
 Meanwhile, if you wish to write helper functions for other kinds of
 IEEE-like arithmetic, some explanation of struct FPI and the bits
 array may be helpful.  Both gdtoa and strtodg operate on a bits array
-described by FPI *fpi.  The bits array is of type ULong, a 32-bit
+described by FPI *fpi.  The bits array is of type uint32_t, a 32-bit
 unsigned integer type.  Floating-point numbers have fpi->nbits bits,
 with the least significant 32 bits in bits[0], the next 32 bits in
 bits[1], etc.  These numbers are regarded as integers multiplied by

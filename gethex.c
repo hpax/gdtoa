@@ -38,16 +38,16 @@ THIS SOFTWARE.
  int
 #ifdef KR_headers
 gethex(sp, fpi, exp, bp, sign MTa)
-	const char **sp; const FPI *fpi; Long *exp; Bigint **bp; int sign; MTk
+	const char **sp; const FPI *fpi; int32_t *exp; Bigint **bp; int sign; MTk
 #else
-gethex( const char **sp, const FPI *fpi, Long *exp, Bigint **bp, int sign MTd)
+gethex( const char **sp, const FPI *fpi, int32_t *exp, Bigint **bp, int sign MTd)
 #endif
 {
 	Bigint *b;
 	const unsigned char *decpt, *s0, *s, *s1;
 	int big, esign, havedig, irv, j, k, n, n0, nbits, up, zret;
-	ULong L, lostbits, *x;
-	Long e, e1;
+	uint32_t L, lostbits, *x;
+	int32_t e, e1;
 #ifdef USE_LOCALE
 	int i;
 #ifdef NO_LOCALE_CACHE
@@ -118,7 +118,7 @@ gethex( const char **sp, const FPI *fpi, Long *exp, Bigint **bp, int sign MTd)
 			s++;
 		}/*}*/
 	if (decpt)
-		e = -(((Long)(s-decpt)) << 2);
+		e = -(((int32_t)(s-decpt)) << 2);
  pcheck:
 	s1 = s;
 	big = esign = 0;

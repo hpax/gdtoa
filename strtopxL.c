@@ -31,7 +31,7 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern ULong NanDflt_xL_D2A[3];
+ extern uint32_t NanDflt_xL_D2A[3];
 
 #undef _0
 #undef _1
@@ -57,10 +57,10 @@ strtopxL(const char *s, char **sp, void *V)
 #endif
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };
-	ULong bits[2];
-	Long exp;
+	uint32_t bits[2];
+	int32_t exp;
 	int k;
-	ULong *L = (ULong*)V;
+	uint32_t *L = (uint32_t*)V;
 #ifdef Honor_FLT_ROUNDS
 #include "gdtoa_fltrnds.h"
 #else

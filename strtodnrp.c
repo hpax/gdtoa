@@ -45,10 +45,10 @@ strtod(const char *s, char **sp)
 #endif
 {
 	static FPI fpi = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
-	ULong bits[2];
-	Long exp;
+	uint32_t bits[2];
+	int32_t exp;
 	int k;
-	union { ULong L[2]; double d; } u;
+	union { uint32_t L[2]; double d; } u;
 
 	k = strtodg(s, sp, &fpi, &exp, bits);
 	switch(k & STRTOG_Retmask) {

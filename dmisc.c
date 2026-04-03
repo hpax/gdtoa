@@ -44,9 +44,9 @@ rv_alloc(int i MTd)
 {
 	int j, k, *r;
 
-	j = sizeof(ULong);
+	j = sizeof(uint32_t);
 	for(k = 0;
-		(int)(sizeof(Bigint) - sizeof(ULong) - sizeof(int)) + j <= i;
+		(int)(sizeof(Bigint) - sizeof(uint32_t) - sizeof(int)) + j <= i;
 		j <<= 1)
 			k++;
 	r = (int*)Balloc(k MTa);
@@ -109,15 +109,8 @@ quorem
 #endif
 {
 	int n;
-	ULong *bx, *bxe, q, *sx, *sxe;
-#ifdef ULLong
-	ULLong borrow, carry, y, ys;
-#else
-	ULong borrow, carry, y, ys;
-#ifdef Pack_32
-	ULong si, z, zs;
-#endif
-#endif
+	uint32_t *bx, *bxe, q, *sx, *sxe;
+	uint64_t borrow, carry, y, ys;
 
 	n = S->wds;
 #ifdef DEBUG
@@ -139,31 +132,11 @@ quorem
 		borrow = 0;
 		carry = 0;
 		do {
-#ifdef ULLong
-			ys = *sx++ * (ULLong)q + carry;
+			ys = *sx++ * (uint64_t)q + carry;
 			carry = ys >> 32;
 			y = *bx - (ys & 0xffffffffUL) - borrow;
 			borrow = y >> 32 & 1UL;
 			*bx++ = y & 0xffffffffUL;
-#else
-#ifdef Pack_32
-			si = *sx++;
-			ys = (si & 0xffff) * q + carry;
-			zs = (si >> 16) * q + (ys >> 16);
-			carry = zs >> 16;
-			y = (*bx & 0xffff) - (ys & 0xffff) - borrow;
-			borrow = (y & 0x10000) >> 16;
-			z = (*bx >> 16) - (zs & 0xffff) - borrow;
-			borrow = (z & 0x10000) >> 16;
-			Storeinc(bx, z, y);
-#else
-			ys = *sx++ * q + carry;
-			carry = ys >> 16;
-			y = *bx - (ys & 0xffff) - borrow;
-			borrow = (y & 0x10000) >> 16;
-			*bx++ = y & 0xffff;
-#endif
-#endif
 			}
 			while(sx <= sxe);
 		if (!*bxe) {
@@ -180,31 +153,11 @@ quorem
 		bx = b->x;
 		sx = S->x;
 		do {
-#ifdef ULLong
 			ys = *sx++ + carry;
 			carry = ys >> 32;
 			y = *bx - (ys & 0xffffffffUL) - borrow;
 			borrow = y >> 32 & 1UL;
 			*bx++ = y & 0xffffffffUL;
-#else
-#ifdef Pack_32
-			si = *sx++;
-			ys = (si & 0xffff) + carry;
-			zs = (si >> 16) + (ys >> 16);
-			carry = zs >> 16;
-			y = (*bx & 0xffff) - (ys & 0xffff) - borrow;
-			borrow = (y & 0x10000) >> 16;
-			z = (*bx >> 16) - (zs & 0xffff) - borrow;
-			borrow = (z & 0x10000) >> 16;
-			Storeinc(bx, z, y);
-#else
-			ys = *sx++ + carry;
-			carry = ys >> 16;
-			y = *bx - (ys & 0xffff) - borrow;
-			borrow = (y & 0x10000) >> 16;
-			*bx++ = y & 0xffff;
-#endif
-#endif
 			}
 			while(sx <= sxe);
 		bx = b->x;

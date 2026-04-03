@@ -40,7 +40,7 @@ g_ddfmt(char *buf, double *dd0, int ndig, size_t bufsize)
 {
 	FPI fpi;
 	char *b, *s, *se;
-	ULong *L, bits0[4], *bits, *zx;
+	uint32_t *L, bits0[4], *bits, *zx;
 	int bx, by, decpt, ex, ey, i, j, mode;
 	Bigint *x, *y, *z;
 	U *dd, ddx[2];

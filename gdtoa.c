@@ -33,14 +33,14 @@ THIS SOFTWARE.
 
  static Bigint *
 #ifdef KR_headers
-bitstob(bits, nbits, bbits MTa) ULong *bits; int nbits; int *bbits; MTk
+bitstob(bits, nbits, bbits MTa) uint32_t *bits; int nbits; int *bbits; MTk
 #else
-bitstob(ULong *bits, int nbits, int *bbits MTd)
+bitstob(uint32_t *bits, int nbits, int *bbits MTd)
 #endif
 {
 	int i, k;
 	Bigint *b;
-	ULong *be, *x, *x0;
+	uint32_t *be, *x, *x0;
 
 	i = ULbits;
 	k = 0;
@@ -104,7 +104,7 @@ bitstob(ULong *bits, int nbits, int *bbits MTd)
  *	   guarantee that the floating-point calculation has given
  *	   the correctly rounded result.  For k requested digits and
  *	   "uniformly" distributed input, the probability is
- *	   something like 10^(k-15) that we must resort to the Long
+ *	   something like 10^(k-15) that we must resort to the int32_t
  *	   calculation.
  */
 
@@ -112,10 +112,10 @@ bitstob(ULong *bits, int nbits, int *bbits MTd)
 gdtoa
 #ifdef KR_headers
 	(fpi, be, bits, kindp, mode, ndigits, decpt, rve)
-	const FPI *fpi; int be; ULong *bits;
+	const FPI *fpi; int be; uint32_t *bits;
 	int *kindp, mode, ndigits, *decpt; char **rve;
 #else
-	(const FPI *fpi, int be, ULong *bits, int *kindp, int mode, int ndigits, int *decpt, char **rve)
+	(const FPI *fpi, int be, uint32_t *bits, int *kindp, int mode, int ndigits, int *decpt, char **rve)
 #endif
 {
  /*	Arguments ndigits and decpt are similar to the second and third
@@ -159,7 +159,7 @@ gdtoa
 	int bbits, b2, b5, be0, dig, i, ieps, ilim, ilim0, ilim1, inex;
 	int j, j1, k, k0, k_check, kind, leftright, m2, m5, nbits;
 	int rdir, s2, s5, spec_case, try_quick;
-	Long L;
+	int32_t L;
 	Bigint *b, *b1, *delta, *mlo, *mhi, *mhi1, *S;
 	double d2, ds;
 	char *s, *s0;
@@ -391,7 +391,7 @@ gdtoa
 			 */
 			dval(&eps) = ds*0.5/tens[ilim-1] - dval(&eps);
 			for(i = 0;;) {
-				L = (Long)(dval(&d)/ds);
+				L = (int32_t)(dval(&d)/ds);
 				dval(&d) -= L*ds;
 				*s++ = '0' + (int)L;
 				if (dval(&d) < dval(&eps)) {
@@ -412,7 +412,7 @@ gdtoa
 			/* Generate ilim digits, then fix them up. */
 			dval(&eps) *= tens[ilim-1];
 			for(i = 1;; i++, dval(&d) *= 10.) {
-				if ( (L = (Long)(dval(&d)/ds)) !=0)
+				if ( (L = (int32_t)(dval(&d)/ds)) !=0)
 					dval(&d) -= L*ds;
 				*s++ = '0' + (int)L;
 				if (i == ilim) {

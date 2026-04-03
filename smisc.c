@@ -34,14 +34,14 @@ THIS SOFTWARE.
  Bigint *
 s2b
 #ifdef KR_headers
-	(s, nd0, nd, y9, dplen MTa) const char *s; int dplen, nd0, nd; ULong y9; MTk
+	(s, nd0, nd, y9, dplen MTa) const char *s; int dplen, nd0, nd; uint32_t y9; MTk
 #else
-	(const char *s, int nd0, int nd, ULong y9, int dplen MTd)
+	(const char *s, int nd0, int nd, uint32_t y9, int dplen MTd)
 #endif
 {
 	Bigint *b;
 	int i, k;
-	Long x, y;
+	int32_t x, y;
 
 	x = (nd + 8) / 9;
 	for(k = 0, y = 1; x > y; y <<= 1, k++) ;
@@ -132,12 +132,12 @@ match
 
  void
 #ifdef KR_headers
-copybits(c, n, b) ULong *c; int n; Bigint *b;
+copybits(c, n, b) uint32_t *c; int n; Bigint *b;
 #else
-copybits(ULong *c, int n, Bigint *b)
+copybits(uint32_t *c, int n, Bigint *b)
 #endif
 {
-	ULong *ce, *x, *xe;
+	uint32_t *ce, *x, *xe;
 #ifdef Pack_16
 	int nw, nw1;
 #endif
@@ -160,7 +160,7 @@ copybits(ULong *c, int n, Bigint *b)
 		*c++ = 0;
 	}
 
- ULong
+ uint32_t
 #ifdef KR_headers
 any_on(b, k) Bigint *b; int k;
 #else
@@ -168,7 +168,7 @@ any_on(Bigint *b, int k)
 #endif
 {
 	int n, nwds;
-	ULong *x, *x0, x1, x2;
+	uint32_t *x, *x0, x1, x2;
 
 	x = b->x;
 	nwds = b->wds;

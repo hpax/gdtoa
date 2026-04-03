@@ -39,7 +39,7 @@ ulpdown(U *d)
 #endif
 {
 	double u;
-	ULong *L = d->L;
+	uint32_t *L = d->L;
 
 	u = ulp(d);
 	if (!(L[_1] | (L[_0] & 0xfffff))
@@ -56,8 +56,8 @@ strtodI(const char *s, char **sp, double *dd)
 #endif
 {
 	static FPI fpi = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
-	ULong bits[2], sign;
-	Long exp;
+	uint32_t bits[2], sign;
+	int32_t exp;
 	int j, k;
 	U *u;
 
