@@ -1,3 +1,27 @@
+This version has been modified by H. Peter Anvin <hpa@zytor.com> to
+remove support for very obsolete systems.
+
+The originally imported version of gdtoa.tgz had no version number,
+but the newest timestamp was 2023-12-09.
+
+The code now makes the following assumptions:
+
+1. C90 standard features: void, void *, const, prototypes, 64-bit
+   integers.
+
+2. <inttypes.h> is available and includes at least int64_t, uint64_t,
+   int32_t, uint32_t, and uint16_t.  If somehow your compiler lacks
+   <inttypes.h>, you can use the file "inttypes.h0" in its stead.
+
+3. "double" is IEEE binary 64-bit arithmetic with the same byte order
+   as integers; support for VAX, IBM, and Cray proprietary formats has
+   been removed.
+
+I claim no copyright on these changes, as they are simply
+transformative, not creative.
+
+	**** **** **** ****
+
 This directory contains source for a library of binary -> decimal
 and decimal -> binary conversion routines, for single-, double-,
 and extended-precision IEEE binary floating-point arithmetic, and
