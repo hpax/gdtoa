@@ -32,15 +32,7 @@ THIS SOFTWARE.
 #include <stdio.h>		/* in case it's already included, */
 #endif				/* e.g., by cplex.h */
 
-#ifdef KR_headers
-#ifndef _SIZE_T
-#define _SIZE_T
-typedef unsigned int size_t;
-#endif
-#include "varargs.h"
-#else
 #include "stdarg.h"
-#endif
 
 #ifndef NO_STDIO1
 #ifdef _WIN32

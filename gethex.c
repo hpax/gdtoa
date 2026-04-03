@@ -36,12 +36,7 @@ THIS SOFTWARE.
 #endif
 
  int
-#ifdef KR_headers
-gethex(sp, fpi, exp, bp, sign MTa)
-	const char **sp; const FPI *fpi; int32_t *exp; Bigint **bp; int sign; MTk
-#else
 gethex( const char **sp, const FPI *fpi, int32_t *exp, Bigint **bp, int sign MTd)
-#endif
 {
 	Bigint *b;
 	const unsigned char *decpt, *s0, *s, *s1;

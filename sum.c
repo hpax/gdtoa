@@ -32,11 +32,7 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 
  Bigint *
-#ifdef KR_headers
-sum(a, b MTa) Bigint *a; Bigint *b; MTk
-#else
 sum(Bigint *a, Bigint *b MTd)
-#endif
 {
 	Bigint *c;
 	uint32_t carry, *xc, *xa, *xb, *xe, y;

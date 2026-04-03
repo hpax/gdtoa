@@ -45,11 +45,7 @@ fivesbits[] = {	 0,  3,  5,  7, 10, 12, 14, 17, 19, 21,
 		};
 
  Bigint *
-#ifdef KR_headers
-increment(b MTa) Bigint *b; MTk
-#else
 increment(Bigint *b MTd)
-#endif
 {
 	uint32_t *x, *xe;
 	Bigint *b1;
@@ -90,11 +86,7 @@ increment(Bigint *b MTd)
 	}
 
  void
-#ifdef KR_headers
-decrement(b) Bigint *b;
-#else
 decrement(Bigint *b)
-#endif
 {
 	uint32_t *x, *xe;
 #ifdef Pack_16
@@ -122,11 +114,7 @@ decrement(Bigint *b)
 	}
 
  static int
-#ifdef KR_headers
-all_on(b, n) Bigint *b; int n;
-#else
 all_on(Bigint *b, int n)
-#endif
 {
 	uint32_t *x, *xe;
 
@@ -141,11 +129,7 @@ all_on(Bigint *b, int n)
 	}
 
  Bigint *
-#ifdef KR_headers
-set_ones(b, n MTa) Bigint *b; int n; MTk
-#else
 set_ones(Bigint *b, int n MTd)
-#endif
 {
 	int k;
 	uint32_t *x, *xe;
@@ -170,12 +154,7 @@ set_ones(Bigint *b, int n MTd)
 
  static int
 rvOK
-#ifdef KR_headers
- (d, fpi, exp, bits, exact, rd, irv MTa)
- U *d; const FPI *fpi; int32_t *exp; uint32_t *bits; int exact, rd, *irv; MTk
-#else
  (U *d, const FPI *fpi, int32_t *exp, uint32_t *bits, int exact, int rd, int *irv MTd)
-#endif
 {
 	Bigint *b;
 	uint32_t carry, inex, lostbits;
@@ -290,11 +269,7 @@ rvOK
 	}
 
  static int
-#ifdef KR_headers
-mantbits(d) U *d;
-#else
 mantbits(U *d)
-#endif
 {
 	uint32_t L;
 #ifdef VAX
@@ -314,12 +289,7 @@ mantbits(U *d)
 
  int
 strtodg
-#ifdef KR_headers
-	(s00, se, fpi, exp, bits)
-	const char *s00; char **se; const FPI *fpi; int32_t *exp; uint32_t *bits;
-#else
 	(const char *s00, char **se, const FPI *fpi, int32_t *exp, uint32_t *bits)
-#endif
 {
 	int abe, abits, asub;
 	int bb0, bb2, bb5, bbe, bd2, bd5, bbbits, bs2, c, decpt, denorm;

@@ -32,11 +32,7 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 
  int
-#ifdef KR_headers
-strtoIg(s00, se, fpi, exp, B, rvp) const char *s00; char **se; const FPI *fpi; int32_t *exp; Bigint **B; int *rvp;
-#else
 strtoIg(const char *s00, char **se, const FPI *fpi, int32_t *exp, Bigint **B, int *rvp)
-#endif
 {
 	Bigint *b, *b1;
 	int i, nb, nw, nw1, rv, rv1, swap;

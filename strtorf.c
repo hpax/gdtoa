@@ -34,11 +34,7 @@ THIS SOFTWARE.
  extern uint32_t NanDflt_f_D2A[1];
 
  void
-#ifdef KR_headers
-ULtof(L, bits, exp, k) uint32_t *L; uint32_t *bits; int32_t exp; int k;
-#else
 ULtof(uint32_t *L, uint32_t *bits, int32_t exp, int k)
-#endif
 {
 	switch(k & STRTOG_Retmask) {
 	  case STRTOG_NoNumber:
@@ -67,11 +63,7 @@ ULtof(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 	}
 
  int
-#ifdef KR_headers
-strtorf(s, sp, rounding, f) const char *s; char **sp; int rounding; float *f;
-#else
 strtorf(const char *s, char **sp, int rounding, float *f)
-#endif
 {
 	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };
 	FPI *fpi, fpi1;

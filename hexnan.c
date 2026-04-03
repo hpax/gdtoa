@@ -32,11 +32,7 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 
  static void
-#ifdef KR_headers
-L_shift(x, x1, i) uint32_t *x; uint32_t *x1; int i;
-#else
 L_shift(uint32_t *x, uint32_t *x1, int i)
-#endif
 {
 	int j;
 
@@ -50,12 +46,7 @@ L_shift(uint32_t *x, uint32_t *x1, int i)
 	}
 
  int
-#ifdef KR_headers
-hexnan(sp, fpi, x0)
-	const char **sp; const FPI *fpi; uint32_t *x0;
-#else
 hexnan( const char **sp, const FPI *fpi, uint32_t *x0)
-#endif
 {
 	uint32_t c, h, *x, *x1, *xe;
 	const char *s;

@@ -163,12 +163,3 @@ xs0 = README\
 	 ulp.c
 
 # "make -r xsum.out" to check for transmission errors; source for xsum is
-# netlib's "xsum.c from f2c", e.g.,
-# ftp://netlib.bell-labs.com/netlib/f2c/xsum.c.gz
-
-xsum.out: xsum0.out $(xs0)
-	xsum $(xs0) >xsum1.out
-	cmp xsum0.out xsum1.out && mv xsum1.out xsum.out || diff xsum[01].out
-
-clean:
-	rm -f arith.h gd_qnan.h *.[ao] Printf xsum.out xsum1.out

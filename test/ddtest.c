@@ -60,11 +60,7 @@ THIS SOFTWARE.
 #define UL (unsigned long)
 
  static void
-#ifdef KR_headers
-dprint(what, d) char *what; double d;
-#else
 dprint(char *what, double d)
-#endif
 {
 	U u;
 	char buf[32];

@@ -50,11 +50,7 @@ THIS SOFTWARE.
  extern uint32_t NanDflt_xL_D2A[3];
 
  void
-#ifdef KR_headers
-ULtoxL(L, bits, exp, k) uint32_t *L; uint32_t *bits; int32_t exp; int k;
-#else
 ULtoxL(uint32_t *L, uint32_t *bits, int32_t exp, int k)
-#endif
 {
 	switch(k & STRTOG_Retmask) {
 	  case STRTOG_NoNumber:
@@ -86,11 +82,7 @@ ULtoxL(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 	}
 
  int
-#ifdef KR_headers
-strtorxL(s, sp, rounding, L) const char *s; char **sp; int rounding; void *L;
-#else
 strtorxL(const char *s, char **sp, int rounding, void *L)
-#endif
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };
 	FPI *fpi, fpi1;

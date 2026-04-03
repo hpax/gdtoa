@@ -32,11 +32,7 @@ THIS SOFTWARE.
 #include <string.h>
 
  char *
-#ifdef KR_headers
-g_ddfmt(buf, dd0, ndig, bufsize) char *buf; double *dd0; int ndig; size_t bufsize;
-#else
 g_ddfmt(char *buf, double *dd0, int ndig, size_t bufsize)
-#endif
 {
 	FPI fpi;
 	char *b, *s, *se;

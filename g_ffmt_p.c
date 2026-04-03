@@ -34,11 +34,7 @@ THIS SOFTWARE.
  extern uint32_t NanDflt_f_D2A[1];
 
  char*
-#ifdef KR_headers
-g_ffmt_p(buf, f, ndig, bufsize, nik) char *buf; float *f; int ndig; size_t bufsize; int nik;
-#else
 g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
-#endif
 {
 	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, 0, 6 };
 	char *b, *s, *se;

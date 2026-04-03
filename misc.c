@@ -91,11 +91,7 @@ get_TI(void)
 
  Bigint *
 Balloc
-#ifdef KR_headers
-	(k MTa) int k; MTk
-#else
 	(int k MTd)
-#endif
 {
 	int x;
 	Bigint *rv;
@@ -147,11 +143,7 @@ Balloc
 
  void
 Bfree
-#ifdef KR_headers
-	(v MTa) Bigint *v; MTk
-#else
 	(Bigint *v MTd)
-#endif
 {
 #ifdef MULTIPLE_THREADS
 	ThInfo *TI;
@@ -182,11 +174,7 @@ Bfree
 
  int
 lo0bits
-#ifdef KR_headers
-	(y) uint32_t *y;
-#else
 	(uint32_t *y)
-#endif
 {
 	int k;
 	uint32_t x = *y;
@@ -230,11 +218,7 @@ lo0bits
 
  Bigint *
 multadd
-#ifdef KR_headers
-	(b, m, a MTa) Bigint *b; int m, a; MTk
-#else
 	(Bigint *b, int m, int a MTd)	/* multiply by m and add a */
-#endif
 {
 	int i, wds;
 	uint32_t *x;
@@ -266,11 +250,7 @@ multadd
 
  int
 hi0bits_D2A
-#ifdef KR_headers
-	(x) uint32_t x;
-#else
 	(uint32_t x)
-#endif
 {
 	int k = 0;
 
@@ -300,11 +280,7 @@ hi0bits_D2A
 
  Bigint *
 i2b
-#ifdef KR_headers
-	(i MTa) int i; MTk
-#else
 	(int i MTd)
-#endif
 {
 	Bigint *b;
 
@@ -316,11 +292,7 @@ i2b
 
  Bigint *
 mult
-#ifdef KR_headers
-	(a, b MTa) Bigint *a, *b; MTk
-#else
 	(Bigint *a, Bigint *b MTd)
-#endif
 {
 	Bigint *c;
 	int k, wa, wb, wc;
@@ -368,11 +340,7 @@ mult
 
  Bigint *
 pow5mult
-#ifdef KR_headers
-	(b, k MTa) Bigint *b; int k; MTk
-#else
 	(Bigint *b, int k MTd)
-#endif
 {
 	Bigint *b1, *p5, *p51;
 #ifdef MULTIPLE_THREADS
@@ -440,11 +408,7 @@ pow5mult
 
  Bigint *
 lshift
-#ifdef KR_headers
-	(b, k MTa) Bigint *b; int k; MTk
-#else
 	(Bigint *b, int k MTd)
-#endif
 {
 	int i, k1, n, n1;
 	Bigint *b1;
@@ -494,11 +458,7 @@ lshift
 
  int
 cmp
-#ifdef KR_headers
-	(a, b) Bigint *a, *b;
-#else
 	(Bigint *a, Bigint *b)
-#endif
 {
 	uint32_t *xa, *xa0, *xb, *xb0;
 	int i, j;
@@ -528,11 +488,7 @@ cmp
 
  Bigint *
 diff
-#ifdef KR_headers
-	(a, b MTa) Bigint *a, *b; MTk
-#else
 	(Bigint *a, Bigint *b MTd)
-#endif
 {
 	Bigint *c;
 	int i, wa, wb;
@@ -583,11 +539,7 @@ diff
 
  double
 b2d
-#ifdef KR_headers
-	(a, e) Bigint *a; int *e;
-#else
 	(Bigint *a, int *e)
-#endif
 {
 	uint32_t *xa, *xa0, w, y, z;
 	int k;
@@ -652,11 +604,7 @@ b2d
 
  Bigint *
 d2b
-#ifdef KR_headers
-	(dd, e, bits MTa) double dd; int *e, *bits; MTk
-#else
 	(double dd, int *e, int *bits MTd)
-#endif
 {
 	Bigint *b;
 	U d;
@@ -814,11 +762,7 @@ tens[] = {
 		};
 
  char *
-#ifdef KR_headers
-strcp_D2A(a, b) char *a; char *b;
-#else
 strcp_D2A(char *a, const char *b)
-#endif
 {
 	while((*a = *b++))
 		a++;
@@ -828,11 +772,7 @@ strcp_D2A(char *a, const char *b)
 #ifdef NO_STRING_H
 
  void *
-#ifdef KR_headers
-memcpy_D2A(a, b, len) void *a; void *b; size_t len;
-#else
 memcpy_D2A(void *a1, void *b1, size_t len)
-#endif
 {
 	char *a = (char*)a1, *ae = a + len;
 	char *b = (char*)b1, *a0 = a;

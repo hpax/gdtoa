@@ -32,11 +32,7 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 
  int
-#ifdef KR_headers
-strtoId(s, sp, f0, f1) const char *s; char **sp; double *f0, *f1;
-#else
 strtoId(const char *s, char **sp, double *f0, double *f1)
-#endif
 {
 	static FPI fpi = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
 	int32_t exp[2];

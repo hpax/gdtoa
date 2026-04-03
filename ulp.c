@@ -33,11 +33,7 @@ THIS SOFTWARE.
 
  double
 ulp
-#ifdef KR_headers
-	(x) U *x;
-#else
 	(U *x)
-#endif
 {
 	int32_t L;
 	U a;

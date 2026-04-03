@@ -52,11 +52,7 @@ THIS SOFTWARE.
 #endif
 
  char*
-#ifdef KR_headers
-g_Qfmt_p(buf, V, ndig, bufsize, nik) char *buf; char *V; int ndig; size_t bufsize; int nik;
-#else
 g_Qfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
-#endif
 {
 	static FPI fpi0 = { 113, 1-16383-113+1, 32766 - 16383 - 113 + 1, 1, 0, Int_max };
 	char *b, *s, *se;

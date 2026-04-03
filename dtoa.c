@@ -74,12 +74,7 @@ THIS SOFTWARE.
 
  char *
 dtoa
-#ifdef KR_headers
-	(d0, mode, ndigits, decpt, sign, rve)
-	double d0; int mode, ndigits, *decpt, *sign; char **rve;
-#else
 	(double d0, int mode, int ndigits, int *decpt, int *sign, char **rve)
-#endif
 {
  /*	Arguments ndigits, decpt, sign are similar to those
 	of ecvt and fcvt; trailing zeros are suppressed from

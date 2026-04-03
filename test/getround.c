@@ -41,11 +41,7 @@ static int fe_conv[4] = {FE_TOWARDZERO, FE_TONEAREST, FE_UPWARD, FE_DOWNWARD };
 #endif
 
  int
-#ifdef KR_headers
-getround(r, s) int r; char *s;
-#else
 getround(int r, char *s)
-#endif
 {
 	int i;
 

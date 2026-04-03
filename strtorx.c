@@ -54,11 +54,7 @@ THIS SOFTWARE.
  extern uint16_t NanDflt_ldus_D2A[5];
 
  void
-#ifdef KR_headers
-ULtox(L, bits, exp, k) uint16_t *L; uint32_t *bits; int32_t exp; int k;
-#else
 ULtox(uint16_t *L, uint32_t *bits, int32_t exp, int k)
-#endif
 {
 	switch(k & STRTOG_Retmask) {
 	  case STRTOG_NoNumber:
@@ -98,11 +94,7 @@ ULtox(uint16_t *L, uint32_t *bits, int32_t exp, int k)
 	}
 
  int
-#ifdef KR_headers
-strtorx(s, sp, rounding, L) const char *s; char **sp; int rounding; void *L;
-#else
 strtorx(const char *s, char **sp, int rounding, void *L)
-#endif
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };
 	FPI *fpi, fpi1;

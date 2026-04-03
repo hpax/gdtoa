@@ -45,11 +45,7 @@ THIS SOFTWARE.
 #include <stdio.h>
 #include "gdtoa.h"
 int STRTOD_DIGLIM = 24;
-#ifdef KR_headers
-#define void /*void*/
-#else
 #define void void
-#endif
 
 #ifdef __STDC__
 #include <stdlib.h>
@@ -81,11 +77,7 @@ extern char *dtoa (double, int, int, int*, int*, char **);
 #endif
 
  static void
-#ifdef KR_headers
-g_fmt(b, x) char *b; double x;
-#else
 g_fmt(char *b, double x)
-#endif
 {
 	char *s, *se;
 	int decpt, i, j, k, sign;
@@ -157,11 +149,7 @@ baderrno(void)
 #define UL (unsigned long)
 
  static void
-#ifdef KR_headers
-check(d) U *d;
-#else
 check(U *d)
-#endif
 {
 	char buf[64];
 	int decpt, sign;

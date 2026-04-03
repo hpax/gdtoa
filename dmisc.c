@@ -36,11 +36,7 @@ THIS SOFTWARE.
 #endif
 
  char *
-#ifdef KR_headers
-rv_alloc(i MTa) int i; MTk
-#else
 rv_alloc(int i MTd)
-#endif
 {
 	int j, k, *r;
 
@@ -59,11 +55,7 @@ rv_alloc(int i MTd)
 	}
 
  char *
-#ifdef KR_headers
-nrv_alloc(s, rve, n MTa) char *s, **rve; int n; MTk
-#else
 nrv_alloc(char *s, char **rve, int n MTd)
-#endif
 {
 	char *rv, *t;
 
@@ -82,11 +74,7 @@ nrv_alloc(char *s, char **rve, int n MTd)
  */
 
  void
-#ifdef KR_headers
-freedtoa(s) char *s;
-#else
 freedtoa(char *s)
-#endif
 {
 #ifdef MULTIPLE_THREADS
 	ThInfo *TI = 0;
@@ -102,11 +90,7 @@ freedtoa(char *s)
 
  int
 quorem
-#ifdef KR_headers
-	(b, S) Bigint *b, *S;
-#else
 	(Bigint *b, Bigint *S)
-#endif
 {
 	int n;
 	uint32_t *bx, *bxe, q, *sx, *sxe;

@@ -38,11 +38,7 @@ THIS SOFTWARE.
 #define UL (unsigned long)
 
  static void
-#ifdef KR_headers
-dshow(what, d) char *what; double d;
-#else
 dshow(char *what, double d)
-#endif
 {
 	char buf[32];
 	g_dfmt(buf, &d, 0, sizeof(buf));

@@ -33,11 +33,7 @@ THIS SOFTWARE.
 
  Bigint *
 s2b
-#ifdef KR_headers
-	(s, nd0, nd, y9, dplen MTa) const char *s; int dplen, nd0, nd; uint32_t y9; MTk
-#else
 	(const char *s, int nd0, int nd, uint32_t y9, int dplen MTd)
-#endif
 {
 	Bigint *b;
 	int i, k;
@@ -71,11 +67,7 @@ s2b
 
  double
 ratio
-#ifdef KR_headers
-	(a, b) Bigint *a, *b;
-#else
 	(Bigint *a, Bigint *b)
-#endif
 {
 	U da, db;
 	int k, ka, kb;
@@ -110,11 +102,7 @@ ratio
 
  int
 match
-#ifdef KR_headers
-	(sp, t) char **sp, *t;
-#else
 	(const char **sp, char *t)
-#endif
 {
 	int c, d;
 	const char *s = *sp;
@@ -131,11 +119,7 @@ match
 #endif /* INFNAN_CHECK */
 
  void
-#ifdef KR_headers
-copybits(c, n, b) uint32_t *c; int n; Bigint *b;
-#else
 copybits(uint32_t *c, int n, Bigint *b)
-#endif
 {
 	uint32_t *ce, *x, *xe;
 #ifdef Pack_16
@@ -161,11 +145,7 @@ copybits(uint32_t *c, int n, Bigint *b)
 	}
 
  uint32_t
-#ifdef KR_headers
-any_on(b, k) Bigint *b; int k;
-#else
 any_on(Bigint *b, int k)
-#endif
 {
 	int n, nwds;
 	uint32_t *x, *x0, x1, x2;

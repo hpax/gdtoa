@@ -38,11 +38,7 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 
  double
-#ifdef KR_headers
-strtod(s, sp) const char *s; char **sp;
-#else
 strtod(const char *s, char **sp)
-#endif
 {
 	static FPI fpi = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
 	uint32_t bits[2];

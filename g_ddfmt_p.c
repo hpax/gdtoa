@@ -34,11 +34,7 @@ THIS SOFTWARE.
  extern uint32_t NanDflt_d_D2A[2];
 
  char *
-#ifdef KR_headers
-g_ddfmt_p(buf, dd0, ndig, bufsize, nik) char *buf; double *dd0; int ndig; size_t bufsize; int nik;
-#else
 g_ddfmt_p(char *buf, double *dd0, int ndig, size_t bufsize, int nik)
-#endif
 {
 	FPI fpi;
 	char *b, *s, *se;

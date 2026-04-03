@@ -32,11 +32,7 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 
  void
-#ifdef KR_headers
-rshift(b, k) Bigint *b; int k;
-#else
 rshift(Bigint *b, int k)
-#endif
 {
 	uint32_t *x, *x1, *xe, y;
 	int n;
@@ -65,11 +61,7 @@ rshift(Bigint *b, int k)
 	}
 
  int
-#ifdef KR_headers
-trailz(b) Bigint *b;
-#else
 trailz(Bigint *b)
-#endif
 {
 	uint32_t L, *x, *xe;
 	int n = 0;

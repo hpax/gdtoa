@@ -50,11 +50,7 @@ THIS SOFTWARE.
 #endif
 
  int
-#ifdef KR_headers
-strtopxL(s, sp, V) const char *s; char **sp; void *V;
-#else
 strtopxL(const char *s, char **sp, void *V)
-#endif
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };
 	uint32_t bits[2];

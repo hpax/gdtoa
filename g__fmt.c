@@ -60,11 +60,7 @@ THIS SOFTWARE.
  uint16_t NanDflt_ldus_D2A[5] = { ldus_QNAN4, ldus_QNAN3, ldus_QNAN2, ldus_QNAN1, ldus_QNAN0 };
 
  char *
-#ifdef KR_headers
-g__fmt(b, s, se, decpt, sign, blen) char *b; char *s; char *se; int decpt; uint32_t sign; size_t blen;
-#else
 g__fmt(char *b, char *s, char *se, int decpt, uint32_t sign, size_t blen)
-#endif
 {
 	int i, j, k;
 	char *be, *s0;

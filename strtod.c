@@ -60,11 +60,7 @@ static const double tinytens[] = { 1e-16, 1e-32, 1e-64, 1e-128,
 #ifdef Avoid_Underflow /*{*/
  static double
 sulp
-#ifdef KR_headers
-	(x, scale) U *x; int scale;
-#else
 	(U *x, int scale)
-#endif
 {
 	U u;
 	double rv;
@@ -81,11 +77,7 @@ sulp
 
  double
 strtod
-#ifdef KR_headers
-	(s00, se) const char *s00; char **se;
-#else
 	(const char *s00, char **se)
-#endif
 {
 #ifdef Avoid_Underflow
 	int scale;

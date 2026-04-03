@@ -28,13 +28,9 @@ THIS SOFTWARE.
  * precisions allowed for %f.
  */
 
-#ifdef KR_headers
-#include "varargs.h"
-#else
 #include "stddef.h"
 #include "stdarg.h"
 #include "stdlib.h"
-#endif
 
 #ifdef Use_GDTOA_for_i386_long_double /*{{*/
 #include "gdtoa.h"
@@ -270,13 +266,6 @@ Qfpbits(U *u, FPBits *b)
 #undef _3
 #endif /*} GDTOA_Qtype */
 
-#ifdef KR_headers
-#ifndef size_t__
-#define size_t int
-#define size_t__
-#endif
-
-#endif
 
 #undef MESS
 #ifndef Stderr
@@ -431,11 +420,7 @@ pfput(Finfo *f, int *rvp)
 
  static char *
 Fput
-#ifdef KR_headers
-	(f, rvp) Finfo *f; int *rvp;
-#else
 	(Finfo *f, int *rvp)
-#endif
 {
 	char *ob0 = f->ob0;
 
@@ -451,11 +436,7 @@ int stdout_fileno_ASL = 1;
 
  static char *
 Wput
-#ifdef KR_headers
-	(f, rvp) Finfo *f; int *rvp;
-#else
 	(Finfo *f, int *rvp)
-#endif
 {
 	char *ob0 = f->ob0;
 
@@ -667,12 +648,7 @@ bround(FPBits *b, int prec, int prec1)	/* round to prec hex digits after the "."
 
  static int
 x_sprintf
-#ifdef KR_headers
-	(obe, fput, f, fmt, ap)
-	char *obe, *fmt; Finfo *f; Putfunc fput; va_list ap;
-#else
 	(char *obe, Putfunc fput, Finfo *f, const char *fmt, va_list ap)
-#endif
 {
 	FPBits fpb;
 	Fpbits fpbits;
@@ -1333,21 +1309,6 @@ x_sprintf
 
  int
 Printf
-#ifdef KR_headers
-	(va_alist)
- va_dcl
-{
-	char *fmt;
-
-	va_list ap;
-	int rv;
-	Finfo f;
-	char buf[Bsize];
-
-	va_start(ap);
-	fmt = va_arg(ap, char*);
-	/*}*/
-#else
 	(const char *fmt, ...)
 {
 	va_list ap;
@@ -1356,7 +1317,6 @@ Printf
 	char buf[Bsize];
 
 	va_start(ap, fmt);
-#endif
 	f.u.cf = stdout;
 	f.ob0 = buf;
 	f.obe1 = buf + Bsize - 1;
@@ -1384,11 +1344,7 @@ Printf
 
  static char *
 Sput
-#ifdef KR_headers
-	(f, rvp) Finfo *f; int *rvp;
-#else
 	(Finfo *f, int *rvp)
-#endif
 {
 	if (Printf("\nBUG! Sput called!\n", f, rvp))
 		/* pass vp, rvp and return 0 to shut diagnostics off */
@@ -1398,20 +1354,6 @@ Sput
 
  int
 Sprintf
-#ifdef KR_headers
-	(va_alist)
- va_dcl
-{
-	char *s, *fmt;
-	va_list ap;
-	int rv;
-	Finfo f;
-
-	va_start(ap);
-	s = va_arg(ap, char*);
-	fmt = va_arg(ap, char*);
-	/*}*/
-#else
 	(char *s, const char *fmt, ...)
 {
 	va_list ap;
@@ -1419,7 +1361,6 @@ Sprintf
 	Finfo f;
 
 	va_start(ap, fmt);
-#endif
 	f.ob0 = s;
 	rv = x_sprintf(s, Sput, &f, fmt, ap);
 	va_end(ap);
@@ -1428,22 +1369,6 @@ Sprintf
 
  int
 Fprintf
-#ifdef KR_headers
-	(va_alist)
- va_dcl
-{
-	FILE *F;
-	char *s, *fmt;
-	va_list ap;
-	int rv;
-	Finfo f;
-	char buf[Bsize];
-
-	va_start(ap);
-	F = va_arg(ap, FILE*);
-	fmt = va_arg(ap, char*);
-	/*}*/
-#else
 	(FILE *F, const char *fmt, ...)
 {
 	va_list ap;
@@ -1452,7 +1377,6 @@ Fprintf
 	char buf[Bsize];
 
 	va_start(ap, fmt);
-#endif
 	f.u.cf = F;
 	f.ob0 = buf;
 	f.obe1 = buf + Bsize - 1;
@@ -1498,11 +1422,7 @@ Fprintf
 
  int
 Vsprintf
-#ifdef KR_headers
-	(s, fmt, ap) char *s, *fmt; va_list ap;
-#else
 	(char *s, const char *fmt, va_list ap)
-#endif
 {
 	Finfo f;
 	return x_sprintf(f.ob0 = s, Sput, &f, fmt, ap);
@@ -1510,11 +1430,7 @@ Vsprintf
 
  int
 Vfprintf
-#ifdef KR_headers
-	(F, fmt, ap) FILE *F; char *fmt; va_list ap;
-#else
 	(FILE *F, const char *fmt, va_list ap)
-#endif
 {
 	char buf[Bsize];
 	int rv;
@@ -1565,11 +1481,7 @@ Vfprintf
 
  void
 Perror
-#ifdef KR_headers
-	(s) char *s;
-#else
 	(const char *s)
-#endif
 {
 	if (s && *s)
 		Fprintf(Stderr, "%s: ", s);
@@ -1578,11 +1490,7 @@ Perror
 
  static char *
 Snput
-#ifdef KR_headers
-	(f, rvp) Finfo *f; int *rvp;
-#else
 	(Finfo *f, int *rvp)
-#endif
 {
 	char *s, *s0;
 	size_t L;
@@ -1604,11 +1512,7 @@ Snput
 
  int
 Vsnprintf
-#ifdef KR_headers
-	(s, n, fmt, ap) char *s; size_t n; char *fmt; va_list ap;
-#else
 	(char *s, size_t n, const char *fmt, va_list ap)
-#endif
 {
 	Finfo f;
 	char buf[Bsize];
@@ -1634,28 +1538,12 @@ Vsnprintf
 	}
  int
 Snprintf
-#ifdef KR_headers
-	(va_alist)
- va_dcl
-{
-	char *s, *fmt;
-	int rv;
-	size_t n;
-	va_list ap;
-
-	va_start(ap);
-	s = va_arg(ap, char*);
-	n = va_arg(ap, size_t);
-	fmt = va_arg(ap, char*);
-	/*}*/
-#else
 	(char *s, size_t n, const char *fmt, ...)
 {
 	int rv;
 	va_list ap;
 
 	va_start(ap, fmt);
-#endif
 	rv = Vsnprintf(s, n, fmt, ap);
 	va_end(ap);
 	return rv;

@@ -34,11 +34,7 @@ THIS SOFTWARE.
  extern uint32_t NanDflt_d_D2A[2];
 
  void
-#ifdef KR_headers
-ULtodd(L, bits, exp, k) uint32_t *L; uint32_t *bits; int32_t exp; int k;
-#else
 ULtodd(uint32_t *L, uint32_t *bits, int32_t exp, int k)
-#endif
 {
 	int i, j;
 
@@ -174,11 +170,7 @@ ULtodd(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 	}
 
  int
-#ifdef KR_headers
-strtordd(s, sp, rounding, dd) const char *s; char **sp; int rounding; double *dd;
-#else
 strtordd(const char *s, char **sp, int rounding, double *dd)
-#endif
 {
 #ifdef Sudden_Underflow
 	static FPI fpi0 = { 106, 1-1023, 2046-1023-106+1, 1, 1, 0 /*unused*/ };

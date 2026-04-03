@@ -32,11 +32,7 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 
  static Bigint *
-#ifdef KR_headers
-bitstob(bits, nbits, bbits MTa) uint32_t *bits; int nbits; int *bbits; MTk
-#else
 bitstob(uint32_t *bits, int nbits, int *bbits MTd)
-#endif
 {
 	int i, k;
 	Bigint *b;
@@ -110,13 +106,7 @@ bitstob(uint32_t *bits, int nbits, int *bbits MTd)
 
  char *
 gdtoa
-#ifdef KR_headers
-	(fpi, be, bits, kindp, mode, ndigits, decpt, rve)
-	const FPI *fpi; int be; uint32_t *bits;
-	int *kindp, mode, ndigits, *decpt; char **rve;
-#else
 	(const FPI *fpi, int be, uint32_t *bits, int *kindp, int mode, int ndigits, int *decpt, char **rve)
-#endif
 {
  /*	Arguments ndigits and decpt are similar to the second and third
 	arguments of ecvt and fcvt; trailing zeros are suppressed from
