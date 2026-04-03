@@ -76,7 +76,7 @@ double
 #ifdef INFNAN_CHECK
 
 int
- match(const char **sp, char *t) {
+ match(const char **sp, const char *t) {
 	int c, d;
 	const char *s = *sp;
 

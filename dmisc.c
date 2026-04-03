@@ -53,7 +53,7 @@ char *rv_alloc(int i MTd)
 	    (char *)(r + 1);
 }
 
-char *nrv_alloc(char *s, char **rve, int n MTd)
+char *nrv_alloc(const char *s, char **rve, int n MTd)
 {
 	char *rv, *t;
 

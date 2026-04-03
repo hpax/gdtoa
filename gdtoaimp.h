@@ -469,10 +469,10 @@ extern "C" {
 	extern Bigint *increment(Bigint * MTd);
 	extern int lo0bits(uint32_t *);
 	extern Bigint *lshift(Bigint *, int MTd);
-	extern int match(const char **, char *);
+	extern int match(const char **, const char *);
 	extern Bigint *mult(Bigint *, Bigint * MTd);
 	extern Bigint *multadd(Bigint *, int, int MTd);
-	extern char *nrv_alloc(char *, char **, int MTd);
+	extern char *nrv_alloc(const char *, char **, int MTd);
 	extern Bigint *pow5mult(Bigint *, int MTd);
 	extern int quorem(Bigint *, Bigint *);
 	extern double ratio(Bigint *, Bigint *);

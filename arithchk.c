@@ -30,7 +30,7 @@ THIS SOFTWARE.
 static int dalign;
 typedef struct
     Akind {
-	char *name;
+	const char *name;
 	int kind;
 } Akind;
 
