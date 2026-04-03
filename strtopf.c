@@ -31,10 +31,10 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- int
-strtopf(const char *s, char **sp, float *f)
+int strtopf(const char *s, char **sp, float *f)
 {
-	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };
+	static FPI fpi0 =
+	    { 24, 1 - 127 - 24 + 1, 254 - 127 - 24 + 1, 1, SI, 0 /*unused */  };
 	uint32_t bits[1], *L;
 	int32_t exp;
 	int k;
@@ -45,30 +45,30 @@ strtopf(const char *s, char **sp, float *f)
 #endif
 
 	k = strtodg(s, sp, fpi, &exp, bits);
-	L = (uint32_t*)f;
-	switch(k & STRTOG_Retmask) {
-	  case STRTOG_NoNumber:
-	  case STRTOG_Zero:
+	L = (uint32_t *) f;
+	switch (k & STRTOG_Retmask) {
+	case STRTOG_NoNumber:
+	case STRTOG_Zero:
 		L[0] = 0;
 		break;
 
-	  case STRTOG_Normal:
-	  case STRTOG_NaNbits:
+	case STRTOG_Normal:
+	case STRTOG_NaNbits:
 		L[0] = (bits[0] & 0x7fffff) | ((exp + 0x7f + 23) << 23);
 		break;
 
-	  case STRTOG_Denormal:
+	case STRTOG_Denormal:
 		L[0] = bits[0];
 		break;
 
-	  case STRTOG_Infinite:
+	case STRTOG_Infinite:
 		L[0] = 0x7f800000;
 		break;
 
-	  case STRTOG_NaN:
+	case STRTOG_NaN:
 		L[0] = f_QNAN;
-	  }
+	}
 	if (k & STRTOG_Neg)
 		L[0] |= 0x80000000L;
 	return k;
-	}
+}

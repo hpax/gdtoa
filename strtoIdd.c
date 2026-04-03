@@ -31,13 +31,15 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- int
-strtoIdd(const char *s, char **sp, double *f0, double *f1)
+int strtoIdd(const char *s, char **sp, double *f0, double *f1)
 {
 #ifdef Sudden_Underflow
-	static FPI fpi = { 106, 1-1023, 2046-1023-106+1, 1, 1, 0 /*unused*/ };
+	static FPI fpi =
+	    { 106, 1 - 1023, 2046 - 1023 - 106 + 1, 1, 1, 0 /*unused */  };
 #else
-	static FPI fpi = { 106, 1-1023-53+1, 2046-1023-106+1, 1, 0, 0 /*unused*/ };
+	static FPI fpi =
+	    { 106, 1 - 1023 - 53 + 1, 2046 - 1023 - 106 + 1, 1, 0,
+       0 /*unused */  };
 #endif
 	int32_t exp[2];
 	Bigint *B[2];
@@ -49,17 +51,16 @@ strtoIdd(const char *s, char **sp, double *f0, double *f1)
 	B[0] = Balloc(2 MTb);
 	B[0]->wds = 4;
 	k = strtoIg(s, sp, &fpi, exp, B, rv);
-	ULtodd((uint32_t*)f0, B[0]->x, exp[0], rv[0]);
+	ULtodd((uint32_t *) f0, B[0]->x, exp[0], rv[0]);
 	Bfree(B[0] MTb);
 	if (B[1]) {
-		ULtodd((uint32_t*)f1, B[1]->x, exp[1], rv[1]);
+		ULtodd((uint32_t *) f1, B[1]->x, exp[1], rv[1]);
 		Bfree(B[1] MTb);
-		}
-	else {
-		((uint32_t*)f1)[0] = ((uint32_t*)f0)[0];
-		((uint32_t*)f1)[1] = ((uint32_t*)f0)[1];
-		((uint32_t*)f1)[2] = ((uint32_t*)f0)[2];
-		((uint32_t*)f1)[3] = ((uint32_t*)f0)[3];
-		}
-	return k;
+	} else {
+		((uint32_t *) f1)[0] = ((uint32_t *) f0)[0];
+		((uint32_t *) f1)[1] = ((uint32_t *) f0)[1];
+		((uint32_t *) f1)[2] = ((uint32_t *) f0)[2];
+		((uint32_t *) f1)[3] = ((uint32_t *) f0)[3];
 	}
+	return k;
+}

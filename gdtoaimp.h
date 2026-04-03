@@ -203,13 +203,13 @@ THIS SOFTWARE.
 #include "string.h"
 
 #ifdef MALLOC
-extern void *MALLOC (size_t);
+extern void *MALLOC(size_t);
 #else
 #define MALLOC malloc
 #endif
 
 #ifdef REALLOC
-extern void *REALLOC (void*, size_t);
+extern void *REALLOC(void *, size_t);
 #else
 #define REALLOC realloc
 #endif
@@ -232,20 +232,16 @@ extern void *REALLOC (void*, size_t);
 #define FLT_RADIX 2
 #define DBL_MAX 1.7976931348623157e+308
 
-
-
 #ifndef LONG_MAX
 #define LONG_MAX 2147483647
 #endif
 
-#else /* ifndef Bad_float_h */
+#else				/* ifndef Bad_float_h */
 #include "float.h"
-#endif /* Bad_float_h */
+#endif				/* Bad_float_h */
 
 #define Scale_Bit 0x10
 #define n_bigtens 5
-
-
 
 #ifndef __MATH_H__
 #include "math.h"
@@ -256,10 +252,12 @@ extern "C" {
 #endif
 
 #if defined(IEEE_8087) + defined(IEEE_MC68k) + defined(VAX) + defined(IBM) != 1
-Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined.
+	Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined.
 #endif
-
-typedef union { double d; uint32_t L[2]; } U;
+	     typedef union {
+		double d;
+		uint32_t L[2];
+	} U;
 
 #ifdef IEEE_8087
 #define word0(x) (x)->L[1]
@@ -319,8 +317,7 @@ typedef union { double d; uint32_t L[2]; } U;
 #else
 #define Flt_Rounds 1
 #endif
-#endif /*Flt_Rounds*/
-
+#endif				/*Flt_Rounds */
 
 #ifdef ROUND_BIASED_without_Round_Up
 #undef  ROUND_BIASED
@@ -330,7 +327,7 @@ typedef union { double d; uint32_t L[2]; } U;
 #ifdef RND_PRODQUOT
 #define rounded_product(a,b) a = rnd_prod(a, b)
 #define rounded_quotient(a,b) a = rnd_quot(a, b)
-extern double rnd_prod(double, double), rnd_quot(double, double);
+	extern double rnd_prod(double, double), rnd_quot(double, double);
 #else
 #define rounded_product(a,b) a *= b
 #define rounded_quotient(a,b) a /= b
@@ -346,49 +343,49 @@ extern double rnd_prod(double, double), rnd_quot(double, double);
 #define kmask 31
 #define ALL_ON 0xffffffff
 
-#ifdef MULTIPLE_THREADS /*{{*/
+#ifdef MULTIPLE_THREADS		/*{{ */
 #define MTa , PTI
 #define MTb , &TI
 #define MTd , ThInfo **PTI
 #define MTk ThInfo **PTI;
-extern void ACQUIRE_DTOA_LOCK (unsigned int);
-extern void FREE_DTOA_LOCK (unsigned int);
-extern unsigned int dtoa_get_threadno (void);
-#else /*}{*/
-#define ACQUIRE_DTOA_LOCK(n)	/*nothing*/
-#define FREE_DTOA_LOCK(n)	/*nothing*/
-#define MTa /*nothing*/
-#define MTb /*nothing*/
-#define MTd /*nothing*/
-#define MTk /*nothing*/
-#endif /*}}*/
+	extern void ACQUIRE_DTOA_LOCK(unsigned int);
+	extern void FREE_DTOA_LOCK(unsigned int);
+	extern unsigned int dtoa_get_threadno(void);
+#else				/*}{ */
+#define ACQUIRE_DTOA_LOCK(n)	/*nothing */
+#define FREE_DTOA_LOCK(n)	/*nothing */
+#define MTa			/*nothing */
+#define MTb			/*nothing */
+#define MTd			/*nothing */
+#define MTk			/*nothing */
+#endif				/*}} */
 
 #define Kmax 9
 
- struct
-Bigint {
-	struct Bigint *next;
-	int k, maxwds, sign, wds;
-	uint32_t x[1];
+	struct
+	    Bigint {
+		struct Bigint *next;
+		int k, maxwds, sign, wds;
+		uint32_t x[1];
 	};
 
- typedef struct Bigint Bigint;
+	typedef struct Bigint Bigint;
 
- typedef struct
-ThInfo {
-	Bigint *Freelist[Kmax+1];
-	Bigint *P5s;
+	typedef struct
+	    ThInfo {
+		Bigint *Freelist[Kmax + 1];
+		Bigint *P5s;
 	} ThInfo;
 
 #ifdef NO_STRING_H
 #ifdef DECLARE_SIZE_T
-typedef unsigned int size_t;
+	typedef unsigned int size_t;
 #endif
-extern void memcpy_D2A (void*, const void*, size_t);
+	extern void memcpy_D2A(void *, const void *, size_t);
 #define Bcopy(x,y) memcpy_D2A(&x->sign,&y->sign,y->wds*sizeof(uint32_t) + 2*sizeof(int))
-#else /* !NO_STRING_H */
+#else				/* !NO_STRING_H */
 #define Bcopy(x,y) memcpy(&x->sign,&y->sign,y->wds*sizeof(uint32_t) + 2*sizeof(int))
-#endif /* NO_STRING_H */
+#endif				/* NO_STRING_H */
 
 #define Balloc Balloc_D2A
 #define Bfree Bfree_D2A
@@ -439,55 +436,57 @@ extern void memcpy_D2A (void*, const void*, size_t);
 #define trailz trailz_D2A
 #define ulp ulp_D2A
 
- extern char *add_nanbits (char*, size_t, uint32_t*, int);
- extern char *dtoa_result;
- extern const double bigtens[], tens[], tinytens[];
- extern unsigned char hexdig[];
- extern const char *InfName[6], *NanName[3];
+	extern char *add_nanbits(char *, size_t, uint32_t *, int);
+	extern char *dtoa_result;
+	extern const double bigtens[], tens[], tinytens[];
+	extern unsigned char hexdig[];
+	extern const char *InfName[6], *NanName[3];
 
- extern Bigint *Balloc (int MTd);
- extern void Bfree (Bigint* MTd);
- extern void ULtof (uint32_t*, uint32_t*, int32_t, int);
- extern void ULtod (uint32_t*, uint32_t*, int32_t, int);
- extern void ULtodd (uint32_t*, uint32_t*, int32_t, int);
- extern void ULtoQ (uint32_t*, uint32_t*, int32_t, int);
- extern void ULtox (uint16_t*, uint32_t*, int32_t, int);
- extern void ULtoxL (uint32_t*, uint32_t*, int32_t, int);
- extern uint32_t any_on (Bigint*, int);
- extern double b2d (Bigint*, int*);
- extern int cmp (Bigint*, Bigint*);
- extern void copybits (uint32_t*, int, Bigint*);
- extern Bigint *d2b (double, int*, int* MTd);
- extern void decrement (Bigint*);
- extern Bigint *diff (Bigint*, Bigint* MTd);
- extern char *dtoa (double d, int mode, int ndigits,
-			int *decpt, int *sign, char **rve);
- extern char *g__fmt (char*, char*, char*, int, uint32_t, size_t);
- extern int gethex (const char**, const FPI*, int32_t*, Bigint**, int MTd);
- extern void hexdig_init_D2A(void);
- extern int hexnan (const char**, const FPI*, uint32_t*);
- extern int hi0bits_D2A (uint32_t);
- extern Bigint *i2b (int MTd);
- extern Bigint *increment (Bigint* MTd);
- extern int lo0bits (uint32_t*);
- extern Bigint *lshift (Bigint*, int MTd);
- extern int match (const char**, char*);
- extern Bigint *mult (Bigint*, Bigint* MTd);
- extern Bigint *multadd (Bigint*, int, int MTd);
- extern char *nrv_alloc (char*, char **, int MTd);
- extern Bigint *pow5mult (Bigint*, int MTd);
- extern int quorem (Bigint*, Bigint*);
- extern double ratio (Bigint*, Bigint*);
- extern void rshift (Bigint*, int);
- extern char *rv_alloc (int MTd);
- extern Bigint *s2b (const char*, int, int, uint32_t, int MTd);
- extern Bigint *set_ones (Bigint*, int MTd);
- extern char *strcp (char*, const char*);
- extern int strtoIg (const char*, char**, const FPI*, int32_t*, Bigint**, int*);
- extern double strtod (const char *s00, char **se);
- extern Bigint *sum (Bigint*, Bigint* MTd);
- extern int trailz (Bigint*);
- extern double ulp (U*);
+	extern Bigint *Balloc(int MTd);
+	extern void Bfree(Bigint * MTd);
+	extern void ULtof(uint32_t *, uint32_t *, int32_t, int);
+	extern void ULtod(uint32_t *, uint32_t *, int32_t, int);
+	extern void ULtodd(uint32_t *, uint32_t *, int32_t, int);
+	extern void ULtoQ(uint32_t *, uint32_t *, int32_t, int);
+	extern void ULtox(uint16_t *, uint32_t *, int32_t, int);
+	extern void ULtoxL(uint32_t *, uint32_t *, int32_t, int);
+	extern uint32_t any_on(Bigint *, int);
+	extern double b2d(Bigint *, int *);
+	extern int cmp(Bigint *, Bigint *);
+	extern void copybits(uint32_t *, int, Bigint *);
+	extern Bigint *d2b(double, int *, int *MTd);
+	extern void decrement(Bigint *);
+	extern Bigint *diff(Bigint *, Bigint * MTd);
+	extern char *dtoa(double d, int mode, int ndigits,
+			  int *decpt, int *sign, char **rve);
+	extern char *g__fmt(char *, char *, char *, int, uint32_t, size_t);
+	extern int gethex(const char **, const FPI *, int32_t *, Bigint **,
+			  int MTd);
+	extern void hexdig_init_D2A(void);
+	extern int hexnan(const char **, const FPI *, uint32_t *);
+	extern int hi0bits_D2A(uint32_t);
+	extern Bigint *i2b(int MTd);
+	extern Bigint *increment(Bigint * MTd);
+	extern int lo0bits(uint32_t *);
+	extern Bigint *lshift(Bigint *, int MTd);
+	extern int match(const char **, char *);
+	extern Bigint *mult(Bigint *, Bigint * MTd);
+	extern Bigint *multadd(Bigint *, int, int MTd);
+	extern char *nrv_alloc(char *, char **, int MTd);
+	extern Bigint *pow5mult(Bigint *, int MTd);
+	extern int quorem(Bigint *, Bigint *);
+	extern double ratio(Bigint *, Bigint *);
+	extern void rshift(Bigint *, int);
+	extern char *rv_alloc(int MTd);
+	extern Bigint *s2b(const char *, int, int, uint32_t, int MTd);
+	extern Bigint *set_ones(Bigint *, int MTd);
+	extern char *strcp(char *, const char *);
+	extern int strtoIg(const char *, char **, const FPI *, int32_t *,
+			   Bigint **, int *);
+	extern double strtod(const char *s00, char **se);
+	extern Bigint *sum(Bigint *, Bigint * MTd);
+	extern int trailz(Bigint *);
+	extern double ulp(U *);
 
 #ifdef __cplusplus
 }
@@ -524,12 +523,10 @@ extern void memcpy_D2A (void*, const void*, size_t);
 #define NAN_WORD1 d_QNAN0
 #endif
 #endif
-
 #undef SI
 #ifdef Sudden_Underflow
 #define SI 1
 #else
 #define SI 0
 #endif
-
-#endif /* GDTOAIMP_H_INCLUDED */
+#endif				/* GDTOAIMP_H_INCLUDED */

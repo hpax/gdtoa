@@ -31,10 +31,9 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- char*
-g_ffmt(char *buf, float *f, int ndig, size_t bufsize)
+char *g_ffmt(char *buf, float *f, int ndig, size_t bufsize)
 {
-	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, 0, 6 };
+	static FPI fpi0 = { 24, 1 - 127 - 24 + 1, 254 - 127 - 24 + 1, 1, 0, 6 };
 	char *b, *s, *se;
 	uint32_t bits[1], *L, sign;
 	int decpt, ex, i, mode;
@@ -49,18 +48,18 @@ g_ffmt(char *buf, float *f, int ndig, size_t bufsize)
 	if (bufsize < (size_t)(ndig + 10))
 		return 0;
 
-	L = (uint32_t*)f;
+	L = (uint32_t *) f;
 	sign = L[0] & 0x80000000L;
 	if ((L[0] & 0x7f800000) == 0x7f800000) {
 		/* Infinity or NaN */
 		if (L[0] & 0x7fffff) {
 			return strcp(buf, "NaN");
-			}
+		}
 		b = buf;
 		if (sign)
 			*b++ = '-';
 		return strcp(b, "Infinity");
-		}
+	}
 	if (*f == 0.) {
 		b = buf;
 #ifndef IGNORE_ZERO_SIGN
@@ -70,9 +69,9 @@ g_ffmt(char *buf, float *f, int ndig, size_t bufsize)
 		*b++ = '0';
 		*b = 0;
 		return b;
-		}
+	}
 	bits[0] = L[0] & 0x7fffff;
-	if ( (ex = (L[0] >> 23) & 0xff) !=0)
+	if ((ex = (L[0] >> 23) & 0xff) != 0)
 		bits[0] |= 0x800000;
 	else
 		ex = 1;
@@ -82,8 +81,8 @@ g_ffmt(char *buf, float *f, int ndig, size_t bufsize)
 		if (bufsize < 16)
 			return 0;
 		mode = 0;
-		}
+	}
 	i = STRTOG_Normal;
 	s = gdtoa(fpi, ex, bits, &i, mode, ndig, &decpt, &se);
 	return g__fmt(buf, s, se, decpt, sign, bufsize);
-	}
+}

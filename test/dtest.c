@@ -53,14 +53,13 @@ THIS SOFTWARE.
 #include <stdio.h>
 #include <stdlib.h>
 
- extern int getround (int,char*);
+extern int getround(int, char *);
 
- static char ibuf[2048], obuf[2048], obuf1[2048];
+static char ibuf[2048], obuf[2048], obuf1[2048];
 
 #define UL (unsigned long)
 
- int
-main(void)
+int main(void)
 {
 	U fI[2], u;
 	char *s, *se, *se1;
@@ -68,32 +67,33 @@ main(void)
 	int i, i1, ndig = 0, nik, nike, r = 1;
 	long LL[2];
 
-	while( (s = fgets(ibuf, sizeof(ibuf), stdin)) !=0) {
-		while(*s <= ' ')
+	while ((s = fgets(ibuf, sizeof(ibuf), stdin)) != 0) {
+		while (*s <= ' ')
 			if (!*s++)
 				continue;
-		switch(*s) {
-		  case 'r':
+		switch (*s) {
+		case 'r':
 			r = getround(r, s);
 			continue;
-		  case 'n':
+		case 'n':
 			i = s[1];
 			if (i <= ' ' || (i >= '0' && i <= '9')) {
-				ndig = atoi(s+1);
+				ndig = atoi(s + 1);
 				continue;
-				}
-			break; /* nan? */
-		  case '#':
+			}
+			break;	/* nan? */
+		case '#':
 			LL[0] = u.L[_0];
 			LL[1] = u.L[_1];
-			sscanf(s+1, "%lx %lx", &LL[0], &LL[1]);
+			sscanf(s + 1, "%lx %lx", &LL[0], &LL[1]);
 			u.L[_0] = LL[0];
 			u.L[_1] = LL[1];
 			printf("\nInput: %s", ibuf);
-			printf("--> f = #%lx %lx\n", (long)u.L[_0], (long)u.L[_1]);
+			printf("--> f = #%lx %lx\n", (long)u.L[_0],
+			       (long)u.L[_1]);
 			i = 0;
 			goto fmt_test;
-			}
+		}
 		printf("\nInput: %s", ibuf);
 		i = strtord(ibuf, &se, r, &u.d);
 		if (r == 1) {
@@ -102,56 +102,65 @@ main(void)
 			i1 = strtopd(ibuf, &se, &f1);
 			if (i != i1 || u.d != f1 || se != se1)
 				printf("***strtord and strtopd disagree!!\n");
-			}
-		printf("strtord consumes %d bytes and returns %d with f = %.17g = #%lx %lx\n",
-				(int)(se-ibuf), i, u.d, UL u.L[_0], UL u.L[_1]);
+		}
+		printf
+		    ("strtord consumes %d bytes and returns %d with f = %.17g = #%lx %lx\n",
+		     (int)(se - ibuf), i, u.d, UL u.L[_0], UL u.L[_1]);
  fmt_test:
 		se = g_dfmt(obuf, &u.d, ndig, sizeof(obuf));
 		printf("g_dfmt(%d) gives %d bytes: \"%s\"\n\n",
-			ndig, (int)(se-obuf), se ? obuf : "<null>");
+		       ndig, (int)(se - obuf), se ? obuf : "<null>");
 		se1 = g_dfmt_p(obuf1, &u.d, ndig, sizeof(obuf1), 0);
 		if (se1 - obuf1 != se - obuf || strcmp(obuf, obuf1))
-			printf("Botch: g_dfmt_p gives \"%s\" rather than \"%s\"\n",
-				obuf1, obuf);
+			printf
+			    ("Botch: g_dfmt_p gives \"%s\" rather than \"%s\"\n",
+			     obuf1, obuf);
 		if (*s == '#')
 			continue;
-		printf("strtoId returns %d,", strtoId(ibuf, &se, &fI[0].d, &fI[1].d));
-		printf(" consuming %d bytes.\n", (int)(se-ibuf));
+		printf("strtoId returns %d,",
+		       strtoId(ibuf, &se, &fI[0].d, &fI[1].d));
+		printf(" consuming %d bytes.\n", (int)(se - ibuf));
 		if (fI[0].d == fI[1].d) {
 			if (fI[0].d == u.d)
 				printf("fI[0] == fI[1] == strtod\n");
 			else
 				printf("fI[0] == fI[1] = #%lx %lx = %.17g\n",
-					UL fI[0].L[_0], UL fI[0].L[_1], fI[0].d);
-			}
-		else {
+				       UL fI[0].L[_0], UL fI[0].L[_1], fI[0].d);
+		} else {
 			printf("fI[0] = #%lx %lx = %.17g\n",
-				UL fI[0].L[_0], UL fI[0].L[_1], fI[0].d);
+			       UL fI[0].L[_0], UL fI[0].L[_1], fI[0].d);
 			printf("fI[1] = #%lx %lx = %.17g\n",
-				UL fI[1].L[_0], UL fI[1].L[_1], fI[1].d);
+			       UL fI[1].L[_0], UL fI[1].L[_1], fI[1].d);
 			if (fI[0].d == u.d)
 				printf("fI[0] == strtod\n");
 			else if (fI[1].d == u.d)
 				printf("fI[1] == strtod\n");
 			else
 				printf("**** Both differ from strtod ****\n");
-			}
-		printf("\n");
-		switch(i & STRTOG_Retmask) {
-		  case STRTOG_Infinite:
-			for(nik = 0; nik < 6; ++nik) {
-				se1 = g_dfmt_p(obuf1, &u.d, ndig, sizeof(obuf1), nik);
-				printf("g_dfmt_p(...,%d): \"%s\"\n", nik, obuf1);
-				}
-			break;
-		  case STRTOG_NaN:
-		  case STRTOG_NaNbits:
-			for(i = 0; i < 3; ++i)
-				for(nik = 6*i, nike = nik + 3; nik < nike; ++nik) {
-					se1 = g_dfmt_p(obuf1, &u.d, ndig, sizeof(obuf1), nik);
-					printf("g_dfmt_p(...,%d): \"%s\"\n", nik, obuf1);
-					}
-		  }
 		}
-	return 0;
+		printf("\n");
+		switch (i & STRTOG_Retmask) {
+		case STRTOG_Infinite:
+			for (nik = 0; nik < 6; ++nik) {
+				se1 =
+				    g_dfmt_p(obuf1, &u.d, ndig, sizeof(obuf1),
+					     nik);
+				printf("g_dfmt_p(...,%d): \"%s\"\n", nik,
+				       obuf1);
+			}
+			break;
+		case STRTOG_NaN:
+		case STRTOG_NaNbits:
+			for (i = 0; i < 3; ++i)
+				for (nik = 6 * i, nike = nik + 3; nik < nike;
+				     ++nik) {
+					se1 =
+					    g_dfmt_p(obuf1, &u.d, ndig,
+						     sizeof(obuf1), nik);
+					printf("g_dfmt_p(...,%d): \"%s\"\n",
+					       nik, obuf1);
+				}
+		}
 	}
+	return 0;
+}

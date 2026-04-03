@@ -51,16 +51,17 @@ THIS SOFTWARE.
 #define ldus_QNAN4 0
 #endif
 
- const char *InfName[6] = { "Infinity", "infinity", "INFINITY", "Inf", "inf", "INF" };
- const char *NanName[3] = { "NaN", "nan", "NAN" };
- uint32_t NanDflt_Q_D2A[4] = { 0xffffffff, 0xffffffff, 0xffffffff, 0x7fffffff };
- uint32_t NanDflt_d_D2A[2] = { d_QNAN1, d_QNAN0 };
- uint32_t NanDflt_f_D2A[1] = { f_QNAN };
- uint32_t NanDflt_xL_D2A[3] = { 1, 0x80000000, 0x7fff0000 };
- uint16_t NanDflt_ldus_D2A[5] = { ldus_QNAN4, ldus_QNAN3, ldus_QNAN2, ldus_QNAN1, ldus_QNAN0 };
+const char *InfName[6] =
+    { "Infinity", "infinity", "INFINITY", "Inf", "inf", "INF" };
+const char *NanName[3] = { "NaN", "nan", "NAN" };
+uint32_t NanDflt_Q_D2A[4] = { 0xffffffff, 0xffffffff, 0xffffffff, 0x7fffffff };
+uint32_t NanDflt_d_D2A[2] = { d_QNAN1, d_QNAN0 };
+uint32_t NanDflt_f_D2A[1] = { f_QNAN };
+uint32_t NanDflt_xL_D2A[3] = { 1, 0x80000000, 0x7fff0000 };
+uint16_t NanDflt_ldus_D2A[5] =
+    { ldus_QNAN4, ldus_QNAN3, ldus_QNAN2, ldus_QNAN1, ldus_QNAN0 };
 
- char *
-g__fmt(char *b, char *s, char *se, int decpt, uint32_t sign, size_t blen)
+char *g__fmt(char *b, char *s, char *se, int decpt, uint32_t sign, size_t blen)
 {
 	int i, j, k;
 	char *be, *s0;
@@ -76,18 +77,18 @@ g__fmt(char *b, char *s, char *se, int decpt, uint32_t sign, size_t blen)
 	if (!(s0 = decimalpoint_cache)) {
 		s0 = localeconv()->decimal_point;
 		dlen = strlen(s0);
-		if ((decimalpoint_cache = (char*)MALLOC(strlen(s0) + 1))) {
+		if ((decimalpoint_cache = (char *)MALLOC(strlen(s0) + 1))) {
 			strcpy(decimalpoint_cache, s0);
 			s0 = decimalpoint_cache;
-			}
 		}
+	}
 	decimalpoint = s0;
 #endif
 #else
 #define dlen 0
 #endif
 	s0 = s;
-	len = (se-s) + dlen + 6; /* 6 = sign + e+dd + trailing null */
+	len = (se - s) + dlen + 6;	/* 6 = sign + e+dd + trailing null */
 	if (blen < len)
 		goto ret0;
 	be = b + blen - 1;
@@ -97,77 +98,74 @@ g__fmt(char *b, char *s, char *se, int decpt, uint32_t sign, size_t blen)
 		*b++ = *s++;
 		if (*s) {
 #ifdef USE_LOCALE
-			while((*b = *decimalpoint++))
+			while ((*b = *decimalpoint++))
 				++b;
 #else
 			*b++ = '.';
 #endif
-			while((*b = *s++) !=0)
+			while ((*b = *s++) != 0)
 				b++;
-			}
+		}
 		*b++ = 'e';
 		/* sprintf(b, "%+.2d", decpt - 1); */
 		if (--decpt < 0) {
 			*b++ = '-';
 			decpt = -decpt;
-			}
-		else
+		} else
 			*b++ = '+';
-		for(j = 2, k = 10; 10*k <= decpt; j++, k *= 10){}
-		for(;;) {
+		for (j = 2, k = 10; 10 * k <= decpt; j++, k *= 10) {
+		}
+		for (;;) {
 			i = decpt / k;
 			if (b >= be)
 				goto ret0;
 			*b++ = i + '0';
 			if (--j <= 0)
 				break;
-			decpt -= i*k;
+			decpt -= i * k;
 			decpt *= 10;
-			}
-		*b = 0;
 		}
-	else if (decpt <= 0) {
+		*b = 0;
+	} else if (decpt <= 0) {
 #ifdef USE_LOCALE
-		while((*b = *decimalpoint++))
+		while ((*b = *decimalpoint++))
 			++b;
 #else
 		*b++ = '.';
 #endif
 		if (be < b - decpt + (se - s))
 			goto ret0;
-		for(; decpt < 0; decpt++)
+		for (; decpt < 0; decpt++)
 			*b++ = '0';
-		while((*b = *s++) != 0)
+		while ((*b = *s++) != 0)
 			b++;
-		}
-	else {
-		while((*b = *s++) != 0) {
+	} else {
+		while ((*b = *s++) != 0) {
 			b++;
 			if (--decpt == 0 && *s) {
 #ifdef USE_LOCALE
-				while(*b = *decimalpoint++)
+				while (*b = *decimalpoint++)
 					++b;
 #else
 				*b++ = '.';
 #endif
-				}
 			}
+		}
 		if (b + decpt > be) {
  ret0:
 			b = 0;
 			goto ret;
-			}
-		for(; decpt > 0; decpt--)
+		}
+		for (; decpt > 0; decpt--)
 			*b++ = '0';
 		*b = 0;
-		}
+	}
  ret:
 	freedtoa(s0);
 	return b;
- 	}
+}
 
- char *
-add_nanbits_D2A(char *b, size_t blen, uint32_t *bits, int nb)
+char *add_nanbits_D2A(char *b, size_t blen, uint32_t *bits, int nb)
 {
 	uint32_t t;
 	char *rv;
@@ -175,25 +173,29 @@ add_nanbits_D2A(char *b, size_t blen, uint32_t *bits, int nb)
 	size_t L;
 	static char Hexdig[16] = "0123456789abcdef";
 
-	while(!bits[--nb])
+	while (!bits[--nb])
 		if (!nb)
 			return b;
-	L = 8*nb + 3;
+	L = 8 * nb + 3;
 	t = bits[nb];
-	do ++L; while((t >>= 4));
+	do
+		++L;
+	while ((t >>= 4));
 	if (L > blen)
 		return b;
 	b += L;
 	*--b = 0;
 	rv = b;
-	*--b = /*(*/ ')';
-	for(i = 0; i < nb; ++i) {
+	*--b = /*( */ ')';
+	for (i = 0; i < nb; ++i) {
 		t = bits[i];
-		for(j = 0; j < 8; ++j, t >>= 4)
+		for (j = 0; j < 8; ++j, t >>= 4)
 			*--b = Hexdig[t & 0xf];
-		}
-	t = bits[nb];
-	do *--b = Hexdig[t & 0xf]; while(t >>= 4);
-	*--b = '('; /*)*/
-	return rv;
 	}
+	t = bits[nb];
+	do
+		*--b = Hexdig[t & 0xf];
+	while (t >>= 4);
+	*--b = '(';		/*) */
+	return rv;
+}

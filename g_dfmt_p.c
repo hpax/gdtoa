@@ -31,12 +31,12 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern uint32_t NanDflt_d_D2A[2];
+extern uint32_t NanDflt_d_D2A[2];
 
- char*
-g_dfmt_p(char *buf, double *d, int ndig, size_t bufsize, int nik)
+char *g_dfmt_p(char *buf, double *d, int ndig, size_t bufsize, int nik)
 {
-	static FPI fpi0 = { 53, 1-1023-53+1, 2046-1023-53+1, 1, 0, Int_max };
+	static FPI fpi0 =
+	    { 53, 1 - 1023 - 53 + 1, 2046 - 1023 - 53 + 1, 1, 0, Int_max };
 	char *b, *s, *se;
 	uint32_t bits[2], *L, sign;
 	int decpt, ex, i, mode;
@@ -51,7 +51,7 @@ g_dfmt_p(char *buf, double *d, int ndig, size_t bufsize, int nik)
 	if (bufsize < (size_t)(ndig + 10))
 		return 0;
 
-	L = (uint32_t*)d;
+	L = (uint32_t *) d;
 	sign = L[_0] & 0x80000000L;
 	if ((L[_0] & 0x7ff00000) == 0x7ff00000) {
 		/* Infinity or NaN */
@@ -63,22 +63,23 @@ g_dfmt_p(char *buf, double *d, int ndig, size_t bufsize, int nik)
 			b = buf;
 			if (L[_0] & 0x80000000L && nik < 18)
 				*b++ = '-';
-			b = strcp(b, NanName[nik%3]);
-			if (nik > 5 && (nik < 12
-					|| bits[0] != NanDflt_d_D2A[0]
-					|| (bits[1] ^ NanDflt_d_D2A[1]) & 0xfffff)) {
+			b = strcp(b, NanName[nik % 3]);
+			if (nik > 5 && (nik < 12 || bits[0] != NanDflt_d_D2A[0]
+					|| (bits[1] ^ NanDflt_d_D2A[1]) &
+					0xfffff)) {
 				bits[0] = L[_1];
 				bits[1] = L[_0] & 0xfffff;
-				b = add_nanbits(b, bufsize - (b-buf), bits, 2);
-				}
-			return b;
+				b = add_nanbits(b, bufsize - (b - buf), bits,
+						2);
 			}
+			return b;
+		}
 		b = buf;
 		if (sign)
 			*b++ = '-';
-		return strcp(b, InfName[nik%6]);
-		}
-	if (L[_1] == 0 && (L[_0] ^ sign) == 0 /*d == 0.*/) {
+		return strcp(b, InfName[nik % 6]);
+	}
+	if (L[_1] == 0 && (L[_0] ^ sign) == 0 /*d == 0. */ ) {
 		b = buf;
 #ifndef IGNORE_ZERO_SIGN
 		if (L[_0] & 0x80000000L)
@@ -87,10 +88,10 @@ g_dfmt_p(char *buf, double *d, int ndig, size_t bufsize, int nik)
 		*b++ = '0';
 		*b = 0;
 		return b;
-		}
+	}
 	bits[0] = L[_1];
 	bits[1] = L[_0] & 0xfffff;
-	if ( (ex = (L[_0] >> 20) & 0x7ff) !=0)
+	if ((ex = (L[_0] >> 20) & 0x7ff) != 0)
 		bits[1] |= 0x100000;
 	else
 		ex = 1;
@@ -103,4 +104,4 @@ g_dfmt_p(char *buf, double *d, int ndig, size_t bufsize, int nik)
 		i = STRTOG_Normal | STRTOG_Neg;
 	s = gdtoa(fpi, ex, bits, &i, mode, ndig, &decpt, &se);
 	return g__fmt(buf, s, se, decpt, sign, bufsize);
-	}
+}

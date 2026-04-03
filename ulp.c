@@ -31,33 +31,29 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- double
-ulp
-	(U *x)
-{
+double
+ ulp(U * x) {
 	int32_t L;
 	U a;
 
-	L = (word0(x) & Exp_mask) - (P-1)*Exp_msk1;
+	L = (word0(x) & Exp_mask) - (P - 1) * Exp_msk1;
 #ifndef Sudden_Underflow
 	if (L > 0) {
 #endif
 		word0(&a) = L;
 		word1(&a) = 0;
 #ifndef Sudden_Underflow
-		}
-	else {
+	} else {
 		L = -L >> Exp_shift;
 		if (L < Exp_shift) {
 			word0(&a) = 0x80000 >> L;
 			word1(&a) = 0;
-			}
-		else {
+		} else {
 			word0(&a) = 0;
 			L -= Exp_shift;
 			word1(&a) = L >= 31 ? 1 : 1 << (31 - L);
-			}
 		}
+	}
 #endif
 	return dval(&a);
-	}
+}

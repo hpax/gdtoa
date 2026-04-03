@@ -33,92 +33,93 @@ THIS SOFTWARE.
 #define GDTOA_H_INCLUDED
 
 #include "arith.h"
-#include <stddef.h>	/* for size_t */
-#include <inttypes.h>	/* for int32_t, uint32_t, uint16_t */
+#include <stddef.h>		/* for size_t */
+#include <inttypes.h>		/* for int32_t, uint32_t, uint16_t */
 
- enum {	/* return values from strtodg */
-	STRTOG_Zero	= 0,
-	STRTOG_Normal	= 1,
-	STRTOG_Denormal	= 2,
-	STRTOG_Infinite	= 3,
-	STRTOG_NaN	= 4,
-	STRTOG_NaNbits	= 5,
-	STRTOG_NoNumber	= 6,
-	STRTOG_Retmask	= 7,
+enum {				/* return values from strtodg */
+	STRTOG_Zero = 0,
+	STRTOG_Normal = 1,
+	STRTOG_Denormal = 2,
+	STRTOG_Infinite = 3,
+	STRTOG_NaN = 4,
+	STRTOG_NaNbits = 5,
+	STRTOG_NoNumber = 6,
+	STRTOG_Retmask = 7,
 
 	/* The following may be or-ed into one of the above values. */
 
-	STRTOG_Neg	= 0x08, /* does not affect STRTOG_Inexlo or STRTOG_Inexhi */
-	STRTOG_Inexlo	= 0x10,	/* returned result rounded toward zero */
-	STRTOG_Inexhi	= 0x20, /* returned result rounded away from zero */
-	STRTOG_Inexact	= 0x30,
-	STRTOG_Underflow= 0x40,
-	STRTOG_Overflow	= 0x80
-	};
+	STRTOG_Neg = 0x08,	/* does not affect STRTOG_Inexlo or STRTOG_Inexhi */
+	STRTOG_Inexlo = 0x10,	/* returned result rounded toward zero */
+	STRTOG_Inexhi = 0x20,	/* returned result rounded away from zero */
+	STRTOG_Inexact = 0x30,
+	STRTOG_Underflow = 0x40,
+	STRTOG_Overflow = 0x80
+};
 
- typedef struct
-FPI {
+typedef struct
+    FPI {
 	int nbits;
 	int emin;
 	int emax;
 	int rounding;
 	int sudden_underflow;
 	int int_max;
-	} FPI;
+} FPI;
 
-enum {	/* FPI.rounding values: same as FLT_ROUNDS */
+enum {				/* FPI.rounding values: same as FLT_ROUNDS */
 	FPI_Round_zero = 0,
 	FPI_Round_near = 1,
 	FPI_Round_up = 2,
 	FPI_Round_down = 3
-	};
+};
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern char* dtoa  (double d, int mode, int ndigits, int *decpt,
-			int *sign, char **rve);
-extern char* gdtoa (const FPI *fpi, int be, uint32_t *bits, int *kindp,
-			int mode, int ndigits, int *decpt, char **rve);
-extern void freedtoa (char*);
-extern float  strtof (const char *, char **);
-extern double strtod (const char *, char **);
-extern int strtodg (const char*, char**, const FPI*, int32_t*, uint32_t*);
+	extern char *dtoa(double d, int mode, int ndigits, int *decpt,
+			  int *sign, char **rve);
+	extern char *gdtoa(const FPI * fpi, int be, uint32_t * bits, int *kindp,
+			   int mode, int ndigits, int *decpt, char **rve);
+	extern void freedtoa(char *);
+	extern float strtof(const char *, char **);
+	extern double strtod(const char *, char **);
+	extern int strtodg(const char *, char **, const FPI *, int32_t *,
+			   uint32_t *);
 
-extern char*	g_ddfmt   (char*, double*, int, size_t);
-extern char*	g_ddfmt_p (char*, double*,	int, size_t, int);
-extern char*	g_dfmt    (char*, double*, int, size_t);
-extern char*	g_dfmt_p  (char*, double*,	int, size_t, int);
-extern char*	g_ffmt    (char*, float*,  int, size_t);
-extern char*	g_ffmt_p  (char*, float*,	int, size_t, int);
-extern char*	g_Qfmt    (char*, void*,   int, size_t);
-extern char*	g_Qfmt_p  (char*, void*,	int, size_t, int);
-extern char*	g_xfmt    (char*, void*,   int, size_t);
-extern char*	g_xfmt_p  (char*, void*,	int, size_t, int);
-extern char*	g_xLfmt   (char*, void*,   int, size_t);
-extern char*	g_xLfmt_p (char*, void*,	int, size_t, int);
+	extern char *g_ddfmt(char *, double *, int, size_t);
+	extern char *g_ddfmt_p(char *, double *, int, size_t, int);
+	extern char *g_dfmt(char *, double *, int, size_t);
+	extern char *g_dfmt_p(char *, double *, int, size_t, int);
+	extern char *g_ffmt(char *, float *, int, size_t);
+	extern char *g_ffmt_p(char *, float *, int, size_t, int);
+	extern char *g_Qfmt(char *, void *, int, size_t);
+	extern char *g_Qfmt_p(char *, void *, int, size_t, int);
+	extern char *g_xfmt(char *, void *, int, size_t);
+	extern char *g_xfmt_p(char *, void *, int, size_t, int);
+	extern char *g_xLfmt(char *, void *, int, size_t);
+	extern char *g_xLfmt_p(char *, void *, int, size_t, int);
 
-extern int	strtoId  (const char*, char**, double*, double*);
-extern int	strtoIdd (const char*, char**, double*, double*);
-extern int	strtoIf  (const char*, char**, float*, float*);
-extern int	strtoIQ  (const char*, char**, void*, void*);
-extern int	strtoIx  (const char*, char**, void*, void*);
-extern int	strtoIxL (const char*, char**, void*, void*);
-extern int	strtord  (const char*, char**, int, double*);
-extern int	strtordd (const char*, char**, int, double*);
-extern int	strtorf  (const char*, char**, int, float*);
-extern int	strtorQ  (const char*, char**, int, void*);
-extern int	strtorx  (const char*, char**, int, void*);
-extern int	strtorxL (const char*, char**, int, void*);
+	extern int strtoId(const char *, char **, double *, double *);
+	extern int strtoIdd(const char *, char **, double *, double *);
+	extern int strtoIf(const char *, char **, float *, float *);
+	extern int strtoIQ(const char *, char **, void *, void *);
+	extern int strtoIx(const char *, char **, void *, void *);
+	extern int strtoIxL(const char *, char **, void *, void *);
+	extern int strtord(const char *, char **, int, double *);
+	extern int strtordd(const char *, char **, int, double *);
+	extern int strtorf(const char *, char **, int, float *);
+	extern int strtorQ(const char *, char **, int, void *);
+	extern int strtorx(const char *, char **, int, void *);
+	extern int strtorxL(const char *, char **, int, void *);
 #if 1
-extern int	strtodI  (const char*, char**, double*);
-extern int	strtopd  (const char*, char**, double*);
-extern int	strtopdd (const char*, char**, double*);
-extern int	strtopf  (const char*, char**, float*);
-extern int	strtopQ  (const char*, char**, void*);
-extern int	strtopx  (const char*, char**, void*);
-extern int	strtopxL (const char*, char**, void*);
+	extern int strtodI(const char *, char **, double *);
+	extern int strtopd(const char *, char **, double *);
+	extern int strtopdd(const char *, char **, double *);
+	extern int strtopf(const char *, char **, float *);
+	extern int strtopQ(const char *, char **, void *);
+	extern int strtopx(const char *, char **, void *);
+	extern int strtopxL(const char *, char **, void *);
 #else
 #define strtopd(s,se,x) strtord(s,se,1,x)
 #define strtopdd(s,se,x) strtordd(s,se,1,x)
@@ -131,4 +132,4 @@ extern int	strtopxL (const char*, char**, void*);
 #ifdef __cplusplus
 }
 #endif
-#endif /* GDTOA_H_INCLUDED */
+#endif				/* GDTOA_H_INCLUDED */

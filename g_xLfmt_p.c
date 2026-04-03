@@ -31,7 +31,7 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern uint32_t NanDflt_xL_D2A[3];
+extern uint32_t NanDflt_xL_D2A[3];
 
 #undef _0
 #undef _1
@@ -49,10 +49,10 @@ THIS SOFTWARE.
 #define _2 0
 #endif
 
- char*
-g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
+char *g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
 {
-	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, 0, Int_max };
+	static FPI fpi0 =
+	    { 64, 1 - 16383 - 64 + 1, 32766 - 16383 - 64 + 1, 1, 0, Int_max };
 	char *b, *s, *se;
 	uint32_t bits[2], *L, sign;
 	int decpt, ex, i, mode;
@@ -67,11 +67,11 @@ g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
 	if (bufsize < (size_t)(ndig + 10))
 		return 0;
 
-	L = (uint32_t*)V;
+	L = (uint32_t *) V;
 	sign = L[_0] & 0x80000000L;
 	bits[1] = L[_1];
 	bits[0] = L[_2];
-	if ( (ex = (L[_0] >> 16) & 0x7fff) !=0) {
+	if ((ex = (L[_0] >> 16) & 0x7fff) != 0) {
 		if (ex == 0x7fff) {
 			/* Infinity or NaN */
 			if (nik < 0 || nik > 35)
@@ -80,26 +80,25 @@ g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
 				b = buf;
 				if (sign)
 					*b++ = '-';
-				b = strcp(b, InfName[nik%6]);
-				}
-			else {
+				b = strcp(b, InfName[nik % 6]);
+			} else {
 				b = buf;
 				if (sign && nik < 18)
 					*b++ = '-';
-				b = strcp(b, NanName[nik%3]);
+				b = strcp(b, NanName[nik % 3]);
 				if (nik > 5 && (nik < 12
 						|| bits[0] != NanDflt_xL_D2A[0]
-						|| bits[1] != NanDflt_xL_D2A[1]))
-					b = add_nanbits(b, bufsize - (b-buf), bits, 2);
-				}
-			return b;
+						|| bits[1] !=
+						NanDflt_xL_D2A[1]))
+					b = add_nanbits(b, bufsize - (b - buf),
+							bits, 2);
 			}
+			return b;
+		}
 		i = STRTOG_Normal;
-		}
-	else if (bits[0] | bits[1]) {
+	} else if (bits[0] | bits[1]) {
 		i = STRTOG_Denormal;
-		}
-	else {
+	} else {
 		b = buf;
 #ifndef IGNORE_ZERO_SIGN
 		if (sign)
@@ -108,14 +107,14 @@ g_xLfmt_p(char *buf, void *V, int ndig, size_t bufsize, int nik)
 		*b++ = '0';
 		*b = 0;
 		return b;
-		}
+	}
 	ex -= 0x3fff + 63;
 	mode = 2;
 	if (ndig <= 0) {
 		if (bufsize < 32)
 			return 0;
 		mode = 0;
-		}
+	}
 	s = gdtoa(fpi, ex, bits, &i, mode, ndig, &decpt, &se);
 	return g__fmt(buf, s, se, decpt, sign, bufsize);
-	}
+}

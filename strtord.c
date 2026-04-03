@@ -31,45 +31,45 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern uint32_t NanDflt_d_D2A[2];
+extern uint32_t NanDflt_d_D2A[2];
 
- void
-ULtod(uint32_t *L, uint32_t *bits, int32_t exp, int k)
+void ULtod(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 {
-	switch(k & STRTOG_Retmask) {
-	  case STRTOG_NoNumber:
-	  case STRTOG_Zero:
+	switch (k & STRTOG_Retmask) {
+	case STRTOG_NoNumber:
+	case STRTOG_Zero:
 		L[0] = L[1] = 0;
 		break;
 
-	  case STRTOG_Denormal:
+	case STRTOG_Denormal:
 		L[_1] = bits[0];
 		L[_0] = bits[1];
 		break;
 
-	  case STRTOG_Normal:
-	  case STRTOG_NaNbits:
+	case STRTOG_Normal:
+	case STRTOG_NaNbits:
 		L[_1] = bits[0];
 		L[_0] = (bits[1] & ~0x100000) | ((exp + 0x3ff + 52) << 20);
 		break;
 
-	  case STRTOG_Infinite:
+	case STRTOG_Infinite:
 		L[_0] = 0x7ff00000;
 		L[_1] = 0;
 		break;
 
-	  case STRTOG_NaN:
+	case STRTOG_NaN:
 		L[_0] = NanDflt_d_D2A[1];
 		L[_1] = NanDflt_d_D2A[0];
-	  }
+	}
 	if (k & STRTOG_Neg)
 		L[_0] |= 0x80000000L;
-	}
+}
 
- int
-strtord(const char *s, char **sp, int rounding, double *d)
+int strtord(const char *s, char **sp, int rounding, double *d)
 {
-	static FPI fpi0 = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
+	static FPI fpi0 =
+	    { 53, 1 - 1023 - 53 + 1, 2046 - 1023 - 53 + 1, 1, SI,
+      0 /*unused */  };
 	FPI *fpi, fpi1;
 	uint32_t bits[2];
 	int32_t exp;
@@ -80,8 +80,8 @@ strtord(const char *s, char **sp, int rounding, double *d)
 		fpi1 = fpi0;
 		fpi1.rounding = rounding;
 		fpi = &fpi1;
-		}
-	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtod((uint32_t*)d, bits, exp, k);
-	return k;
 	}
+	k = strtodg(s, sp, fpi, &exp, bits);
+	ULtod((uint32_t *) d, bits, exp, k);
+	return k;
+}

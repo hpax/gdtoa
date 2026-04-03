@@ -31,63 +31,58 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern uint32_t NanDflt_d_D2A[2];
+extern uint32_t NanDflt_d_D2A[2];
 
- void
-ULtodd(uint32_t *L, uint32_t *bits, int32_t exp, int k)
+void ULtodd(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 {
 	int i, j;
 
-	switch(k & STRTOG_Retmask) {
-	  case STRTOG_NoNumber:
-	  case STRTOG_Zero:
+	switch (k & STRTOG_Retmask) {
+	case STRTOG_NoNumber:
+	case STRTOG_Zero:
 		L[0] = L[1] = L[2] = L[3] = 0;
 		break;
 
-	  case STRTOG_Normal:
-		L[_1] = (bits[1] >> 21 | bits[2] << 11) & (uint32_t)0xffffffffL;
+	case STRTOG_Normal:
+		L[_1] =
+		    (bits[1] >> 21 | bits[2] << 11) & (uint32_t) 0xffffffffL;
 		L[_0] = (bits[2] >> 21) | (bits[3] << 11 & 0xfffff)
-			  | ((exp + 0x3ff + 105) << 20);
+		    | ((exp + 0x3ff + 105) << 20);
 		exp += 0x3ff + 52;
 		if (bits[1] &= 0x1fffff) {
 			i = hi0bits(bits[1]) - 11;
 			if (i >= exp) {
 				i = exp - 1;
 				exp = 0;
-				}
-			else
+			} else
 				exp -= i;
 			if (i > 0) {
-				bits[1] = bits[1] << i | bits[0] >> (32-i);
-				bits[0] = bits[0] << i & (uint32_t)0xffffffffL;
-				}
+				bits[1] = bits[1] << i | bits[0] >> (32 - i);
+				bits[0] = bits[0] << i & (uint32_t) 0xffffffffL;
 			}
-		else if (bits[0]) {
+		} else if (bits[0]) {
 			i = hi0bits(bits[0]) + 21;
 			if (i >= exp) {
 				i = exp - 1;
 				exp = 0;
-				}
-			else
+			} else
 				exp -= i;
 			if (i < 32) {
 				bits[1] = bits[0] >> (32 - i);
-				bits[0] = bits[0] << i & (uint32_t)0xffffffffL;
-				}
-			else {
+				bits[0] = bits[0] << i & (uint32_t) 0xffffffffL;
+			} else {
 				bits[1] = bits[0] << (i - 32);
 				bits[0] = 0;
-				}
 			}
-		else {
+		} else {
 			L[2] = L[3] = 0;
 			break;
-			}
-		L[2+_1] = bits[0];
-		L[2+_0] = (bits[1] & 0xfffff) | (exp << 20);
+		}
+		L[2 + _1] = bits[0];
+		L[2 + _0] = (bits[1] & 0xfffff) | (exp << 20);
 		break;
 
-	  case STRTOG_Denormal:
+	case STRTOG_Denormal:
 		if (bits[3])
 			goto nearly_normal;
 		if (bits[2])
@@ -100,82 +95,89 @@ ULtodd(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 		L[_0] = bits[1];
 		break;
 
-	  nearly_normal:
+ nearly_normal:
 		i = hi0bits(bits[3]) - 11;	/* i >= 12 */
 		j = 32 - i;
 		L[_0] = ((bits[3] << i | bits[2] >> j) & 0xfffff)
-			| ((65 - i) << 20);
+		    | ((65 - i) << 20);
 		L[_1] = (bits[2] << i | bits[1] >> j) & 0xffffffffL;
-		L[2+_0] = bits[1] & (((uint32_t)1L << j) - 1);
-		L[2+_1] = bits[0];
+		L[2 + _0] = bits[1] & (((uint32_t) 1L << j) - 1);
+		L[2 + _1] = bits[0];
 		break;
 
-	  partly_normal:
+ partly_normal:
 		i = hi0bits(bits[2]) - 11;
 		if (i < 0) {
 			j = -i;
 			i += 32;
 			L[_0] = (bits[2] >> j & 0xfffff) | ((33 + j) << 20);
 			L[_1] = (bits[2] << i | bits[1] >> j) & 0xffffffffL;
-			L[2+_0] = bits[1] & (((uint32_t)1L << j) - 1);
-			L[2+_1] = bits[0];
+			L[2 + _0] = bits[1] & (((uint32_t) 1L << j) - 1);
+			L[2 + _1] = bits[0];
 			break;
-			}
+		}
 		if (i == 0) {
 			L[_0] = (bits[2] & 0xfffff) | (33 << 20);
 			L[_1] = bits[1];
-			L[2+_0] = 0;
-			L[2+_1] = bits[0];
+			L[2 + _0] = 0;
+			L[2 + _1] = bits[0];
 			break;
-			}
+		}
 		j = 32 - i;
 		L[_0] = (((bits[2] << i) | (bits[1] >> j)) & 0xfffff)
-				| ((j + 1) << 20);
+		    | ((j + 1) << 20);
 		L[_1] = (bits[1] << i | bits[0] >> j) & 0xffffffffL;
-		L[2+_0] = 0;
-		L[2+_1] = bits[0] & ((1L << j) - 1);
+		L[2 + _0] = 0;
+		L[2 + _1] = bits[0] & ((1L << j) - 1);
 		break;
 
-	  hardly_normal:
+ hardly_normal:
 		j = 11 - hi0bits(bits[1]);
 		i = 32 - j;
 		L[_0] = (bits[1] >> j & 0xfffff) | ((j + 1) << 20);
 		L[_1] = (bits[1] << i | bits[0] >> j) & 0xffffffffL;
-		L[2+_0] = 0;
-		L[2+_1] = bits[0] & (((uint32_t)1L << j) - 1);
+		L[2 + _0] = 0;
+		L[2 + _1] = bits[0] & (((uint32_t) 1L << j) - 1);
 		break;
 
-	  case STRTOG_Infinite:
-		L[_0] = L[2+_0] = 0x7ff00000;
-		L[_1] = L[2+_1] = 0;
+	case STRTOG_Infinite:
+		L[_0] = L[2 + _0] = 0x7ff00000;
+		L[_1] = L[2 + _1] = 0;
 		break;
 
-	  case STRTOG_NaN:
-		L[_0] = L[_0+2] = NanDflt_d_D2A[1];
-		L[_1] = L[_1+2] = NanDflt_d_D2A[0];
+	case STRTOG_NaN:
+		L[_0] = L[_0 + 2] = NanDflt_d_D2A[1];
+		L[_1] = L[_1 + 2] = NanDflt_d_D2A[0];
 		break;
 
-	  case STRTOG_NaNbits:
-		L[_1] = (bits[1] >> 20 | bits[2] << 12) & (uint32_t)0xffffffffL;
+	case STRTOG_NaNbits:
+		L[_1] =
+		    (bits[1] >> 20 | bits[2] << 12) & (uint32_t) 0xffffffffL;
 		L[_0] = bits[2] >> 20 | bits[3] << 12;
-		L[_0] |= (L[_1] | L[_0]) ? (uint32_t)0x7ff00000L : (uint32_t)0x7ff80000L;
-		L[2+_1] = bits[0] & (uint32_t)0xffffffffL;
-		L[2+_0] = bits[1] & 0xfffffL;
-		L[2+_0] |= (L[2+_1] | L[2+_0]) ? (uint32_t)0x7ff00000L : (uint32_t)0x7ff80000L;
-	  }
+		L[_0] |=
+		    (L[_1] | L[_0]) ? (uint32_t) 0x7ff00000L : (uint32_t)
+		    0x7ff80000L;
+		L[2 + _1] = bits[0] & (uint32_t) 0xffffffffL;
+		L[2 + _0] = bits[1] & 0xfffffL;
+		L[2 + _0] |=
+		    (L[2 + _1] | L[2 + _0]) ? (uint32_t) 0x7ff00000L
+		    : (uint32_t) 0x7ff80000L;
+	}
 	if (k & STRTOG_Neg) {
 		L[_0] |= 0x80000000L;
-		L[2+_0] |= 0x80000000L;
-		}
+		L[2 + _0] |= 0x80000000L;
 	}
+}
 
- int
-strtordd(const char *s, char **sp, int rounding, double *dd)
+int strtordd(const char *s, char **sp, int rounding, double *dd)
 {
 #ifdef Sudden_Underflow
-	static FPI fpi0 = { 106, 1-1023, 2046-1023-106+1, 1, 1, 0 /*unused*/ };
+	static FPI fpi0 =
+	    { 106, 1 - 1023, 2046 - 1023 - 106 + 1, 1, 1, 0 /*unused */  };
 #else
-	static FPI fpi0 = { 106, 1-1023-53+1, 2046-1023-106+1, 1, 0, 0 /*unused*/ };
+	static FPI fpi0 =
+	    { 106, 1 - 1023 - 53 + 1, 2046 - 1023 - 106 + 1, 1, 0,
+      0 /*unused */  };
 #endif
 	FPI *fpi, fpi1;
 	uint32_t bits[4];
@@ -187,8 +189,8 @@ strtordd(const char *s, char **sp, int rounding, double *dd)
 		fpi1 = fpi0;
 		fpi1.rounding = rounding;
 		fpi = &fpi1;
-		}
-	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtodd((uint32_t*)dd, bits, exp, k);
-	return k;
 	}
+	k = strtodg(s, sp, fpi, &exp, bits);
+	ULtodd((uint32_t *) dd, bits, exp, k);
+	return k;
+}

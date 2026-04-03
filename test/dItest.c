@@ -33,21 +33,19 @@ THIS SOFTWARE.
 #include <stdio.h>
 #include <stdlib.h>
 
- static char ibuf[2048];
+static char ibuf[2048];
 
 #define UL (unsigned long)
 
- static void
-dshow(char *what, double d)
+static void dshow(char *what, double d)
 {
 	char buf[32];
 	g_dfmt(buf, &d, 0, sizeof(buf));
 	printf("%s = #%lx %lx = %s\n", what,
-		UL ((U*)&d)->L[_0], UL ((U*)&d)->L[_1], buf);
-	}
+	       UL((U *) & d)->L[_0], UL((U *) & d)->L[_1], buf);
+}
 
- int
-main(void)
+int main(void)
 {
 	/* Input: one number per line */
 
@@ -56,23 +54,22 @@ main(void)
 	double dd[2], dd1, dd2;
 	static char cfmt[] = "%s consumes %d bytes and returns %d\n";
 
-	while( (s = fgets(ibuf, sizeof(ibuf), stdin)) !=0) {
-		while(*s <= ' ')
+	while ((s = fgets(ibuf, sizeof(ibuf), stdin)) != 0) {
+		while (*s <= ' ')
 			if (!*s++)
 				continue;
 		printf("\nInput: %s", ibuf);
 		i = strtodI(ibuf, &se, dd);
-		printf(cfmt, "strtodI", (int)(se-ibuf), i);
+		printf(cfmt, "strtodI", (int)(se - ibuf), i);
 		dshow("dd[0]", dd[0]);
 		dshow("dd[1]", dd[1]);
 		printf("\n");
 		j = strtoId(ibuf, &se1, &dd1, &dd2);
-		if (j != i || se != se1
-		 || dd[0] != dd1 || dd[1] != dd2) {
-			printf(cfmt, "**** strtoId", (int)(se-ibuf), j);
+		if (j != i || se != se1 || dd[0] != dd1 || dd[1] != dd2) {
+			printf(cfmt, "**** strtoId", (int)(se - ibuf), j);
 			dshow("dd1", dd1);
 			dshow("dd2", dd2);
-			}
 		}
-	return 0;
 	}
+	return 0;
+}

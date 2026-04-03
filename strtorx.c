@@ -51,52 +51,52 @@ THIS SOFTWARE.
 #define _4 0
 #endif
 
- extern uint16_t NanDflt_ldus_D2A[5];
+extern uint16_t NanDflt_ldus_D2A[5];
 
- void
-ULtox(uint16_t *L, uint32_t *bits, int32_t exp, int k)
+void ULtox(uint16_t *L, uint32_t *bits, int32_t exp, int k)
 {
-	switch(k & STRTOG_Retmask) {
-	  case STRTOG_NoNumber:
-	  case STRTOG_Zero:
+	switch (k & STRTOG_Retmask) {
+	case STRTOG_NoNumber:
+	case STRTOG_Zero:
 		L[0] = L[1] = L[2] = L[3] = L[4] = 0;
 		break;
 
-	  case STRTOG_Denormal:
+	case STRTOG_Denormal:
 		L[_0] = 0;
 		goto normal_bits;
 
-	  case STRTOG_Normal:
-	  case STRTOG_NaNbits:
+	case STRTOG_Normal:
+	case STRTOG_NaNbits:
 		L[_0] = exp + 0x3fff + 63;
  normal_bits:
-		L[_4] = (uint16_t)bits[0];
-		L[_3] = (uint16_t)(bits[0] >> 16);
-		L[_2] = (uint16_t)bits[1];
-		L[_1] = (uint16_t)(bits[1] >> 16);
+		L[_4] = (uint16_t) bits[0];
+		L[_3] = (uint16_t) (bits[0] >> 16);
+		L[_2] = (uint16_t) bits[1];
+		L[_1] = (uint16_t) (bits[1] >> 16);
 		break;
 
-	  case STRTOG_Infinite:
+	case STRTOG_Infinite:
 		L[_0] = 0x7fff;
 		L[_1] = 0x8000;
 		L[_2] = L[_3] = L[_4] = 0;
 		break;
 
-	  case STRTOG_NaN:
+	case STRTOG_NaN:
 		L[_4] = NanDflt_ldus_D2A[0];
 		L[_3] = NanDflt_ldus_D2A[1];
 		L[_2] = NanDflt_ldus_D2A[2];
 		L[_1] = NanDflt_ldus_D2A[3];
 		L[_0] = NanDflt_ldus_D2A[4];
-	  }
+	}
 	if (k & STRTOG_Neg)
 		L[_0] |= 0x8000;
-	}
+}
 
- int
-strtorx(const char *s, char **sp, int rounding, void *L)
+int strtorx(const char *s, char **sp, int rounding, void *L)
 {
-	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };
+	static FPI fpi0 =
+	    { 64, 1 - 16383 - 64 + 1, 32766 - 16383 - 64 + 1, 1, SI,
+      0 /*unused */  };
 	FPI *fpi, fpi1;
 	uint32_t bits[2];
 	int32_t exp;
@@ -107,8 +107,8 @@ strtorx(const char *s, char **sp, int rounding, void *L)
 		fpi1 = fpi0;
 		fpi1.rounding = rounding;
 		fpi = &fpi1;
-		}
-	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtox((uint16_t*)L, bits, exp, k);
-	return k;
 	}
+	k = strtodg(s, sp, fpi, &exp, bits);
+	ULtox((uint16_t *) L, bits, exp, k);
+	return k;
+}

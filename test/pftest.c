@@ -29,47 +29,59 @@ PERFORMANCE OF THIS SOFTWARE.
 #undef want_Quad
 #undef want_Ux
 #define want_LD
-typedef union Ud {double x; unsigned int u[2]; } Ud;
-#ifdef __x86_64 /*{{*/
+typedef union Ud {
+	double x;
+	unsigned int u[2];
+} Ud;
+#ifdef __x86_64			/*{{ */
 #define want_Ux
-#ifndef NO_GDTOA_i386_Quad /*{*/
-typedef union UQ {__float128 x; unsigned int u[4]; } UQ;
+#ifndef NO_GDTOA_i386_Quad	/*{ */
+typedef union UQ {
+	__float128 x;
+	unsigned int u[4];
+} UQ;
 #define allow_Quad(x) x
 #define want_Quad
-#endif /*}*/
-#else /*}{*/
-#ifdef __i386 /*{{*/
+#endif				/*} */
+#else				/*}{ */
+#ifdef __i386			/*{{ */
 #define want_Ux
-#else /*}{*/
-#ifdef __sparc /*{{*/
-typedef union UQ {long double x; unsigned int u[4]; } Ux;
-#else /*}{*/
-#ifdef __INTEL_COMPILER /*{*/
+#else				/*}{ */
+#ifdef __sparc			/*{{ */
+typedef union UQ {
+	long double x;
+	unsigned int u[4];
+} Ux;
+#else				/*}{ */
+#ifdef __INTEL_COMPILER		/*{ */
 #undef want_Quad
 #undef want_Ux
 #undef want_LD
-#endif /*}*/
-#endif /*}}*/
-#endif /*}}*/
-#endif /*}}*/
+#endif				/*} */
+#endif				/*}} */
+#endif				/*}} */
+#endif				/*}} */
 
 #ifndef allow_Quad
-#define allow_Quad(x) /*nothing*/
+#define allow_Quad(x)		/*nothing */
 #endif
 
-#ifdef want_Ux /*{{*/
-typedef union Ux {long double x; unsigned short u[5]; } Ux;
-#else /*}{*/
+#ifdef want_Ux			/*{{ */
+typedef union Ux {
+	long double x;
+	unsigned short u[5];
+} Ux;
+#else				/*}{ */
 #ifdef __sparc
 #define want_Ux
 #endif
-#endif /*}}*/
+#endif				/*}} */
 
- int
-main(void)
+int main(void)
 {
 	Ud d;
-	allow_Quad(UQ q;)
+	allow_Quad(UQ q;
+	    )
 	char *b, buf[256], fmt[32], *s;
 #ifdef want_Ux
 	Ux x;
@@ -80,79 +92,83 @@ main(void)
 	k = 0;
 	strcpy(fmt, "%.g");
 	d.x = 0.;
-	allow_Quad(q.x = 0.;)
-	while(fgets(buf, sizeof(buf), stdin)) {
-		for(b = buf; *b && *b != '\n'; ++b);
+	allow_Quad(q.x = 0.;
+	    )
+	    while (fgets(buf, sizeof(buf), stdin)) {
+		for (b = buf; *b && *b != '\n'; ++b) ;
 		*b = 0;
 		if (b == buf)
 			continue;
 		b = buf;
 		if (*b == '%') {
-			for(k = 0; *b > ' '; ++b)
-#ifdef want_LD /*{{*/
-				switch(*b) {
-				  case 'L':
+			for (k = 0; *b > ' '; ++b)
+#ifdef want_LD			/*{{ */
+				switch (*b) {
+				case 'L':
 					k = 1;
 #ifdef want_Quad
 					break;
-				  case 'q':
+				case 'q':
 					if (k >= 1)
 						k = 2;
 #endif
-				  }
-#else /*}{*/
+				}
+#else				/*}{ */
 				;
-#endif /*}}*/
+#endif				/*}} */
 			if (*b)
 				*b++ = 0;
 			if (b - buf < sizeof(fmt)) {
 				strcpy(fmt, buf);
-				}
 			}
+		}
 		if (*b) {
-			switch(k) {
-			  case 0:
-				d.x = strtod(b,&s);
-				break;
-			  case 1:
-#ifdef want_Ux
-#ifdef __sparc
-				strtopQ(b,&s,&x.x);
-#else
-				strtopx(b,&s,&x.x);
-#endif
-#else
-				strtopQ(b,&s,&q.x);
-#endif
-				break;
-			  allow_Quad(case 2: strtopQ(b,&s,&q.x);)
-			  }
-			if (*s)
-				printf("Ignoring \"%s\"\n", s);
-			}
-		switch(k) {
+			switch (k) {
 			case 0:
-				printf("d.x = %.g = #%x %x; %s ==> ", d.x, d.u[1], d.u[0], fmt);
-				printf(fmt, d.x);
+				d.x = strtod(b, &s);
 				break;
 			case 1:
+#ifdef want_Ux
 #ifdef __sparc
-				printf("x.x = %.Lg = #%x %x %x %x; %s ==> ", x.x,
-					x.u[0], x.u[1], x.u[2], x.u[3], fmt);
+				strtopQ(b, &s, &x.x);
 #else
-				printf("x.x = %.Lg = #%x %x %x %x %x; %s ==> ", x.x,
-					x.u[4], x.u[3], x.u[2], x.u[1], x.u[0], fmt);
+				strtopx(b, &s, &x.x);
 #endif
-				printf(fmt, x.x);
-#ifdef want_Quad
+#else
+				strtopQ(b, &s, &q.x);
+#endif
 				break;
-			case 2:
-				printf("q.x = %.Lqg = #%x %x %x %x; %s ==> ", q.x,
-					q.u[3], q.u[2], q.u[1], q.u[0], fmt);
-				printf(fmt, q.x);
-#endif
+			allow_Quad(case 2:
+strtopQ(b, &s, &q.x);
+				    )
 			}
-		putchar('\n');
+			if (*s)
+				printf("Ignoring \"%s\"\n", s);
 		}
-	return 0;
+		switch (k) {
+		case 0:
+			printf("d.x = %.g = #%x %x; %s ==> ", d.x, d.u[1],
+			       d.u[0], fmt);
+			printf(fmt, d.x);
+			break;
+		case 1:
+#ifdef __sparc
+			printf("x.x = %.Lg = #%x %x %x %x; %s ==> ", x.x,
+			       x.u[0], x.u[1], x.u[2], x.u[3], fmt);
+#else
+			printf("x.x = %.Lg = #%x %x %x %x %x; %s ==> ", x.x,
+			       x.u[4], x.u[3], x.u[2], x.u[1], x.u[0], fmt);
+#endif
+			printf(fmt, x.x);
+#ifdef want_Quad
+			break;
+		case 2:
+			printf("q.x = %.Lqg = #%x %x %x %x; %s ==> ", q.x,
+			       q.u[3], q.u[2], q.u[1], q.u[0], fmt);
+			printf(fmt, q.x);
+#endif
+		}
+		putchar('\n');
 	}
+	return 0;
+}

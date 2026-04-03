@@ -68,15 +68,14 @@ static int perm[4] = { 3, 2, 1, 0 };
 
 #define UL (unsigned long)
 
- int
-main(void)
+int main(void)
 {
 #ifdef HAVE_IEEE
 	typedef union {
 		float f;
 		double d;
 		uint32_t L[4];
-		} U;
+	} U;
 	U a, b, c;
 #ifdef Gen_ld_QNAN
 	int i;
@@ -84,7 +83,7 @@ main(void)
 
 	a.L[0] = b.L[0] = 0x7f800000;
 	c.f = a.f - b.f;
-	printf("#define f_QNAN 0x%lx\n", UL (c.L[0] & 0x7fffffff));
+	printf("#define f_QNAN 0x%lx\n", UL(c.L[0] & 0x7fffffff));
 	a.L[_0] = b.L[_0] = 0x7ff00000;
 	a.L[_1] = b.L[_1] = 0;
 	c.d = a.d - b.d;	/* quiet NaN */
@@ -99,10 +98,10 @@ main(void)
 		a.L[0] = a.L[1] = a.L[2] = a.L[3] = 0;
 		a.D = b.D - c.D;
 		a.L[_3] &= 0x7fffffff;
-		for(i = 0; i < 4; i++)
+		for (i = 0; i < 4; i++)
 			printf("#define ld_QNAN%d 0x%lx\n", i, UL a.L[perm[i]]);
-		}
-#endif
-#endif /* HAVE_IEEE */
-	return 0;
 	}
+#endif
+#endif				/* HAVE_IEEE */
+	return 0;
+}

@@ -31,12 +31,11 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- extern uint32_t NanDflt_f_D2A[1];
+extern uint32_t NanDflt_f_D2A[1];
 
- char*
-g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
+char *g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
 {
-	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, 0, 6 };
+	static FPI fpi0 = { 24, 1 - 127 - 24 + 1, 254 - 127 - 24 + 1, 1, 0, 6 };
 	char *b, *s, *se;
 	uint32_t bits[1], *L, sign;
 	int decpt, ex, i, mode;
@@ -51,7 +50,7 @@ g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
 	if (bufsize < (size_t)(ndig + 10))
 		return 0;
 
-	L = (uint32_t*)f;
+	L = (uint32_t *) f;
 	sign = L[0] & 0x80000000L;
 	if ((L[0] & 0x7f800000) == 0x7f800000) {
 		/* Infinity or NaN */
@@ -61,17 +60,19 @@ g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
 			b = buf;
 			if (sign && nik < 18)
 				*b++ = '-';
-			b = strcp(b, NanName[nik%3]);
+			b = strcp(b, NanName[nik % 3]);
 			if (nik > 5 && (nik < 12
-					|| (bits[0] ^ NanDflt_f_D2A[0]) & 0x7fffff))
-				b = add_nanbits(b, bufsize - (b-buf), bits, 1);
+					|| (bits[0] ^ NanDflt_f_D2A[0]) &
+					0x7fffff))
+				b = add_nanbits(b, bufsize - (b - buf), bits,
+						1);
 			return b;
-			}
+		}
 		b = buf;
 		if (sign)
 			*b++ = '-';
-		return strcp(b, InfName[nik%6]);
-		}
+		return strcp(b, InfName[nik % 6]);
+	}
 	if (*f == 0.) {
 		b = buf;
 #ifndef IGNORE_ZERO_SIGN
@@ -81,9 +82,9 @@ g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
 		*b++ = '0';
 		*b = 0;
 		return b;
-		}
+	}
 	bits[0] = L[0] & 0x7fffff;
-	if ( (ex = (L[0] >> 23) & 0xff) !=0)
+	if ((ex = (L[0] >> 23) & 0xff) != 0)
 		bits[0] |= 0x800000;
 	else
 		ex = 1;
@@ -93,8 +94,8 @@ g_ffmt_p(char *buf, float *f, int ndig, size_t bufsize, int nik)
 		if (bufsize < 16)
 			return 0;
 		mode = 0;
-		}
+	}
 	i = STRTOG_Normal;
 	s = gdtoa(fpi, ex, bits, &i, mode, ndig, &decpt, &se);
 	return g__fmt(buf, s, se, decpt, sign, bufsize);
-	}
+}

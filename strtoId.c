@@ -31,10 +31,11 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- int
-strtoId(const char *s, char **sp, double *f0, double *f1)
+int strtoId(const char *s, char **sp, double *f0, double *f1)
 {
-	static FPI fpi = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
+	static FPI fpi =
+	    { 53, 1 - 1023 - 53 + 1, 2046 - 1023 - 53 + 1, 1, SI,
+       0 /*unused */  };
 	int32_t exp[2];
 	Bigint *B[2];
 	int k, rv[2];
@@ -45,15 +46,14 @@ strtoId(const char *s, char **sp, double *f0, double *f1)
 	B[0] = Balloc(1 MTb);
 	B[0]->wds = 2;
 	k = strtoIg(s, sp, &fpi, exp, B, rv);
-	ULtod((uint32_t*)f0, B[0]->x, exp[0], rv[0]);
+	ULtod((uint32_t *) f0, B[0]->x, exp[0], rv[0]);
 	Bfree(B[0] MTb);
 	if (B[1]) {
-		ULtod((uint32_t*)f1, B[1]->x, exp[1], rv[1]);
+		ULtod((uint32_t *) f1, B[1]->x, exp[1], rv[1]);
 		Bfree(B[1] MTb);
-		}
-	else {
-		((uint32_t*)f1)[0] = ((uint32_t*)f0)[0];
-		((uint32_t*)f1)[1] = ((uint32_t*)f0)[1];
-		}
-	return k;
+	} else {
+		((uint32_t *) f1)[0] = ((uint32_t *) f0)[0];
+		((uint32_t *) f1)[1] = ((uint32_t *) f0)[1];
 	}
+	return k;
+}

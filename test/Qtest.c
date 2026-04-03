@@ -54,9 +54,9 @@ THIS SOFTWARE.
 #include <stdlib.h>
 #include <string.h>
 
- extern int getround (int,char*);
+extern int getround(int, char *);
 
- static char ibuf[2048], obuf[2048], obuf1[2048];
+static char ibuf[2048], obuf[2048], obuf1[2048];
 #undef _0
 #undef _1
 
@@ -77,97 +77,105 @@ THIS SOFTWARE.
 
 #define U (unsigned long)
 
- int
-main(void)
+int main(void)
 {
 	char *s, *s1, *se, *se1;
 	int Ltest, i, dItry, ndig = 0, nik, nike, r = 1;
-	union { long double d; uint32_t bits[4]; } u, v[2], w;
+	union {
+		long double d;
+		uint32_t bits[4];
+	} u, v[2], w;
 
 	w.bits[0] = w.bits[3] = 0;
 	w.d = 1.;
 	u.d = 3.;
 	w.d = w.d / u.d;
 	Ltest = sizeof(long double) == 16 && w.bits[0] && w.bits[3];
-	while( (s = fgets(ibuf, sizeof(ibuf), stdin)) !=0) {
-		while(*s <= ' ')
+	while ((s = fgets(ibuf, sizeof(ibuf), stdin)) != 0) {
+		while (*s <= ' ')
 			if (!*s++)
 				continue;
 		dItry = 0;
-		switch(*s) {
-		  case 'r':
+		switch (*s) {
+		case 'r':
 			r = getround(r, s);
 			continue;
-		  case 'n':
+		case 'n':
 			i = s[1];
 			if (i <= ' ' || (i >= '0' && i <= '9')) {
-				ndig = atoi(s+1);
+				ndig = atoi(s + 1);
 				continue;
-				}
-			break; /* nan? */
-		  case '#':
-			/* sscanf(s+1, "%lx %lx %lx %lx", &u.bits[_0],	*/
-			/*	&u.bits[_1], &u.bits[_2], &u.bits[_3]);	*/
-			u.bits[_0] = (uint32_t)strtoul(s1 = s+1, &se, 16);
+			}
+			break;	/* nan? */
+		case '#':
+			/* sscanf(s+1, "%lx %lx %lx %lx", &u.bits[_0],  */
+			/*      &u.bits[_1], &u.bits[_2], &u.bits[_3]); */
+			u.bits[_0] = (uint32_t) strtoul(s1 = s + 1, &se, 16);
 			if (se > s1) {
-			  u.bits[_1] = (uint32_t)strtoul(s1 = se, &se, 16);
-			  if (se > s1) {
-			    u.bits[_2] = (uint32_t)strtoul(s1 = se, &se, 16);
-			    if (se > s1)
-				u.bits[_3] = (uint32_t)strtoul(s1 = se, &se, 16);
-			    }
-			  }
+				u.bits[_1] = (uint32_t) strtoul(s1 =
+								se, &se, 16);
+				if (se > s1) {
+					u.bits[_2] = (uint32_t) strtoul(s1 =
+									se, &se,
+									16);
+					if (se > s1)
+						u.bits[_3] =
+						    (uint32_t) strtoul(s1 =
+								       se, &se,
+								       16);
+				}
+			}
 			printf("\nInput: %s", ibuf);
 			printf(" --> f = #%lx %lx %lx %lx\n", U u.bits[_0],
-				U u.bits[_1], U u.bits[_2], U u.bits[_3]);
+			       U u.bits[_1], U u.bits[_2], U u.bits[_3]);
 			i = 0;
 			goto fmt_test;
-			}
+		}
 		dItry = 1;
 		printf("\nInput: %s", ibuf);
 		i = strtorQ(ibuf, &se, r, u.bits);
-		if (r == 1 && (strtopQ(ibuf,&se1,v[0].bits) != i
-		 || se != se1 || memcmp(u.bits, v[0].bits, 16)))
+		if (r == 1 && (strtopQ(ibuf, &se1, v[0].bits) != i
+			       || se != se1 || memcmp(u.bits, v[0].bits, 16)))
 			printf("***strtoQ and strtorQ disagree!!\n:");
 		printf("\nstrtoQ consumes %d bytes and returns %d\n",
-				(int)(se-ibuf), i);
+		       (int)(se - ibuf), i);
 		printf("with bits = #%lx %lx %lx %lx\n",
-			U u.bits[_0], U u.bits[_1], U u.bits[_2], U u.bits[_3]);
+		       U u.bits[_0], U u.bits[_1], U u.bits[_2], U u.bits[_3]);
  fmt_test:
 		if (Ltest)
 			printf("printf(\"%%.35Lg\") gives %.35Lg\n", u.d);
 		se = g_Qfmt(obuf, u.bits, ndig, sizeof(obuf));
 		printf("g_Qfmt(%d) gives %d bytes: \"%s\"\n\n", ndig,
-			(int)(se-obuf), se ? obuf : "<null>");
+		       (int)(se - obuf), se ? obuf : "<null>");
 		se1 = g_Qfmt_p(obuf1, u.bits, ndig, sizeof(obuf1), 0);
 		if (se1 - obuf1 != se - obuf || strcmp(obuf, obuf1))
-			printf("Botch: g_Qfmt_p gives \"%s\" rather than \"%s\"\n",
-				obuf1, obuf);
+			printf
+			    ("Botch: g_Qfmt_p gives \"%s\" rather than \"%s\"\n",
+			     obuf1, obuf);
 		if (!dItry)
 			continue;
 		printf("strtoIQ returns %d,",
-			strtoIQ(ibuf, &se, v[0].bits, v[1].bits));
-		printf(" consuming %d bytes.\n", (int)(se-ibuf));
+		       strtoIQ(ibuf, &se, v[0].bits, v[1].bits));
+		printf(" consuming %d bytes.\n", (int)(se - ibuf));
 		if (!memcmp(v[0].bits, v[1].bits, 16)) {
 			if (!memcpy(u.bits, v[0].bits, 16))
 				printf("fI[0] == fI[1] == strtoQ\n");
 			else {
 				printf("fI[0] == fI[1] = #%lx %lx %lx %lx\n",
-					U v[0].bits[_0], U v[0].bits[_1],
-					U v[0].bits[_2], U v[0].bits[_3]);
+				       U v[0].bits[_0], U v[0].bits[_1],
+				       U v[0].bits[_2], U v[0].bits[_3]);
 				if (Ltest)
-				    printf("= %.35Lg\n", v[0].d);
-				}
+					printf("= %.35Lg\n", v[0].d);
 			}
-		else {
+		} else {
 			printf("fI[0] = #%lx %lx %lx %lx\n",
-					U v[0].bits[_0], U v[0].bits[_1],
-					U v[0].bits[_2], U v[0].bits[_3]);
+			       U v[0].bits[_0], U v[0].bits[_1],
+			       U v[0].bits[_2], U v[0].bits[_3]);
 			if (Ltest)
 				printf("= %.35Lg\n", v[0].d);
 			printf("fI[1] = #%lx %lx %lx %lx\n",
-					U v[1].bits[_0], U v[1].bits[_1],
-					U v[1].bits[_2], U v[1].bits[_3]);
+			       U v[1].bits[_0], U v[1].bits[_1],
+			       U v[1].bits[_2], U v[1].bits[_3]);
 			if (Ltest)
 				printf("= %.35Lg\n", v[1].d);
 			if (!memcmp(v[0].bits, u.bits, 16))
@@ -176,23 +184,30 @@ main(void)
 				printf("fI[1] == strtod\n");
 			else
 				printf("**** Both differ from strtod ****\n");
-			}
-		printf("\n");
-		switch(i & STRTOG_Retmask) {
-		  case STRTOG_Infinite:
-			for(nik = 0; nik < 6; ++nik) {
-				se1 = g_Qfmt_p(obuf1, u.bits, ndig, sizeof(obuf1), nik);
-				printf("g_Qfmt_p(...,%d): \"%s\"\n", nik, obuf1);
-				}
-			break;
-		  case STRTOG_NaN:
-		  case STRTOG_NaNbits:
-			for(i = 0; i < 3; ++i)
-				for(nik = 6*i, nike = nik + 3; nik < nike; ++nik) {
-					se1 = g_Qfmt_p(obuf1, u.bits, ndig, sizeof(obuf1), nik);
-					printf("g_Qfmt_p(...,%d): \"%s\"\n", nik, obuf1);
-					}
-		  }
 		}
-	return 0;
+		printf("\n");
+		switch (i & STRTOG_Retmask) {
+		case STRTOG_Infinite:
+			for (nik = 0; nik < 6; ++nik) {
+				se1 =
+				    g_Qfmt_p(obuf1, u.bits, ndig, sizeof(obuf1),
+					     nik);
+				printf("g_Qfmt_p(...,%d): \"%s\"\n", nik,
+				       obuf1);
+			}
+			break;
+		case STRTOG_NaN:
+		case STRTOG_NaNbits:
+			for (i = 0; i < 3; ++i)
+				for (nik = 6 * i, nike = nik + 3; nik < nike;
+				     ++nik) {
+					se1 =
+					    g_Qfmt_p(obuf1, u.bits, ndig,
+						     sizeof(obuf1), nik);
+					printf("g_Qfmt_p(...,%d): \"%s\"\n",
+					       nik, obuf1);
+				}
+		}
 	}
+	return 0;
+}

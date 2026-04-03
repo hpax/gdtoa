@@ -33,25 +33,25 @@ THIS SOFTWARE.
 #include <stdlib.h>
 
 static char *dir[4] = { "toward zero", "nearest", "toward +Infinity",
-			"toward -Infinity" };
+	"toward -Infinity"
+};
 
 #ifdef Honor_FLT_ROUNDS
 #include <fenv.h>
-static int fe_conv[4] = {FE_TOWARDZERO, FE_TONEAREST, FE_UPWARD, FE_DOWNWARD };
+static int fe_conv[4] = { FE_TOWARDZERO, FE_TONEAREST, FE_UPWARD, FE_DOWNWARD };
 #endif
 
- int
-getround(int r, char *s)
+int getround(int r, char *s)
 {
 	int i;
 
-	while(*++s <= ' ') {
+	while (*++s <= ' ') {
 		if (!*s) {
 			printf("Current round mode for strtor... is %d (%s).\n",
-				r, dir[r]);
+			       r, dir[r]);
 			return r;
-			}
 		}
+	}
 	i = atoi(s);
 	if (i >= 0 && i < 4) {
 		printf("Rounding mode for strtor... ");
@@ -59,28 +59,26 @@ getround(int r, char *s)
 			printf("was and is %d (%s)\n", i, dir[i]);
 		else
 			printf("changed from %d (%s) to %d (%s)\n",
-				r, dir[r], i, dir[i]);
+			       r, dir[r], i, dir[i]);
 #ifdef Honor_FLT_ROUNDS
 		fesetround(fe_conv[i]);
 #endif
 		return i;
-		}
+	}
 	printf("Bad rounding direction %d: choose among\n", i);
-	for(i = 0; i < 4; i++)
+	for (i = 0; i < 4; i++)
 		printf("\t%d (%s)\n", i, dir[i]);
 	printf("Leaving rounding mode for strtor... at %d (%s)\n", r, dir[r]);
 	return r;
-	}
+}
 
 #ifdef USE_MY_LOCALE
 #include <locale.h>
 
- struct lconv *
-localeconv(void)
+struct lconv *localeconv(void)
 {
 	static struct lconv mylocale;
 	mylocale.decimal_point = "<Pt>";
 	return &mylocale;
-	}
+}
 #endif
-

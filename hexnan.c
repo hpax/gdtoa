@@ -31,8 +31,7 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- static void
-L_shift(uint32_t *x, uint32_t *x1, int i)
+static void L_shift(uint32_t *x, uint32_t *x1, int i)
 {
 	int j;
 
@@ -42,11 +41,10 @@ L_shift(uint32_t *x, uint32_t *x1, int i)
 	do {
 		*x |= x[1] << j;
 		x[1] >>= i;
-		} while(++x < x1);
-	}
+	} while (++x < x1);
+}
 
- int
-hexnan( const char **sp, const FPI *fpi, uint32_t *x0)
+int hexnan(const char **sp, const FPI *fpi, uint32_t *x0)
 {
 	uint32_t c, h, *x, *x1, *xe;
 	const char *s;
@@ -62,15 +60,15 @@ hexnan( const char **sp, const FPI *fpi, uint32_t *x0)
 	havedig = hd0 = i = 0;
 	s = *sp;
 	/* allow optional initial 0x or 0X */
-	while((c = *(const unsigned char*)(s+1)) && c <= ' ') {
+	while ((c = *(const unsigned char *)(s + 1)) && c <= ' ') {
 		if (!c)
 			goto retnan;
 		++s;
-		}
+	}
 	if (s[1] == '0' && (s[2] == 'x' || s[2] == 'X')
-	 && *(const unsigned char*)(s+3) > ' ')
+	    && *(const unsigned char *)(s + 3) > ' ')
 		s += 2;
-	while((c = *(const unsigned char*)++s)) {
+	while ((c = *(const unsigned char *)++s)) {
 		if (!(h = hexdig[c])) {
 			if (c <= ' ') {
 				if (hd0 < havedig) {
@@ -79,46 +77,48 @@ hexnan( const char **sp, const FPI *fpi, uint32_t *x0)
 					if (x <= x0) {
 						i = 8;
 						continue;
-						}
+					}
 					hd0 = havedig;
 					*--x = 0;
 					x1 = x;
 					i = 0;
-					}
-				while((c = *(const unsigned char*)(s+1)) <= ' ') {
+				}
+				while ((c =
+					*(const unsigned char *)(s + 1)) <=
+				       ' ') {
 					if (!c)
 						goto retnan;
 					++s;
-					}
+				}
 				if (s[1] == '0' && (s[2] == 'x' || s[2] == 'X')
-				 && *(const unsigned char*)(s+3) > ' ')
+				    && *(const unsigned char *)(s + 3) > ' ')
 					s += 2;
 				continue;
-				}
-			if (/*(*/ c == ')' && havedig) {
+			}
+			if ( /*( */ c == ')' && havedig) {
 				*sp = s + 1;
 				break;
-				}
+			}
 #ifndef GDTOA_NON_PEDANTIC_NANCHECK
 			do {
-				if (/*(*/ c == ')') {
+				if ( /*( */ c == ')') {
 					*sp = s + 1;
 					goto break2;
-					}
-				} while((c = *++s));
+				}
+			} while ((c = *++s));
 #endif
  retnan:
 			return STRTOG_NaN;
-			}
+		}
 		havedig++;
 		if (++i > 8) {
 			if (x <= x0)
 				continue;
 			i = 1;
 			*--x = 0;
-			}
-		*x = (*x << 4) | (h & 0xf);
 		}
+		*x = (*x << 4) | (h & 0xf);
+	}
 #ifndef GDTOA_NON_PEDANTIC_NANCHECK
  break2:
 #endif
@@ -128,23 +128,24 @@ hexnan( const char **sp, const FPI *fpi, uint32_t *x0)
 		L_shift(x, x1, i);
 	if (x > x0) {
 		x1 = x0;
-		do *x1++ = *x++;
-			while(x <= xe);
-		do *x1++ = 0;
-			while(x1 <= xe);
-		}
-	else {
+		do
+			*x1++ = *x++;
+		while (x <= xe);
+		do
+			*x1++ = 0;
+		while (x1 <= xe);
+	} else {
 		/* truncate high-order word if necessary */
-		if ( (i = nbits & (ULbits-1)) !=0)
-			*xe &= ((uint32_t)0xffffffff) >> (ULbits - i);
-		}
-	for(x1 = xe;; --x1) {
+		if ((i = nbits & (ULbits - 1)) != 0)
+			*xe &= ((uint32_t) 0xffffffff) >> (ULbits - i);
+	}
+	for (x1 = xe;; --x1) {
 		if (*x1 != 0)
 			break;
 		if (x1 == x0) {
 			*x1 = 1;
 			break;
-			}
 		}
-	return STRTOG_NaNbits;
 	}
+	return STRTOG_NaNbits;
+}

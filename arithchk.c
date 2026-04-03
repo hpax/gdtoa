@@ -27,33 +27,31 @@ THIS SOFTWARE.
 #include <stdio.h>
 #include <inttypes.h>
 
- static int dalign;
- typedef struct
-Akind {
+static int dalign;
+typedef struct
+    Akind {
 	char *name;
-	int   kind;
-	} Akind;
+	int kind;
+} Akind;
 
- static Akind
-IEEE_8087	= { "IEEE_8087", 1 },
-IEEE_MC68k	= { "IEEE_MC68k", 2 };
+static const Akind IEEE_8087  = { "IEEE_8087", 1 };
+static const Akind IEEE_MC68k = { "IEEE_MC68k", 2 };
 
- static Akind *
-Lcheck(void)
+static Akind *Lcheck(void)
 {
 	union {
 		double d;
 		int32_t L[2];
-		} u;
+	} u;
 	struct {
 		double d;
 		int32_t L;
-		} x[2];
+	} x[2];
 
-	if (sizeof(double) != 2*sizeof(int32_t))
+	if (sizeof(double) != 2 * sizeof(int32_t))
 		return 0;
 
-	if (sizeof(x) > 2*(sizeof(double) + sizeof(int32_t)))
+	if (sizeof(x) > 2 * (sizeof(double) + sizeof(int32_t)))
 		dalign = 1;
 	u.L[0] = u.L[1] = 0;
 	u.d = 1e13;
@@ -62,40 +60,38 @@ Lcheck(void)
 	if (u.L[1] == 1117925532 && u.L[0] == -448790528)
 		return &IEEE_8087;
 	return 0;
-	}
+}
 
- static int
-fzcheck(void)
+static int fzcheck(void)
 {
 	double a, b;
 	int i;
 
 	a = 1.;
 	b = .1;
-	for(i = 155;; b *= b, i >>= 1) {
+	for (i = 155;; b *= b, i >>= 1) {
 		if (i & 1) {
 			a *= b;
 			if (i == 1)
 				break;
-			}
 		}
+	}
 	b = a * a;
 	return b == 0.;
-	}
+}
 
- int
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	Akind *a = 0;
 	int Ldef = 0;
 	FILE *f;
 
-#ifdef WRITE_ARITH_H	/* for Symantec's buggy "make" */
+#ifdef WRITE_ARITH_H		/* for Symantec's buggy "make" */
 	f = fopen("arith.h", "w");
 	if (!f) {
 		printf("Cannot open arith.h\n");
 		return 1;
-		}
+	}
 #else
 	f = stdout;
 #endif
@@ -110,7 +106,7 @@ main(int argc, char **argv)
 		if (a->kind <= 2 && fzcheck())
 			fprintf(f, "#define Sudden_Underflow\n");
 		return 0;
-		}
+	}
 	fprintf(f, "/* Unknown arithmetic */\n");
 	return 1;
-	}
+}

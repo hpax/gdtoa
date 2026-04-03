@@ -31,16 +31,17 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- Bigint *
-sum(Bigint *a, Bigint *b MTd)
+Bigint *sum(Bigint *a, Bigint *b MTd)
 {
 	Bigint *c;
 	uint32_t carry, *xc, *xa, *xb, *xe, y;
 	uint32_t z;
 
 	if (a->wds < b->wds) {
-		c = b; b = a; a = c;
-		}
+		c = b;
+		b = a;
+		a = c;
+	}
 	c = Balloc(a->k MTa);
 	c->wds = a->wds;
 	carry = 0;
@@ -54,24 +55,24 @@ sum(Bigint *a, Bigint *b MTd)
 		z = (*xa++ >> 16) + (*xb++ >> 16) + carry;
 		carry = (z & 0x10000) >> 16;
 		Storeinc(xc, z, y);
-		}
-		while(xc < xe);
+	}
+	while (xc < xe);
 	xe += a->wds - b->wds;
-	while(xc < xe) {
+	while (xc < xe) {
 		y = (*xa & 0xffff) + carry;
 		carry = (y & 0x10000) >> 16;
 		z = (*xa++ >> 16) + carry;
 		carry = (z & 0x10000) >> 16;
 		Storeinc(xc, z, y);
-		}
+	}
 	if (carry) {
 		if (c->wds == c->maxwds) {
 			b = Balloc(c->k + 1 MTa);
 			Bcopy(b, c);
 			Bfree(c MTa);
 			c = b;
-			}
-		c->x[c->wds++] = 1;
 		}
-	return c;
+		c->x[c->wds++] = 1;
 	}
+	return c;
+}

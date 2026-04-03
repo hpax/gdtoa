@@ -54,9 +54,9 @@ THIS SOFTWARE.
 #include <stdlib.h>
 #include <string.h>
 
- extern int getround (int,char*);
+extern int getround(int, char *);
 
- static char ibuf[2048], obuf[2048], obuf1[2048];
+static char ibuf[2048], obuf[2048], obuf1[2048];
 
 #undef _0
 #undef _1
@@ -78,88 +78,88 @@ THIS SOFTWARE.
 #define _4 0
 #endif
 
- int
-main(void)
+int main(void)
 {
 	char *s, *se, *se1;
 	int i, dItry, ndig = 0, nik, nike, r = 1;
-	union { long double d; uint16_t bits[5]; } u, v[2];
+	union {
+		long double d;
+		uint16_t bits[5];
+	} u, v[2];
 
-	while((s = fgets(ibuf, sizeof(ibuf), stdin))) {
-		while(*s <= ' ')
+	while ((s = fgets(ibuf, sizeof(ibuf), stdin))) {
+		while (*s <= ' ')
 			if (!*s++)
 				continue;
 		dItry = 0;
-		switch(*s) {
-		  case 'r':
+		switch (*s) {
+		case 'r':
 			r = getround(r, s);
 			continue;
-		  case 'n':
+		case 'n':
 			i = s[1];
 			if (i <= ' ' || (i >= '0' && i <= '9')) {
-				ndig = atoi(s+1);
+				ndig = atoi(s + 1);
 				continue;
-				}
-			break; /* nan? */
-		  case '#':
-			sscanf(s+1, "%hx %hx %hx %hx %hx", &u.bits[_0],
-				&u.bits[_1], &u.bits[_2], &u.bits[_3],
-				&u.bits[_4]);
+			}
+			break;	/* nan? */
+		case '#':
+			sscanf(s + 1, "%hx %hx %hx %hx %hx", &u.bits[_0],
+			       &u.bits[_1], &u.bits[_2], &u.bits[_3],
+			       &u.bits[_4]);
 			printf("\nInput: %s", ibuf);
 			printf(" --> f = #%x %x %x %x %x\n", u.bits[_0],
-				u.bits[_1], u.bits[_2], u.bits[_3], u.bits[_4]);
+			       u.bits[_1], u.bits[_2], u.bits[_3], u.bits[_4]);
 			i = 0;
 			goto fmt_test;
-			}
+		}
 		dItry = 1;
 		printf("\nInput: %s", ibuf);
 		i = strtorx(ibuf, &se, r, u.bits);
 		if (r == 1 && (i != strtopx(ibuf, &se1, v[0].bits) || se1 != se
-		 || memcmp(u.bits, v[0].bits, 10)))
+			       || memcmp(u.bits, v[0].bits, 10)))
 			printf("***strtox and strtorx disagree!!\n:");
 		printf("\nstrtox consumes %d bytes and returns %d\n",
-				(int)(se-ibuf), i);
+		       (int)(se - ibuf), i);
 		printf("with bits = #%x %x %x %x %x\n",
-			u.bits[_0], u.bits[_1], u.bits[_2],
-			u.bits[_3], u.bits[_4]);
+		       u.bits[_0], u.bits[_1], u.bits[_2],
+		       u.bits[_3], u.bits[_4]);
 		if (sizeof(long double) == 12)
 			printf("printf(\"%%.21Lg\") gives %.21Lg\n", u.d);
  fmt_test:
 		se = g_xfmt(obuf, u.bits, ndig, sizeof(obuf));
 		printf("g_xfmt(%d) gives %d bytes: \"%s\"\n\n",
-			ndig, (int)(se-obuf), se ? obuf : "<null>");
+		       ndig, (int)(se - obuf), se ? obuf : "<null>");
 		se1 = g_xfmt_p(obuf1, u.bits, ndig, sizeof(obuf1), 0);
 		if (se1 - obuf1 != se - obuf || strcmp(obuf, obuf1))
-			printf("Botch: g_xfmt_p gives \"%s\" rather than \"%s\"\n",
-				obuf1, obuf);
+			printf
+			    ("Botch: g_xfmt_p gives \"%s\" rather than \"%s\"\n",
+			     obuf1, obuf);
 		if (!dItry)
 			continue;
 		printf("strtoIx returns %d,",
-			strtoIx(ibuf, &se, v[0].bits, v[1].bits));
-		printf(" consuming %d bytes.\n", (int)(se-ibuf));
+		       strtoIx(ibuf, &se, v[0].bits, v[1].bits));
+		printf(" consuming %d bytes.\n", (int)(se - ibuf));
 		if (!memcmp(v[0].bits, v[1].bits, 10)) {
 			if (!memcmp(u.bits, v[0].bits, 10))
 				printf("fI[0] == fI[1] == strtox\n");
 			else {
 				printf("fI[0] == fI[1] = #%x %x %x %x %x\n",
-					v[0].bits[_0], v[0].bits[_1],
-					v[0].bits[_2], v[0].bits[_3],
-					v[0].bits[_4]);
+				       v[0].bits[_0], v[0].bits[_1],
+				       v[0].bits[_2], v[0].bits[_3],
+				       v[0].bits[_4]);
 				if (sizeof(long double) == 12)
-				    printf("= %.21Lg\n", v[0].d);
-				}
+					printf("= %.21Lg\n", v[0].d);
 			}
-		else {
+		} else {
 			printf("fI[0] = #%x %x %x %x %x\n",
-					v[0].bits[_0], v[0].bits[_1],
-					v[0].bits[_2], v[0].bits[_3],
-					v[0].bits[_4]);
+			       v[0].bits[_0], v[0].bits[_1],
+			       v[0].bits[_2], v[0].bits[_3], v[0].bits[_4]);
 			if (sizeof(long double) == 12)
 				printf("= %.21Lg\n", v[0].d);
 			printf("fI[1] = #%x %x %x %x %x\n",
-					v[1].bits[_0], v[1].bits[_1],
-					v[1].bits[_2], v[1].bits[_3],
-					v[1].bits[_4]);
+			       v[1].bits[_0], v[1].bits[_1],
+			       v[1].bits[_2], v[1].bits[_3], v[1].bits[_4]);
 			if (sizeof(long double) == 12)
 				printf("= %.21Lg\n", v[1].d);
 			if (!memcmp(v[0].bits, u.bits, 10))
@@ -168,23 +168,30 @@ main(void)
 				printf("fI[1] == strtox\n");
 			else
 				printf("**** Both differ from strtod ****\n");
-			}
-		printf("\n");
-		switch(i & STRTOG_Retmask) {
-		  case STRTOG_Infinite:
-			for(nik = 0; nik < 6; ++nik) {
-				se1 = g_xfmt_p(obuf1, u.bits, ndig, sizeof(obuf1), nik);
-				printf("g_xfmt_p(...,%d): \"%s\"\n", nik, obuf1);
-				}
-			break;
-		  case STRTOG_NaN:
-		  case STRTOG_NaNbits:
-			for(i = 0; i < 3; ++i)
-				for(nik = 6*i, nike = nik + 3; nik < nike; ++nik) {
-					se1 = g_xfmt_p(obuf1, u.bits, ndig, sizeof(obuf1), nik);
-					printf("g_xfmt_p(...,%d): \"%s\"\n", nik, obuf1);
-					}
-		  }
 		}
-	return 0;
+		printf("\n");
+		switch (i & STRTOG_Retmask) {
+		case STRTOG_Infinite:
+			for (nik = 0; nik < 6; ++nik) {
+				se1 =
+				    g_xfmt_p(obuf1, u.bits, ndig, sizeof(obuf1),
+					     nik);
+				printf("g_xfmt_p(...,%d): \"%s\"\n", nik,
+				       obuf1);
+			}
+			break;
+		case STRTOG_NaN:
+		case STRTOG_NaNbits:
+			for (i = 0; i < 3; ++i)
+				for (nik = 6 * i, nike = nik + 3; nik < nike;
+				     ++nik) {
+					se1 =
+					    g_xfmt_p(obuf1, u.bits, ndig,
+						     sizeof(obuf1), nik);
+					printf("g_xfmt_p(...,%d): \"%s\"\n",
+					       nik, obuf1);
+				}
+		}
 	}
+	return 0;
+}

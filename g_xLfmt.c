@@ -47,10 +47,10 @@ THIS SOFTWARE.
 #define _2 0
 #endif
 
- char*
-g_xLfmt(char *buf, void *V, int ndig, size_t bufsize)
+char *g_xLfmt(char *buf, void *V, int ndig, size_t bufsize)
 {
-	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, 0, Int_max };
+	static FPI fpi0 =
+	    { 64, 1 - 16383 - 64 + 1, 32766 - 16383 - 64 + 1, 1, 0, Int_max };
 	char *b, *s, *se;
 	uint32_t bits[2], *L, sign;
 	int decpt, ex, i, mode;
@@ -65,11 +65,11 @@ g_xLfmt(char *buf, void *V, int ndig, size_t bufsize)
 	if (bufsize < (size_t)(ndig + 10))
 		return 0;
 
-	L = (uint32_t*)V;
+	L = (uint32_t *) V;
 	sign = L[_0] & 0x80000000L;
 	bits[1] = L[_1];
 	bits[0] = L[_2];
-	if ( (ex = (L[_0] >> 16) & 0x7fff) !=0) {
+	if ((ex = (L[_0] >> 16) & 0x7fff) != 0) {
 		if (ex == 0x7fff) {
 			/* Infinity or NaN */
 			if (bits[0] | bits[1])
@@ -79,15 +79,13 @@ g_xLfmt(char *buf, void *V, int ndig, size_t bufsize)
 				if (sign)
 					*b++ = '-';
 				b = strcp(b, "Infinity");
-				}
-			return b;
 			}
+			return b;
+		}
 		i = STRTOG_Normal;
-		}
-	else if (bits[0] | bits[1]) {
+	} else if (bits[0] | bits[1]) {
 		i = STRTOG_Denormal;
-		}
-	else {
+	} else {
 		b = buf;
 #ifndef IGNORE_ZERO_SIGN
 		if (sign)
@@ -96,14 +94,14 @@ g_xLfmt(char *buf, void *V, int ndig, size_t bufsize)
 		*b++ = '0';
 		*b = 0;
 		return b;
-		}
+	}
 	ex -= 0x3fff + 63;
 	mode = 2;
 	if (ndig <= 0) {
 		if (bufsize < 32)
 			return 0;
 		mode = 0;
-		}
+	}
 	s = gdtoa(fpi, ex, bits, &i, mode, ndig, &decpt, &se);
 	return g__fmt(buf, s, se, decpt, sign, bufsize);
-	}
+}

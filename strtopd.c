@@ -31,10 +31,11 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- int
-strtopd(const char *s, char **sp, double *d)
+int strtopd(const char *s, char **sp, double *d)
 {
-	static FPI fpi0 = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };
+	static FPI fpi0 =
+	    { 53, 1 - 1023 - 53 + 1, 2046 - 1023 - 53 + 1, 1, SI,
+      0 /*unused */  };
 	uint32_t bits[2];
 	int32_t exp;
 	int k;
@@ -45,6 +46,6 @@ strtopd(const char *s, char **sp, double *d)
 #endif
 
 	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtod((uint32_t*)d, bits, exp, k);
+	ULtod((uint32_t *) d, bits, exp, k);
 	return k;
-	}
+}

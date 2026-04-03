@@ -32,40 +32,38 @@ THIS SOFTWARE.
 #include "gdtoaimp.h"
 
 #ifndef MULTIPLE_THREADS
- char *dtoa_result;
+char *dtoa_result;
 #endif
 
- char *
-rv_alloc(int i MTd)
+char *rv_alloc(int i MTd)
 {
 	int j, k, *r;
 
 	j = sizeof(uint32_t);
-	for(k = 0;
-		(int)(sizeof(Bigint) - sizeof(uint32_t) - sizeof(int)) + j <= i;
-		j <<= 1)
-			k++;
-	r = (int*)Balloc(k MTa);
+	for (k = 0;
+	     (int)(sizeof(Bigint) - sizeof(uint32_t) - sizeof(int)) + j <= i;
+	     j <<= 1)
+		k++;
+	r = (int *)Balloc(k MTa);
 	*r = k;
 	return
 #ifndef MULTIPLE_THREADS
-	dtoa_result =
+	    dtoa_result =
 #endif
-		(char *)(r+1);
-	}
+	    (char *)(r + 1);
+}
 
- char *
-nrv_alloc(char *s, char **rve, int n MTd)
+char *nrv_alloc(char *s, char **rve, int n MTd)
 {
 	char *rv, *t;
 
 	t = rv = rv_alloc(n MTa);
-	while((*t = *s++) !=0)
+	while ((*t = *s++) != 0)
 		t++;
 	if (rve)
 		*rve = t;
 	return rv;
-	}
+}
 
 /* freedtoa(s) must be used to free values s returned by dtoa
  * when MULTIPLE_THREADS is #defined.  It should be used in all cases,
@@ -73,33 +71,29 @@ nrv_alloc(char *s, char **rve, int n MTd)
  * when MULTIPLE_THREADS is not defined.
  */
 
- void
-freedtoa(char *s)
+void freedtoa(char *s)
 {
 #ifdef MULTIPLE_THREADS
 	ThInfo *TI = 0;
 #endif
-	Bigint *b = (Bigint *)((int *)s - 1);
-	b->maxwds = 1 << (b->k = *(int*)b);
+	Bigint *b = (Bigint *) ((int *)s - 1);
+	b->maxwds = 1 << (b->k = *(int *)b);
 	Bfree(b MTb);
 #ifndef MULTIPLE_THREADS
 	if (s == dtoa_result)
 		dtoa_result = 0;
 #endif
-	}
+}
 
- int
-quorem
-	(Bigint *b, Bigint *S)
-{
+int quorem(Bigint * b, Bigint * S) {
 	int n;
 	uint32_t *bx, *bxe, q, *sx, *sxe;
 	uint64_t borrow, carry, y, ys;
 
 	n = S->wds;
 #ifdef DEBUG
-	/*debug*/ if (b->wds > n)
-	/*debug*/	Bug("oversize b in quorem");
+	/*debug */ if (b->wds > n)
+		/*debug */ Bug("oversize b in quorem");
 #endif
 	if (b->wds < n)
 		return 0;
@@ -109,27 +103,27 @@ quorem
 	bxe = bx + n;
 	q = *bxe / (*sxe + 1);	/* ensure q <= true quotient */
 #ifdef DEBUG
-	/*debug*/ if (q > 9)
-	/*debug*/	Bug("oversized quotient in quorem");
+	/*debug */ if (q > 9)
+		/*debug */ Bug("oversized quotient in quorem");
 #endif
 	if (q) {
 		borrow = 0;
 		carry = 0;
 		do {
-			ys = *sx++ * (uint64_t)q + carry;
+			ys = *sx++ * (uint64_t) q + carry;
 			carry = ys >> 32;
 			y = *bx - (ys & 0xffffffffUL) - borrow;
 			borrow = y >> 32 & 1UL;
 			*bx++ = y & 0xffffffffUL;
-			}
-			while(sx <= sxe);
+		}
+		while (sx <= sxe);
 		if (!*bxe) {
 			bx = b->x;
-			while(--bxe > bx && !*bxe)
+			while (--bxe > bx && !*bxe)
 				--n;
 			b->wds = n;
-			}
 		}
+	}
 	if (cmp(b, S) >= 0) {
 		q++;
 		borrow = 0;
@@ -142,15 +136,15 @@ quorem
 			y = *bx - (ys & 0xffffffffUL) - borrow;
 			borrow = y >> 32 & 1UL;
 			*bx++ = y & 0xffffffffUL;
-			}
-			while(sx <= sxe);
+		}
+		while (sx <= sxe);
 		bx = b->x;
 		bxe = bx + n;
 		if (!*bxe) {
-			while(--bxe > bx && !*bxe)
+			while (--bxe > bx && !*bxe)
 				--n;
 			b->wds = n;
-			}
 		}
-	return q;
 	}
+	return q;
+}

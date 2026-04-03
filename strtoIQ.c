@@ -31,14 +31,15 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- int
-strtoIQ(const char *s, char **sp, void *a, void *b)
+int strtoIQ(const char *s, char **sp, void *a, void *b)
 {
-	static FPI fpi = { 113, 1-16383-113+1, 32766-16383-113+1, 1, SI, 0 /*unused*/ };
+	static FPI fpi =
+	    { 113, 1 - 16383 - 113 + 1, 32766 - 16383 - 113 + 1, 1, SI,
+       0 /*unused */  };
 	int32_t exp[2];
 	Bigint *B[2];
 	int k, rv[2];
-	uint32_t *L = (uint32_t *)a, *M = (uint32_t *)b;
+	uint32_t *L = (uint32_t *) a, *M = (uint32_t *) b;
 #ifdef MULTIPLE_THREADS
 	ThInfo *TI = 0;
 #endif
@@ -51,12 +52,11 @@ strtoIQ(const char *s, char **sp, void *a, void *b)
 	if (B[1]) {
 		ULtoQ(M, B[1]->x, exp[1], rv[1]);
 		Bfree(B[1] MTb);
-		}
-	else {
+	} else {
 		M[0] = L[0];
 		M[1] = L[1];
 		M[2] = L[2];
 		M[3] = L[3];
-		}
-	return k;
 	}
+	return k;
+}

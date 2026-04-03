@@ -49,51 +49,51 @@ THIS SOFTWARE.
 #define _3 0
 #endif
 
- extern uint32_t NanDflt_Q_D2A[4];
+extern uint32_t NanDflt_Q_D2A[4];
 
- void
-ULtoQ(uint32_t *L, uint32_t *bits, int32_t exp, int k)
+void ULtoQ(uint32_t *L, uint32_t *bits, int32_t exp, int k)
 {
-	switch(k & STRTOG_Retmask) {
-	  case STRTOG_NoNumber:
-	  case STRTOG_Zero:
+	switch (k & STRTOG_Retmask) {
+	case STRTOG_NoNumber:
+	case STRTOG_Zero:
 		L[0] = L[1] = L[2] = L[3] = 0;
 		break;
 
-	  case STRTOG_Normal:
-	  case STRTOG_NaNbits:
+	case STRTOG_Normal:
+	case STRTOG_NaNbits:
 		L[_3] = bits[0];
 		L[_2] = bits[1];
 		L[_1] = bits[2];
 		L[_0] = (bits[3] & ~0x10000) | ((exp + 0x3fff + 112) << 16);
 		break;
 
-	  case STRTOG_Denormal:
+	case STRTOG_Denormal:
 		L[_3] = bits[0];
 		L[_2] = bits[1];
 		L[_1] = bits[2];
 		L[_0] = bits[3];
 		break;
 
-	  case STRTOG_Infinite:
+	case STRTOG_Infinite:
 		L[_0] = 0x7fff0000;
 		L[_1] = L[_2] = L[_3] = 0;
 		break;
 
-	  case STRTOG_NaN:
+	case STRTOG_NaN:
 		L[_0] = NanDflt_Q_D2A[3];
 		L[_1] = NanDflt_Q_D2A[2];
 		L[_2] = NanDflt_Q_D2A[1];
 		L[_3] = NanDflt_Q_D2A[0];
-	  }
+	}
 	if (k & STRTOG_Neg)
 		L[_0] |= 0x80000000L;
-	}
+}
 
- int
-strtorQ(const char *s, char **sp, int rounding, void *L)
+int strtorQ(const char *s, char **sp, int rounding, void *L)
 {
-	static FPI fpi0 = { 113, 1-16383-113+1, 32766-16383-113+1, 1, SI, 0 /*unused*/ };
+	static FPI fpi0 =
+	    { 113, 1 - 16383 - 113 + 1, 32766 - 16383 - 113 + 1, 1, SI,
+      0 /*unused */  };
 	FPI *fpi, fpi1;
 	uint32_t bits[4];
 	int32_t exp;
@@ -104,8 +104,8 @@ strtorQ(const char *s, char **sp, int rounding, void *L)
 		fpi1 = fpi0;
 		fpi1.rounding = rounding;
 		fpi = &fpi1;
-		}
-	k = strtodg(s, sp, fpi, &exp, bits);
-	ULtoQ((uint32_t*)L, bits, exp, k);
-	return k;
 	}
+	k = strtodg(s, sp, fpi, &exp, bits);
+	ULtoQ((uint32_t *) L, bits, exp, k);
+	return k;
+}

@@ -31,16 +31,13 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- Bigint *
-s2b
-	(const char *s, int nd0, int nd, uint32_t y9, int dplen MTd)
-{
+Bigint *s2b(const char *s, int nd0, int nd, uint32_t y9, int dplen MTd) {
 	Bigint *b;
 	int i, k;
 	int32_t x, y;
 
 	x = (nd + 8) / 9;
-	for(k = 0, y = 1; x > y; y <<= 1, k++) ;
+	for (k = 0, y = 1; x > y; y <<= 1, k++) ;
 	b = Balloc(k MTa);
 	b->x[0] = y9;
 	b->wds = 1;
@@ -48,72 +45,66 @@ s2b
 	i = 9;
 	if (9 < nd0) {
 		s += 9;
-		do b = multadd(b, 10, *s++ - '0' MTa);
-			while(++i < nd0);
+		do
+			b = multadd(b, 10, *s++ - '0' MTa);
+		while (++i < nd0);
 		s += dplen;
-		}
-	else
+	} else
 		s += dplen + 9;
-	for(; i < nd; i++)
+	for (; i < nd; i++)
 		b = multadd(b, 10, *s++ - '0' MTa);
 	return b;
-	}
+}
 
- double
-ratio
-	(Bigint *a, Bigint *b)
-{
+double
+ ratio(Bigint * a, Bigint * b) {
 	U da, db;
 	int k, ka, kb;
 
 	dval(&da) = b2d(a, &ka);
 	dval(&db) = b2d(b, &kb);
-	k = ka - kb + ULbits*(a->wds - b->wds);
+	k = ka - kb + ULbits * (a->wds - b->wds);
 	if (k > 0)
-		word0(&da) += k*Exp_msk1;
+		word0(&da) += k * Exp_msk1;
 	else {
 		k = -k;
-		word0(&db) += k*Exp_msk1;
-		}
-	return dval(&da) / dval(&db);
+		word0(&db) += k * Exp_msk1;
 	}
+	return dval(&da) / dval(&db);
+}
 
 #ifdef INFNAN_CHECK
 
- int
-match
-	(const char **sp, char *t)
-{
+int
+ match(const char **sp, char *t) {
 	int c, d;
 	const char *s = *sp;
 
-	while( (d = *t++) !=0) {
+	while ((d = *t++) != 0) {
 		if ((c = *++s) >= 'A' && c <= 'Z')
 			c += 'a' - 'A';
 		if (c != d)
 			return 0;
-		}
+	}
 	*sp = s + 1;
 	return 1;
-	}
-#endif /* INFNAN_CHECK */
+}
+#endif				/* INFNAN_CHECK */
 
- void
-copybits(uint32_t *c, int n, Bigint *b)
+void copybits(uint32_t *c, int n, Bigint *b)
 {
 	uint32_t *ce, *x, *xe;
 
-	ce = c + ((n-1) >> kshift) + 1;
+	ce = c + ((n - 1) >> kshift) + 1;
 	x = b->x;
 	xe = x + b->wds;
-	while(x < xe)
+	while (x < xe)
 		*c++ = *x++;
-	while(c < ce)
+	while (c < ce)
 		*c++ = 0;
-	}
+}
 
- uint32_t
-any_on(Bigint *b, int k)
+uint32_t any_on(Bigint *b, int k)
 {
 	int n, nwds;
 	uint32_t *x, *x0, x1, x2;
@@ -129,11 +120,11 @@ any_on(Bigint *b, int k)
 		x1 <<= k;
 		if (x1 != x2)
 			return 1;
-		}
+	}
 	x0 = x;
 	x += n;
-	while(x > x0)
+	while (x > x0)
 		if (*--x)
 			return 1;
 	return 0;
-	}
+}

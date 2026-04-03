@@ -31,14 +31,17 @@ THIS SOFTWARE.
 
 #include "gdtoaimp.h"
 
- float
-strtof(const char *s, char **sp)
+float strtof(const char *s, char **sp)
 {
-	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };
+	static FPI fpi0 =
+	    { 24, 1 - 127 - 24 + 1, 254 - 127 - 24 + 1, 1, SI, 0 /*unused */  };
 	uint32_t bits[1];
 	int32_t exp;
 	int k;
-	union { uint32_t L[1]; float f; } u;
+	union {
+		uint32_t L[1];
+		float f;
+	} u;
 #ifdef Honor_FLT_ROUNDS
 #include "gdtoa_fltrnds.h"
 #else
@@ -46,30 +49,30 @@ strtof(const char *s, char **sp)
 #endif
 
 	k = strtodg(s, sp, fpi, &exp, bits);
-	switch(k & STRTOG_Retmask) {
-	  default: /* unused */
-	  case STRTOG_NoNumber:
-	  case STRTOG_Zero:
+	switch (k & STRTOG_Retmask) {
+	default:		/* unused */
+	case STRTOG_NoNumber:
+	case STRTOG_Zero:
 		u.L[0] = 0;
 		break;
 
-	  case STRTOG_Normal:
-	  case STRTOG_NaNbits:
+	case STRTOG_Normal:
+	case STRTOG_NaNbits:
 		u.L[0] = (bits[0] & 0x7fffff) | ((exp + 0x7f + 23) << 23);
 		break;
 
-	  case STRTOG_Denormal:
+	case STRTOG_Denormal:
 		u.L[0] = bits[0];
 		break;
 
-	  case STRTOG_Infinite:
+	case STRTOG_Infinite:
 		u.L[0] = 0x7f800000;
 		break;
 
-	  case STRTOG_NaN:
+	case STRTOG_NaN:
 		u.L[0] = f_QNAN;
-	  }
+	}
 	if (k & STRTOG_Neg)
 		u.L[0] |= 0x80000000L;
 	return u.f;
-	}
+}

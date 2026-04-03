@@ -45,20 +45,20 @@ THIS SOFTWARE.
 extern "C" {
 #endif
 
-extern int Fprintf (FILE*, const char*, ...);
-extern int Printf (const char*, ...);
-extern int Sprintf (char*, const char*, ...);
-extern int Snprintf (char*, size_t, const char*, ...);
-extern void Perror (const char*);
-extern int Vfprintf (FILE*, const char*, va_list);
-extern int Vsprintf (char*, const char*, va_list);
-extern int Vsnprintf (char*, size_t, const char*, va_list);
+	extern int Fprintf(FILE *, const char *, ...);
+	extern int Printf(const char *, ...);
+	extern int Sprintf(char *, const char *, ...);
+	extern int Snprintf(char *, size_t, const char *, ...);
+	extern void Perror(const char *);
+	extern int Vfprintf(FILE *, const char *, va_list);
+	extern int Vsprintf(char *, const char *, va_list);
+	extern int Vsnprintf(char *, size_t, const char *, va_list);
 
 #ifdef PF_BUF
-extern FILE *stderr_ASL;
-extern void (*pfbuf_print_ASL) (char*);
-extern char *pfbuf_ASL;
-extern void fflush_ASL (FILE*);
+	extern FILE *stderr_ASL;
+	extern void (*pfbuf_print_ASL)(char *);
+	extern char *pfbuf_ASL;
+	extern void fflush_ASL(FILE *);
 #ifdef fflush
 #define old_fflush_ASL fflush
 #undef  fflush
@@ -67,9 +67,8 @@ extern void fflush_ASL (FILE*);
 #endif
 
 #ifdef __cplusplus
-	}
+}
 #endif
-
 #undef printf
 #undef fprintf
 #undef sprintf
@@ -78,15 +77,13 @@ extern void fflush_ASL (FILE*);
 #undef vsprintf
 #define printf Printf
 #define fprintf Fprintf
-#undef snprintf		/* for MacOSX */
-#undef vsnprintf	/* for MacOSX */
+#undef snprintf			/* for MacOSX */
+#undef vsnprintf		/* for MacOSX */
 #define snprintf Snprintf
 #define sprintf Sprintf
 #define perror Perror
 #define vfprintf Vfprintf
 #define vsnprintf Vsnprintf
 #define vsprintf Vsprintf
-
-#endif /* NO_STDIO1 */
-
-#endif /* STDIO1_H_included */
+#endif				/* NO_STDIO1 */
+#endif				/* STDIO1_H_included */
