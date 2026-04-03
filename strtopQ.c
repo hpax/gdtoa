@@ -54,9 +54,9 @@ THIS SOFTWARE.
 
  int
 #ifdef KR_headers
-strtopQ(s, sp, V) CONST char *s; char **sp; void *V;
+strtopQ(s, sp, V) const char *s; char **sp; void *V;
 #else
-strtopQ(CONST char *s, char **sp, void *V)
+strtopQ(const char *s, char **sp, void *V)
 #endif
 {
 	static FPI fpi0 = { 113, 1-16383-113+1, 32766 - 16383 - 113 + 1, 1, SI, 0 /*unused*/ };

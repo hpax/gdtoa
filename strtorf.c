@@ -68,9 +68,9 @@ ULtof(ULong *L, ULong *bits, Long exp, int k)
 
  int
 #ifdef KR_headers
-strtorf(s, sp, rounding, f) CONST char *s; char **sp; int rounding; float *f;
+strtorf(s, sp, rounding, f) const char *s; char **sp; int rounding; float *f;
 #else
-strtorf(CONST char *s, char **sp, int rounding, float *f)
+strtorf(const char *s, char **sp, int rounding, float *f)
 #endif
 {
 	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };

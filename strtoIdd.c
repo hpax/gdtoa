@@ -33,9 +33,9 @@ THIS SOFTWARE.
 
  int
 #ifdef KR_headers
-strtoIdd(s, sp, f0, f1) CONST char *s; char **sp; double *f0, *f1;
+strtoIdd(s, sp, f0, f1) const char *s; char **sp; double *f0, *f1;
 #else
-strtoIdd(CONST char *s, char **sp, double *f0, double *f1)
+strtoIdd(const char *s, char **sp, double *f0, double *f1)
 #endif
 {
 #ifdef Sudden_Underflow

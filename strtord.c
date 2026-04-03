@@ -72,9 +72,9 @@ ULtod(ULong *L, ULong *bits, Long exp, int k)
 
  int
 #ifdef KR_headers
-strtord(s, sp, rounding, d) CONST char *s; char **sp; int rounding; double *d;
+strtord(s, sp, rounding, d) const char *s; char **sp; int rounding; double *d;
 #else
-strtord(CONST char *s, char **sp, int rounding, double *d)
+strtord(const char *s, char **sp, int rounding, double *d)
 #endif
 {
 	static FPI fpi0 = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };

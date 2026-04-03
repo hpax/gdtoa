@@ -33,9 +33,9 @@ THIS SOFTWARE.
 
  int
 #ifdef KR_headers
-strtopdd(s, sp, dd) CONST char *s; char **sp; double *dd;
+strtopdd(s, sp, dd) const char *s; char **sp; double *dd;
 #else
-strtopdd(CONST char *s, char **sp, double *dd)
+strtopdd(const char *s, char **sp, double *dd)
 #endif
 {
 #ifdef Sudden_Underflow

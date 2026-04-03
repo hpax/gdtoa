@@ -112,10 +112,10 @@ bitstob(ULong *bits, int nbits, int *bbits MTd)
 gdtoa
 #ifdef KR_headers
 	(fpi, be, bits, kindp, mode, ndigits, decpt, rve)
-	CONST FPI *fpi; int be; ULong *bits;
+	const FPI *fpi; int be; ULong *bits;
 	int *kindp, mode, ndigits, *decpt; char **rve;
 #else
-	(CONST FPI *fpi, int be, ULong *bits, int *kindp, int mode, int ndigits, int *decpt, char **rve)
+	(const FPI *fpi, int be, ULong *bits, int *kindp, int mode, int ndigits, int *decpt, char **rve)
 #endif
 {
  /*	Arguments ndigits and decpt are similar to the second and third

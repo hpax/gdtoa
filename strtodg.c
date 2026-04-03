@@ -35,7 +35,7 @@ THIS SOFTWARE.
 #include "locale.h"
 #endif
 
- static CONST int
+ static const int
 fivesbits[] = {	 0,  3,  5,  7, 10, 12, 14, 17, 19, 21,
 		24, 26, 28, 31, 33, 35, 38, 40, 42, 45,
 		47, 49, 52
@@ -172,9 +172,9 @@ set_ones(Bigint *b, int n MTd)
 rvOK
 #ifdef KR_headers
  (d, fpi, exp, bits, exact, rd, irv MTa)
- U *d; CONST FPI *fpi; Long *exp; ULong *bits; int exact, rd, *irv; MTk
+ U *d; const FPI *fpi; Long *exp; ULong *bits; int exact, rd, *irv; MTk
 #else
- (U *d, CONST FPI *fpi, Long *exp, ULong *bits, int exact, int rd, int *irv MTd)
+ (U *d, const FPI *fpi, Long *exp, ULong *bits, int exact, int rd, int *irv MTd)
 #endif
 {
 	Bigint *b;
@@ -316,9 +316,9 @@ mantbits(U *d)
 strtodg
 #ifdef KR_headers
 	(s00, se, fpi, exp, bits)
-	CONST char *s00; char **se; CONST FPI *fpi; Long *exp; ULong *bits;
+	const char *s00; char **se; const FPI *fpi; Long *exp; ULong *bits;
 #else
-	(CONST char *s00, char **se, CONST FPI *fpi, Long *exp, ULong *bits)
+	(const char *s00, char **se, const FPI *fpi, Long *exp, ULong *bits)
 #endif
 {
 	int abe, abits, asub;
@@ -326,7 +326,7 @@ strtodg
 	int dsign, e, e1, e2, emin, esign, finished, i, inex, irv, j, k;
 	int nbits, nd, nd0, nf, nz, nz0, rd, rvbits, rve, rve1, sign;
 	int sudden_underflow;
-	CONST char *s, *s0;
+	const char *s, *s0;
 	double adj0, tol;
 	Long L;
 	U adj, rv;

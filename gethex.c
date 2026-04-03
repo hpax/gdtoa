@@ -38,13 +38,13 @@ THIS SOFTWARE.
  int
 #ifdef KR_headers
 gethex(sp, fpi, exp, bp, sign MTa)
-	CONST char **sp; CONST FPI *fpi; Long *exp; Bigint **bp; int sign; MTk
+	const char **sp; const FPI *fpi; Long *exp; Bigint **bp; int sign; MTk
 #else
-gethex( CONST char **sp, CONST FPI *fpi, Long *exp, Bigint **bp, int sign MTd)
+gethex( const char **sp, const FPI *fpi, Long *exp, Bigint **bp, int sign MTd)
 #endif
 {
 	Bigint *b;
-	CONST unsigned char *decpt, *s0, *s, *s1;
+	const unsigned char *decpt, *s0, *s, *s1;
 	int big, esign, havedig, irv, j, k, n, n0, nbits, up, zret;
 	ULong L, lostbits, *x;
 	Long e, e1;
@@ -69,7 +69,7 @@ gethex( CONST char **sp, CONST FPI *fpi, Long *exp, Bigint **bp, int sign MTd)
 	/**** if (!hexdig['0']) hexdig_init_D2A(); ****/
 	*bp = 0;
 	havedig = 0;
-	s0 = *(CONST unsigned char **)sp + 2;
+	s0 = *(const unsigned char **)sp + 2;
 	while(s0[havedig] == '0')
 		havedig++;
 	s0 += havedig;

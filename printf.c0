@@ -120,7 +120,7 @@ Finfo {
 	size_t lastlen;
 	} Finfo;
 
- typedef char *(*pgdtoa) (CONST FPI*, int be, ULong *bits, int *kind, int mode, int ndigits, int *decpt, char **rve);
+ typedef char *(*pgdtoa) (const FPI*, int be, ULong *bits, int *kind, int mode, int ndigits, int *decpt, char **rve);
 
  typedef struct
 FPBits {
@@ -271,7 +271,6 @@ Qfpbits(U *u, FPBits *b)
 #endif /*} GDTOA_Qtype */
 
 #ifdef KR_headers
-#define Const /* const */
 #define Voidptr char*
 #ifndef size_t__
 #define size_t int
@@ -280,7 +279,6 @@ Qfpbits(U *u, FPBits *b)
 
 #else
 
-#define Const const
 #define Voidptr void*
 
 #endif
@@ -685,7 +683,7 @@ x_sprintf
 	Fpbits fpbits;
 	U u;
 	char *digits, *ob0, *outbuf, *s, *s0, *se;
-	Const char *fmt0;
+	const char *fmt0;
 	char buf[32];
 	long i;
 	unsigned long j, ul;

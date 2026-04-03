@@ -33,9 +33,9 @@ THIS SOFTWARE.
 
  int
 #ifdef KR_headers
-strtoIx(s, sp, a, b) CONST char *s; char **sp; void *a; void *b;
+strtoIx(s, sp, a, b) const char *s; char **sp; void *a; void *b;
 #else
-strtoIx(CONST char *s, char **sp, void *a, void *b)
+strtoIx(const char *s, char **sp, void *a, void *b)
 #endif
 {
 	static FPI fpi = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };

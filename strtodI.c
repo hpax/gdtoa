@@ -50,9 +50,9 @@ ulpdown(U *d)
 
  int
 #ifdef KR_headers
-strtodI(s, sp, dd) CONST char *s; char **sp; double *dd;
+strtodI(s, sp, dd) const char *s; char **sp; double *dd;
 #else
-strtodI(CONST char *s, char **sp, double *dd)
+strtodI(const char *s, char **sp, double *dd)
 #endif
 {
 	static FPI fpi = { 53, 1-1023-53+1, 2046-1023-53+1, 1, SI, 0 /*unused*/ };

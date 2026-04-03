@@ -96,9 +96,9 @@ ULtoQ(ULong *L, ULong *bits, Long exp, int k)
 
  int
 #ifdef KR_headers
-strtorQ(s, sp, rounding, L) CONST char *s; char **sp; int rounding; void *L;
+strtorQ(s, sp, rounding, L) const char *s; char **sp; int rounding; void *L;
 #else
-strtorQ(CONST char *s, char **sp, int rounding, void *L)
+strtorQ(const char *s, char **sp, int rounding, void *L)
 #endif
 {
 	static FPI fpi0 = { 113, 1-16383-113+1, 32766-16383-113+1, 1, SI, 0 /*unused*/ };

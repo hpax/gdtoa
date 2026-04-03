@@ -55,9 +55,9 @@ THIS SOFTWARE.
 
  int
 #ifdef KR_headers
-strtopx(s, sp, V) CONST char *s; char **sp; void *V;
+strtopx(s, sp, V) const char *s; char **sp; void *V;
 #else
-strtopx(CONST char *s, char **sp, void *V)
+strtopx(const char *s, char **sp, void *V)
 #endif
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };

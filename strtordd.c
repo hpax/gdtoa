@@ -175,9 +175,9 @@ ULtodd(ULong *L, ULong *bits, Long exp, int k)
 
  int
 #ifdef KR_headers
-strtordd(s, sp, rounding, dd) CONST char *s; char **sp; int rounding; double *dd;
+strtordd(s, sp, rounding, dd) const char *s; char **sp; int rounding; double *dd;
 #else
-strtordd(CONST char *s, char **sp, int rounding, double *dd)
+strtordd(const char *s, char **sp, int rounding, double *dd)
 #endif
 {
 #ifdef Sudden_Underflow

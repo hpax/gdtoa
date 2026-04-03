@@ -33,9 +33,9 @@ THIS SOFTWARE.
 
  int
 #ifdef KR_headers
-strtoIg(s00, se, fpi, exp, B, rvp) CONST char *s00; char **se; CONST FPI *fpi; Long *exp; Bigint **B; int *rvp;
+strtoIg(s00, se, fpi, exp, B, rvp) const char *s00; char **se; const FPI *fpi; Long *exp; Bigint **B; int *rvp;
 #else
-strtoIg(CONST char *s00, char **se, CONST FPI *fpi, Long *exp, Bigint **B, int *rvp)
+strtoIg(const char *s00, char **se, const FPI *fpi, Long *exp, Bigint **B, int *rvp)
 #endif
 {
 	Bigint *b, *b1;

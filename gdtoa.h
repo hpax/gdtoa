@@ -51,14 +51,6 @@ typedef unsigned short UShort;
 #define Void void
 #endif
 
-#ifndef CONST
-#ifdef KR_headers
-#define CONST /* blank */
-#else
-#define CONST const
-#endif
-#endif /* CONST */
-
  enum {	/* return values from strtodg */
 	STRTOG_Zero	= 0,
 	STRTOG_Normal	= 1,
@@ -102,12 +94,12 @@ extern "C" {
 
 extern char* dtoa  (double d, int mode, int ndigits, int *decpt,
 			int *sign, char **rve);
-extern char* gdtoa (CONST FPI *fpi, int be, ULong *bits, int *kindp,
+extern char* gdtoa (const FPI *fpi, int be, ULong *bits, int *kindp,
 			int mode, int ndigits, int *decpt, char **rve);
 extern void freedtoa (char*);
-extern float  strtof (CONST char *, char **);
-extern double strtod (CONST char *, char **);
-extern int strtodg (CONST char*, char**, CONST FPI*, Long*, ULong*);
+extern float  strtof (const char *, char **);
+extern double strtod (const char *, char **);
+extern int strtodg (const char*, char**, const FPI*, Long*, ULong*);
 
 extern char*	g_ddfmt   (char*, double*, int, size_t);
 extern char*	g_ddfmt_p (char*, double*,	int, size_t, int);
@@ -122,26 +114,26 @@ extern char*	g_xfmt_p  (char*, void*,	int, size_t, int);
 extern char*	g_xLfmt   (char*, void*,   int, size_t);
 extern char*	g_xLfmt_p (char*, void*,	int, size_t, int);
 
-extern int	strtoId  (CONST char*, char**, double*, double*);
-extern int	strtoIdd (CONST char*, char**, double*, double*);
-extern int	strtoIf  (CONST char*, char**, float*, float*);
-extern int	strtoIQ  (CONST char*, char**, void*, void*);
-extern int	strtoIx  (CONST char*, char**, void*, void*);
-extern int	strtoIxL (CONST char*, char**, void*, void*);
-extern int	strtord  (CONST char*, char**, int, double*);
-extern int	strtordd (CONST char*, char**, int, double*);
-extern int	strtorf  (CONST char*, char**, int, float*);
-extern int	strtorQ  (CONST char*, char**, int, void*);
-extern int	strtorx  (CONST char*, char**, int, void*);
-extern int	strtorxL (CONST char*, char**, int, void*);
+extern int	strtoId  (const char*, char**, double*, double*);
+extern int	strtoIdd (const char*, char**, double*, double*);
+extern int	strtoIf  (const char*, char**, float*, float*);
+extern int	strtoIQ  (const char*, char**, void*, void*);
+extern int	strtoIx  (const char*, char**, void*, void*);
+extern int	strtoIxL (const char*, char**, void*, void*);
+extern int	strtord  (const char*, char**, int, double*);
+extern int	strtordd (const char*, char**, int, double*);
+extern int	strtorf  (const char*, char**, int, float*);
+extern int	strtorQ  (const char*, char**, int, void*);
+extern int	strtorx  (const char*, char**, int, void*);
+extern int	strtorxL (const char*, char**, int, void*);
 #if 1
-extern int	strtodI  (CONST char*, char**, double*);
-extern int	strtopd  (CONST char*, char**, double*);
-extern int	strtopdd (CONST char*, char**, double*);
-extern int	strtopf  (CONST char*, char**, float*);
-extern int	strtopQ  (CONST char*, char**, void*);
-extern int	strtopx  (CONST char*, char**, void*);
-extern int	strtopxL (CONST char*, char**, void*);
+extern int	strtodI  (const char*, char**, double*);
+extern int	strtopd  (const char*, char**, double*);
+extern int	strtopdd (const char*, char**, double*);
+extern int	strtopf  (const char*, char**, float*);
+extern int	strtopQ  (const char*, char**, void*);
+extern int	strtopx  (const char*, char**, void*);
+extern int	strtopxL (const char*, char**, void*);
 #else
 #define strtopd(s,se,x) strtord(s,se,1,x)
 #define strtopdd(s,se,x) strtordd(s,se,1,x)

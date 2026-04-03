@@ -34,9 +34,9 @@ THIS SOFTWARE.
  Bigint *
 s2b
 #ifdef KR_headers
-	(s, nd0, nd, y9, dplen MTa) CONST char *s; int dplen, nd0, nd; ULong y9; MTk
+	(s, nd0, nd, y9, dplen MTa) const char *s; int dplen, nd0, nd; ULong y9; MTk
 #else
-	(CONST char *s, int nd0, int nd, ULong y9, int dplen MTd)
+	(const char *s, int nd0, int nd, ULong y9, int dplen MTd)
 #endif
 {
 	Bigint *b;
@@ -113,11 +113,11 @@ match
 #ifdef KR_headers
 	(sp, t) char **sp, *t;
 #else
-	(CONST char **sp, char *t)
+	(const char **sp, char *t)
 #endif
 {
 	int c, d;
-	CONST char *s = *sp;
+	const char *s = *sp;
 
 	while( (d = *t++) !=0) {
 		if ((c = *++s) >= 'A' && c <= 'Z')

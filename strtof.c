@@ -33,9 +33,9 @@ THIS SOFTWARE.
 
  float
 #ifdef KR_headers
-strtof(s, sp) CONST char *s; char **sp;
+strtof(s, sp) const char *s; char **sp;
 #else
-strtof(CONST char *s, char **sp)
+strtof(const char *s, char **sp)
 #endif
 {
 	static FPI fpi0 = { 24, 1-127-24+1,  254-127-24+1, 1, SI, 0 /*unused*/ };

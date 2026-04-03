@@ -44,7 +44,7 @@ THIS SOFTWARE.
 #undef tinytens
 /* The factor of 2^106 in tinytens[4] helps us avoid setting the underflow */
 /* flag unnecessarily.  It leads to a song and dance at the end of strtod. */
-static CONST double tinytens[] = { 1e-16, 1e-32, 1e-64, 1e-128,
+static const double tinytens[] = { 1e-16, 1e-32, 1e-64, 1e-128,
 		9007199254740992.*9007199254740992.e-256
 		};
 #endif
@@ -82,9 +82,9 @@ sulp
  double
 strtod
 #ifdef KR_headers
-	(s00, se) CONST char *s00; char **se;
+	(s00, se) const char *s00; char **se;
 #else
-	(CONST char *s00, char **se)
+	(const char *s00, char **se)
 #endif
 {
 #ifdef Avoid_Underflow
@@ -92,7 +92,7 @@ strtod
 #endif
 	int bb2, bb5, bbe, bd2, bd5, bbbits, bs2, c, decpt, dsign,
 		 e, e1, esign, i, j, k, nd, nd0, nf, nz, nz0, sign;
-	CONST char *s, *s0;
+	const char *s, *s0;
 	double aadj;
 	Long L;
 	U adj, aadj1, rv, rv0;

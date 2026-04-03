@@ -99,9 +99,9 @@ ULtox(UShort *L, ULong *bits, Long exp, int k)
 
  int
 #ifdef KR_headers
-strtorx(s, sp, rounding, L) CONST char *s; char **sp; int rounding; void *L;
+strtorx(s, sp, rounding, L) const char *s; char **sp; int rounding; void *L;
 #else
-strtorx(CONST char *s, char **sp, int rounding, void *L)
+strtorx(const char *s, char **sp, int rounding, void *L)
 #endif
 {
 	static FPI fpi0 = { 64, 1-16383-64+1, 32766 - 16383 - 64 + 1, 1, SI, 0 /*unused*/ };

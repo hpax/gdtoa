@@ -52,13 +52,13 @@ L_shift(ULong *x, ULong *x1, int i)
  int
 #ifdef KR_headers
 hexnan(sp, fpi, x0)
-	CONST char **sp; CONST FPI *fpi; ULong *x0;
+	const char **sp; const FPI *fpi; ULong *x0;
 #else
-hexnan( CONST char **sp, CONST FPI *fpi, ULong *x0)
+hexnan( const char **sp, const FPI *fpi, ULong *x0)
 #endif
 {
 	ULong c, h, *x, *x1, *xe;
-	CONST char *s;
+	const char *s;
 	int havedig, hd0, i, nbits;
 
 	/**** if (!hexdig['0']) hexdig_init_D2A(); ****/
@@ -71,15 +71,15 @@ hexnan( CONST char **sp, CONST FPI *fpi, ULong *x0)
 	havedig = hd0 = i = 0;
 	s = *sp;
 	/* allow optional initial 0x or 0X */
-	while((c = *(CONST unsigned char*)(s+1)) && c <= ' ') {
+	while((c = *(const unsigned char*)(s+1)) && c <= ' ') {
 		if (!c)
 			goto retnan;
 		++s;
 		}
 	if (s[1] == '0' && (s[2] == 'x' || s[2] == 'X')
-	 && *(CONST unsigned char*)(s+3) > ' ')
+	 && *(const unsigned char*)(s+3) > ' ')
 		s += 2;
-	while((c = *(CONST unsigned char*)++s)) {
+	while((c = *(const unsigned char*)++s)) {
 		if (!(h = hexdig[c])) {
 			if (c <= ' ') {
 				if (hd0 < havedig) {
@@ -94,13 +94,13 @@ hexnan( CONST char **sp, CONST FPI *fpi, ULong *x0)
 					x1 = x;
 					i = 0;
 					}
-				while((c = *(CONST unsigned char*)(s+1)) <= ' ') {
+				while((c = *(const unsigned char*)(s+1)) <= ' ') {
 					if (!c)
 						goto retnan;
 					++s;
 					}
 				if (s[1] == '0' && (s[2] == 'x' || s[2] == 'X')
-				 && *(CONST unsigned char*)(s+3) > ' ')
+				 && *(const unsigned char*)(s+3) > ' ')
 					s += 2;
 				continue;
 				}
