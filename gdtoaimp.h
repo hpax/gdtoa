@@ -189,14 +189,18 @@ THIS SOFTWARE.
 #ifndef GDTOAIMP_H_INCLUDED
 #define GDTOAIMP_H_INCLUDED
 #include "gdtoa.h"
+#include "gdtoacfg.h"
+#include "arith.h"
 #include "gd_qnan.h"
 #ifdef Honor_FLT_ROUNDS
 #include <fenv.h>
 #endif
 
+#ifndef Bug
 #ifdef DEBUG
-#include "stdio.h"
-#define Bug(x) {fprintf(stderr, "%s\n", x); exit(1);}
+#include <assert.h>
+#define Bug(x) (assert(0 && x))
+#endif
 #endif
 
 #include "stdlib.h"

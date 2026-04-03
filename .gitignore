@@ -8,3 +8,12 @@
 *.obj
 arith.h
 gd_qnan.h
+gdtoacfg.h
+gdtoacfg.h.in
+Makefile
+configure
+config.*
+autom4te.cache
+autoconf/aclocal.m4
+autoconf/clean.sh
+autoconf/helpers

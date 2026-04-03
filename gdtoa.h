@@ -32,9 +32,8 @@ THIS SOFTWARE.
 #ifndef GDTOA_H_INCLUDED
 #define GDTOA_H_INCLUDED
 
-#include "arith.h"
-#include <stddef.h>		/* for size_t */
-#include <inttypes.h>		/* for int32_t, uint32_t, uint16_t */
+#include <stddef.h>	/* for size_t */
+#include <inttypes.h>	/* for int32_t, uint32_t, uint16_t */
 
 enum {				/* return values from strtodg */
 	STRTOG_Zero = 0,
