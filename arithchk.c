@@ -107,8 +107,6 @@ main(int argc, char **argv)
 			a->name, a->kind);
 		if (dalign)
 			fprintf(f, "#define Double_Align\n");
-		if (sizeof(char*) == 8)
-			fprintf(f, "#define X64_bit_pointers\n");
 		if (a->kind <= 2 && fzcheck())
 			fprintf(f, "#define Sudden_Underflow\n");
 		return 0;
