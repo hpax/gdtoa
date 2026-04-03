@@ -945,9 +945,9 @@ strcp_D2A(char *a, const char *b)
 
 #ifdef NO_STRING_H
 
- Char *
+ void *
 #ifdef KR_headers
-memcpy_D2A(a, b, len) Char *a; Char *b; size_t len;
+memcpy_D2A(a, b, len) void *a; void *b; size_t len;
 #else
 memcpy_D2A(void *a1, void *b1, size_t len)
 #endif

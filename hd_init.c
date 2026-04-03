@@ -47,7 +47,7 @@ htinit(unsigned char *h, unsigned char *s, int inc)
 	}
 
  void
-hexdig_init_D2A(Void)	/* Use of hexdig_init omitted 20121220 to avoid a */
+hexdig_init_D2A(void)	/* Use of hexdig_init omitted 20121220 to avoid a */
 			/* race condition when multiple threads are used. */
 {
 #define USC (unsigned char *)

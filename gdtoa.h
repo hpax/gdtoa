@@ -45,12 +45,6 @@ typedef unsigned Long ULong;
 typedef unsigned short UShort;
 #endif
 
-#ifdef KR_headers
-#define Void /*nothing*/
-#else
-#define Void void
-#endif
-
  enum {	/* return values from strtodg */
 	STRTOG_Zero	= 0,
 	STRTOG_Normal	= 1,

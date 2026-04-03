@@ -211,20 +211,14 @@ THIS SOFTWARE.
 #include "stdlib.h"
 #include "string.h"
 
-#ifdef KR_headers
-#define Char char
-#else
-#define Char void
-#endif
-
 #ifdef MALLOC
-extern Char *MALLOC (size_t);
+extern void *MALLOC (size_t);
 #else
 #define MALLOC malloc
 #endif
 
 #ifdef REALLOC
-extern Char *REALLOC (Char*, size_t);
+extern void *REALLOC (void*, size_t);
 #else
 #define REALLOC realloc
 #endif
@@ -600,7 +594,7 @@ extern void memcpy_D2A (void*, const void*, size_t);
 			int *decpt, int *sign, char **rve);
  extern char *g__fmt (char*, char*, char*, int, ULong, size_t);
  extern int gethex (const char**, const FPI*, Long*, Bigint**, int MTd);
- extern void hexdig_init_D2A(Void);
+ extern void hexdig_init_D2A(void);
  extern int hexnan (const char**, const FPI*, ULong*);
  extern int hi0bits_D2A (ULong);
  extern Bigint *i2b (int MTd);

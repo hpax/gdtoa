@@ -61,7 +61,7 @@ THIS SOFTWARE.
 typedef union { float f; ULong L; } Uf;
 
  int
-main(Void)
+main(void)
 {
 	Uf fI[2], u;
 	char *s, *se, *se1;

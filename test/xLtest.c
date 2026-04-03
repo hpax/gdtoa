@@ -77,7 +77,7 @@ THIS SOFTWARE.
 #endif
 
  int
-main(Void)
+main(void)
 {
 	char *s, *s1, *se, *se1;
 	int dItry, i, ndig = 0, nik, nike, r = 1;

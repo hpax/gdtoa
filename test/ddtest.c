@@ -75,7 +75,7 @@ dprint(char *what, double d)
 	}
 
  int
-main(Void)
+main(void)
 {
 	U ddI[4], u[2];
 	char *s, *s1, *se, *se1;

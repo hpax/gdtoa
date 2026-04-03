@@ -51,7 +51,7 @@ dshow(char *what, double d)
 	}
 
  int
-main(Void)
+main(void)
 {
 	/* Input: one number per line */
 

@@ -38,14 +38,8 @@ THIS SOFTWARE.
 typedef unsigned int size_t;
 #endif
 #include "varargs.h"
-#ifndef Char
-#define Char char
-#endif
 #else
 #include "stdarg.h"
-#ifndef Char
-#define Char void
-#endif
 #endif
 
 #ifndef NO_STDIO1

@@ -46,9 +46,9 @@ THIS SOFTWARE.
 #include "gdtoa.h"
 int STRTOD_DIGLIM = 24;
 #ifdef KR_headers
-#define Void /*void*/
+#define void /*void*/
 #else
-#define Void void
+#define void void
 #endif
 
 #ifdef __STDC__
@@ -147,7 +147,7 @@ g_fmt(char *b, double x)
 	}
 
  static void
-baderrno(Void)
+baderrno(void)
 {
 	fflush(stdout);
 	perror("\nerrno strtod");
@@ -192,7 +192,7 @@ extern void fpinit_ASL();
 #endif
 
  int
-main(Void)
+main(void)
 {
 	U d, d1;
 	char buf[2048], buf1[32];

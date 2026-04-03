@@ -60,7 +60,7 @@ THIS SOFTWARE.
 #define UL (unsigned long)
 
  int
-main(Void)
+main(void)
 {
 	U fI[2], u;
 	char *s, *se, *se1;

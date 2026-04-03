@@ -79,7 +79,7 @@ THIS SOFTWARE.
 #endif
 
  int
-main(Void)
+main(void)
 {
 	char *s, *se, *se1;
 	int i, dItry, ndig = 0, nik, nike, r = 1;

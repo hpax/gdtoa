@@ -271,15 +271,10 @@ Qfpbits(U *u, FPBits *b)
 #endif /*} GDTOA_Qtype */
 
 #ifdef KR_headers
-#define Voidptr char*
 #ifndef size_t__
 #define size_t int
 #define size_t__
 #endif
-
-#else
-
-#define Voidptr void*
 
 #endif
 
@@ -378,8 +373,8 @@ void (*pfbuf_print_ASL) (char*);
 char *pfbuf_ASL;
 static char *pfbuf_next;
 static size_t pfbuf_len;
-extern Char *mymalloc_ASL (size_t);
-extern Char *myralloc_ASL (void *, size_t);
+extern void *mymalloc_ASL (size_t);
+extern void *myralloc_ASL (void *, size_t);
 
 #undef fflush
 #ifdef old_fflush_ASL
