@@ -426,7 +426,6 @@ lshift
 	x = b->x;
 	xe = x + b->wds;
 	if (k &= kmask) {
-#ifdef Pack_32
 		k1 = 32 - k;
 		z = 0;
 		do {
@@ -436,17 +435,6 @@ lshift
 			while(x < xe);
 		if ((*x1 = z) !=0)
 			++n1;
-#else
-		k1 = 16 - k;
-		z = 0;
-		do {
-			*x1++ = *x << k  & 0xffff | z;
-			z = *x++ >> k1;
-			}
-			while(x < xe);
-		if (*x1 = z)
-			++n1;
-#endif
 		}
 	else do
 		*x1++ = *x++;
@@ -559,7 +547,6 @@ b2d
 #endif
 	k = hi0bits(y);
 	*e = 32 - k;
-#ifdef Pack_32
 	if (k < Ebits) {
 		d0 = Exp_1 | y >> (Ebits - k);
 		w = xa > xa0 ? *--xa : 0;
@@ -576,22 +563,6 @@ b2d
 		d0 = Exp_1 | y;
 		d1 = z;
 		}
-#else
-	if (k < Ebits + 16) {
-		z = xa > xa0 ? *--xa : 0;
-		d0 = Exp_1 | y << k - Ebits | z >> Ebits + 16 - k;
-		w = xa > xa0 ? *--xa : 0;
-		y = xa > xa0 ? *--xa : 0;
-		d1 = z << k + 16 - Ebits | w << k - Ebits | y >> 16 + Ebits - k;
-		goto ret_d;
-		}
-	z = xa > xa0 ? *--xa : 0;
-	w = xa > xa0 ? *--xa : 0;
-	k -= Ebits + 16;
-	d0 = Exp_1 | y << k + 16 | z << k | w >> 16 - k;
-	y = xa > xa0 ? *--xa : 0;
-	d1 = w << k + 16 | y << k;
-#endif
  ret_d:
 #ifdef VAX
 	word0(&d) = d0 >> 16 | d0 << 16;
@@ -625,11 +596,7 @@ d2b
 	d1 = word1(&d) >> 16 | word1(&d) << 16;
 #endif
 
-#ifdef Pack_32
 	b = Balloc(1 MTa);
-#else
-	b = Balloc(2 MTa);
-#endif
 	x = b->x;
 
 	z = d0 & Frac_mask;
@@ -643,7 +610,6 @@ d2b
 	if ( (de = (int)(d0 >> Exp_shift)) !=0)
 		z |= Exp_msk1;
 #endif
-#ifdef Pack_32
 	if ( (y = d1) !=0) {
 		if ( (k = lo0bits(&y)) !=0) {
 			x[0] = y | z << (32 - k);
@@ -665,51 +631,6 @@ d2b
 		    b->wds = 1;
 		k += 32;
 		}
-#else
-	if ( (y = d1) !=0) {
-		if ( (k = lo0bits(&y)) !=0)
-			if (k >= 16) {
-				x[0] = y | z << 32 - k & 0xffff;
-				x[1] = z >> k - 16 & 0xffff;
-				x[2] = z >> k;
-				i = 2;
-				}
-			else {
-				x[0] = y & 0xffff;
-				x[1] = y >> 16 | z << 16 - k & 0xffff;
-				x[2] = z >> k & 0xffff;
-				x[3] = z >> k+16;
-				i = 3;
-				}
-		else {
-			x[0] = y & 0xffff;
-			x[1] = y >> 16;
-			x[2] = z & 0xffff;
-			x[3] = z >> 16;
-			i = 3;
-			}
-		}
-	else {
-#ifdef DEBUG
-		if (!z)
-			Bug("Zero passed to d2b");
-#endif
-		k = lo0bits(&z);
-		if (k >= 16) {
-			x[0] = z;
-			i = 0;
-			}
-		else {
-			x[0] = z & 0xffff;
-			x[1] = z >> 16;
-			i = 1;
-			}
-		k += 32;
-		}
-	while(!x[i])
-		--i;
-	b->wds = i + 1;
-#endif
 #ifndef Sudden_Underflow
 	if (de) {
 #endif
@@ -724,11 +645,7 @@ d2b
 		}
 	else {
 		*e = de - Bias - (P-1) + 1 + k;
-#ifdef Pack_32
 		*bits = 32*i - hi0bits(x[i-1]);
-#else
-		*bits = (i+2)*16 - hi0bits(x[i]);
-#endif
 		}
 #endif
 	return b;

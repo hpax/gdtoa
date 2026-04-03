@@ -44,18 +44,11 @@ bitstob(uint32_t *bits, int nbits, int *bbits MTd)
 		i <<= 1;
 		k++;
 		}
-#ifndef Pack_32
-	if (!k)
-		k = 1;
-#endif
 	b = Balloc(k MTa);
 	be = bits + ((nbits - 1) >> kshift);
 	x = x0 = b->x;
 	do {
 		*x++ = *bits & ALL_ON;
-#ifdef Pack_16
-		*x++ = (*bits >> 16) & ALL_ON;
-#endif
 		} while(++bits <= be);
 	i = x - x0;
 	while(!x0[--i])

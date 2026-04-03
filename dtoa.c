@@ -570,13 +570,8 @@ dtoa
 	 * and for all and pass them and a shift to quorem, so it
 	 * can do shifts and ors to compute the numerator for q.
 	 */
-#ifdef Pack_32
 	if (( i = ((s5 ? 32 - hi0bits(S->x[S->wds-1]) : 1) + s2) & 0x1f )!=0)
 		i = 32 - i;
-#else
-	if (( i = ((s5 ? 32 - hi0bits(S->x[S->wds-1]) : 1) + s2) & 0xf )!=0)
-		i = 16 - i;
-#endif
 	if (i > 4) {
 		i -= 4;
 		b2 += i;

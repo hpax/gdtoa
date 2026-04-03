@@ -36,9 +36,7 @@ sum(Bigint *a, Bigint *b MTd)
 {
 	Bigint *c;
 	uint32_t carry, *xc, *xa, *xb, *xe, y;
-#ifdef Pack_32
 	uint32_t z;
-#endif
 
 	if (a->wds < b->wds) {
 		c = b; b = a; a = c;
@@ -50,7 +48,6 @@ sum(Bigint *a, Bigint *b MTd)
 	xb = b->x;
 	xc = c->x;
 	xe = xc + b->wds;
-#ifdef Pack_32
 	do {
 		y = (*xa & 0xffff) + (*xb & 0xffff) + carry;
 		carry = (y & 0x10000) >> 16;
@@ -67,20 +64,6 @@ sum(Bigint *a, Bigint *b MTd)
 		carry = (z & 0x10000) >> 16;
 		Storeinc(xc, z, y);
 		}
-#else
-	do {
-		y = *xa++ + *xb++ + carry;
-		carry = (y & 0x10000) >> 16;
-		*xc++ = y & 0xffff;
-		}
-		while(xc < xe);
-	xe += a->wds - b->wds;
-	while(xc < xe) {
-		y = *xa++ + carry;
-		carry = (y & 0x10000) >> 16;
-		*xc++ = y & 0xffff;
-		}
-#endif
 	if (carry) {
 		if (c->wds == c->maxwds) {
 			b = Balloc(c->k + 1 MTa);

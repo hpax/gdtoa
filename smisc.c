@@ -41,15 +41,9 @@ s2b
 
 	x = (nd + 8) / 9;
 	for(k = 0, y = 1; x > y; y <<= 1, k++) ;
-#ifdef Pack_32
 	b = Balloc(k MTa);
 	b->x[0] = y9;
 	b->wds = 1;
-#else
-	b = Balloc(k+1 MTa);
-	b->x[0] = y9 & 0xffff;
-	b->wds = (b->x[1] = y9 >> 16) ? 2 : 1;
-#endif
 
 	i = 9;
 	if (9 < nd0) {
@@ -122,24 +116,12 @@ match
 copybits(uint32_t *c, int n, Bigint *b)
 {
 	uint32_t *ce, *x, *xe;
-#ifdef Pack_16
-	int nw, nw1;
-#endif
 
 	ce = c + ((n-1) >> kshift) + 1;
 	x = b->x;
-#ifdef Pack_32
 	xe = x + b->wds;
 	while(x < xe)
 		*c++ = *x++;
-#else
-	nw = b->wds;
-	nw1 = nw & 1;
-	for(xe = x + (nw - nw1); x < xe; x += 2)
-		Storeinc(c, x[1], x[0]);
-	if (nw1)
-		*c++ = *x;
-#endif
 	while(c < ce)
 		*c++ = 0;
 	}

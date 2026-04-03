@@ -49,13 +49,9 @@ increment(Bigint *b MTd)
 {
 	uint32_t *x, *xe;
 	Bigint *b1;
-#ifdef Pack_16
-	uint32_t carry = 1, y;
-#endif
 
 	x = b->x;
 	xe = x + b->wds;
-#ifdef Pack_32
 	do {
 		if (*x < (uint32_t)0xffffffffL) {
 			++*x;
@@ -63,16 +59,6 @@ increment(Bigint *b MTd)
 			}
 		*x++ = 0;
 		} while(x < xe);
-#else
-	do {
-		y = *x + carry;
-		carry = y >> 16;
-		*x++ = y & 0xffff;
-		if (!carry)
-			return b;
-		} while(x < xe);
-	if (carry)
-#endif
 	{
 		if (b->wds >= b->maxwds) {
 			b1 = Balloc(b->k+1 MTa);
@@ -89,13 +75,9 @@ increment(Bigint *b MTd)
 decrement(Bigint *b)
 {
 	uint32_t *x, *xe;
-#ifdef Pack_16
-	uint32_t borrow = 1, y;
-#endif
 
 	x = b->x;
 	xe = x + b->wds;
-#ifdef Pack_32
 	do {
 		if (*x) {
 			--*x;
@@ -104,13 +86,6 @@ decrement(Bigint *b)
 		*x++ = 0xffffffffL;
 		}
 		while(x < xe);
-#else
-	do {
-		y = *x - borrow;
-		borrow = (y & 0x10000) >> 16;
-		*x++ = y & 0xffff;
-		} while(borrow && x < xe);
-#endif
 	}
 
  static int

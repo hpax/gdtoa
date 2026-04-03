@@ -427,21 +427,11 @@ extern double rnd_prod(double, double), rnd_quot(double, double);
 #define Big1 0xffffffff
 
 #undef  Pack_16
-#ifndef Pack_32
-#define Pack_32
-#endif
 
-#ifdef Pack_32
 #define ULbits 32
 #define kshift 5
 #define kmask 31
 #define ALL_ON 0xffffffff
-#else
-#define ULbits 16
-#define kshift 4
-#define kmask 15
-#define ALL_ON 0xffff
-#endif
 
 #ifdef MULTIPLE_THREADS /*{{*/
 #define MTa , PTI
